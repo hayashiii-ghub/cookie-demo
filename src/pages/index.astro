@@ -1,0 +1,203 @@
+---
+import '../styles/reel.css';
+---
+
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>COOKIE — 2:13→2:20 (a seven-second scrub)</title>
+</head>
+<body>
+<div class="bg" id="bgDark"></div>
+<div class="bg" id="bgBlue"></div>
+<canvas id="cookie" aria-hidden="true"></canvas>
+<div class="grain"></div>
+<div class="vig"></div>
+
+<main class="track" id="track" role="main" aria-label="COOKIE 2:13에서 2:20까지, 7초를 스크롤로 재생하는 릴">
+  <h1 class="sr-only">COOKIE — 2:13에서 2:20까지, 7초의 스크럽</h1>
+  <div class="pin">
+    <div class="stage">
+
+      <!-- pure dark → giant cookie zooms in → bursts into scattering cookies (canvas) → blue -->
+
+
+      <!-- the FIRST CD appears here, then travels right + gets doodled in the burn -->
+      <div class="anchor a-cd1"><div class="disc cd1" id="cd1">
+        <div class="doodle" id="doodle">
+          <span class="d-njk">뉴진스</span><span class="d-nj">NEWJEANS</span><span class="d-att">ATTENTION</span>
+          <span class="d-hype">HYPE BOY</span><span class="d-hurt">HURT</span><span class="d-cookie">COOKIE</span>
+          <span class="d-star"><svg viewBox="0 0 32 32"><path d="M16 3 L19.7 12 L29 12.7 L21.5 18.8 L24.2 28 L16 22.4 L7.8 28 L10.5 18.8 L3 12.7 L12.3 12 Z"/></svg></span>
+          <span class="d-smile"><svg viewBox="0 0 40 40"><circle class="face" cx="20" cy="20" r="15.5"/><circle class="dot" cx="14.6" cy="17.2" r="1.9"/><circle class="dot" cx="25.4" cy="17.2" r="1.9"/><path class="mouth" d="M12.5 24 q7.5 8 15 0"/></svg></span>
+          <span class="d-arrow1"><svg viewBox="0 0 46 30"><path d="M4 22 q13 -19 36 -13"/><path d="M31 4 l10 4.5 l-7 8"/></svg></span>
+          <span class="d-arrow2"><svg viewBox="0 0 46 30"><path d="M4 22 q13 -19 36 -13"/><path d="M31 4 l10 4.5 l-7 8"/></svg></span>
+          <span class="d-flow"><svg viewBox="0 0 36 36"><ellipse cx="18" cy="8.5" rx="4.4" ry="7.4"/><ellipse cx="18" cy="8.5" rx="4.4" ry="7.4" transform="rotate(72 18 18)"/><ellipse cx="18" cy="8.5" rx="4.4" ry="7.4" transform="rotate(144 18 18)"/><ellipse cx="18" cy="8.5" rx="4.4" ry="7.4" transform="rotate(216 18 18)"/><ellipse cx="18" cy="8.5" rx="4.4" ry="7.4" transform="rotate(288 18 18)"/><circle class="fillc" cx="18" cy="18" r="3.6"/></svg></span>
+        </div>
+      </div></div>
+      <div class="anchor a-c2"><div class="copy c2" id="c2">
+        <div class="kick">Shot 02 · 2:16</div>
+        <h2>그리고,<br>파랑.</h2>
+        <p class="lede">한 번의 컷. 무대가 전기 블루로 뒤집히고, 방송용 로고에 불이 들어온다.<br><span style="opacity:.6">One hard cut. The room flips to electric blue and the broadcast bug lights up.</span></p>
+      </div></div>
+
+      <!-- burn — a SECOND (plain) disc slides in to join it, plus the card -->
+      <div class="anchor a-plain"><div class="disc plain" id="plain"></div></div>
+      <div class="anchor a-c3"><div class="copy c3" id="c3">
+        <div class="kick">Shot 03 · 2:18</div>
+        <h2>전부<br>한 장에<br>굽는다</h2>
+        <p class="lede">그동안의 전부를 — 한 장의 구운 시디 위에 매직으로 적어 넣는다.<br><span style="opacity:.6">Everything the group is, doodled in marker onto one burned disc.</span></p>
+        <div class="tracklist"><i>Attention</i><i>Hype Boy</i><i>Hurt</i><i class="on">Cookie</i></div>
+        <div class="endtag">2:20:00 — 다음 마디로 ↓</div>
+      </div></div>
+
+    </div>
+  </div>
+</main>
+
+<div class="bug" id="bug" aria-hidden="true"><div class="lz"><div class="n1">NEW</div><div class="n2">JEANS</div><span class="adr">ADR</span></div></div>
+
+<div class="topbar" role="banner">
+  <div class="reel"><span class="dot"></span> COOKIE · 뉴진스 &nbsp;— &nbsp;REEL 02</div>
+  <div class="shot" id="shot">암전 · the dark floor</div>
+</div>
+
+<div class="hint" id="hint" aria-hidden="true">아래로 스크롤 · scroll to play <span class="arw">↓</span></div>
+
+<div class="scrubber" role="region" aria-label="타임코드 스크러버 · 클릭이나 드래그로 이동">
+  <div class="tc"><span id="tc">2:13:00</span><small>2:13 → 2:20</small></div>
+  <div class="track-bar" id="bar">
+    <div class="rail"></div><div class="fill" id="fill"></div>
+    <div class="cut" style="left:16%"></div><div class="marks" id="marks"></div><div class="head" id="head"></div>
+  </div>
+  <div class="meta">00:07 · 168f · 24fps</div>
+</div>
+
+<div class="flash" id="flash"></div>
+
+<script is:inline>
+(function(){
+  var $=function(id){return document.getElementById(id);};
+  var bgDark=$('bgDark'),bgBlue=$('bgBlue'),bug=$('bug'),flash=$('flash'),
+      tcEl=$('tc'),fill=$('fill'),head=$('head'),shotEl=$('shot'),hint=$('hint'),
+      bar=$('bar'),marks=$('marks');
+  var E={cd1:$('cd1'),c2:$('c2'),plain:$('plain'),doodle:$('doodle'),c3:$('c3')};
+  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches, ROT=reduce?0:1;
+
+  var mh='';for(var s=0;s<=7;s++){mh+='<b style="left:'+(s/7*100)+'%">2:'+(13+s)+'</b>';}marks.innerHTML=mh;
+
+  function clamp(v,a,b){return v<a?a:v>b?b:v;}
+  function seg(p,a,b){return clamp((p-a)/(b-a),0,1);}
+  function lerp(a,b,t){return a+(b-a)*t;}
+  function eOut(t){return 1-Math.pow(1-t,3);}
+  function set(n,x,y,s,r,o){n.style.transform='translate('+x+'px,'+y+'px) scale('+s+') rotate('+r+'deg)';n.style.opacity=o;}
+  function pad(n){return(n<10?'0':'')+n;}
+  function fmt(p){var f=133*24+Math.round(p*168),sec=Math.floor(f/24),ff=f%24;return Math.floor(sec/60)+':'+pad(sec%60)+':'+pad(ff);}
+
+  /* ===== cookie zoom + burst engine (canvas) ===== */
+  var cv=$('cookie'), ctx=cv.getContext('2d'), DPR=Math.min(2,window.devicePixelRatio||1);
+  function sizeCookie(){ cv.width=Math.round(innerWidth*DPR); cv.height=Math.round(innerHeight*DPR);
+    cv.style.width=innerWidth+'px'; cv.style.height=innerHeight+'px'; ctx.setTransform(DPR,0,0,DPR,0,0); }
+  sizeCookie(); window.addEventListener('resize',sizeCookie);
+  var MM=['#3ea04b','#2f7fd6','#e23b2f','#f2c53d','#e77f2a','#7b3fa0'];
+  var TOP=[ {x:-0.48,y:-0.42,r:0.17,c:'#3ea04b',mm:1},{x:0.34,y:-0.5,r:0.18,c:'#5a2d1c',mm:0},
+    {x:-0.56,y:0.48,r:0.16,c:'#2f7fd6',mm:1},{x:0.6,y:0.42,r:0.15,c:'#f2c53d',mm:1},
+    {x:0.42,y:-0.05,r:0.10,c:'#e23b2f',mm:1},{x:0.66,y:-0.34,r:0.07,c:'#7b3fa0',mm:1},
+    {x:0.04,y:0.12,r:0.11,c:'#4a2c17',mm:0},{x:-0.18,y:-0.08,r:0.08,c:'#4a2c17',mm:0},
+    {x:-0.32,y:0.2,r:0.09,c:'#4a2c17',mm:0},{x:0.16,y:0.5,r:0.09,c:'#4a2c17',mm:0},{x:-0.04,y:-0.5,r:0.08,c:'#4a2c17',mm:0} ];
+  var PART=[];
+  (function(){ var r=0.1234; function rnd(){ r=(r*9301+49297)%233280; return r/233280; }
+    for(var i=0;i<40;i++){ var mm=rnd()<0.3;
+      PART.push({an:rnd()*6.283, sp:0.42+rnd()*0.95, sz:mm?14+rnd()*12:26+rnd()*26,
+        rot:rnd()*6.283, spin:(rnd()*2-1)*3.2, gv:0.6+rnd()*0.8, mm:mm, col:mm?MM[(rnd()*MM.length)|0]:'#c88a44'}); }
+  })();
+  function topping(x,y,r,c,mm){ ctx.beginPath();ctx.arc(x,y,r,0,6.283);ctx.fillStyle=c;ctx.fill();
+    if(mm){ ctx.beginPath();ctx.arc(x-r*0.3,y-r*0.32,r*0.34,0,6.283);ctx.fillStyle='rgba(255,255,255,.55)';ctx.fill(); }
+    else { ctx.beginPath();ctx.arc(x-r*0.25,y-r*0.25,r*0.3,0,6.283);ctx.fillStyle='rgba(255,255,255,.10)';ctx.fill();
+           ctx.beginPath();ctx.arc(x+r*0.2,y+r*0.2,r*0.3,0,6.283);ctx.fillStyle='rgba(0,0,0,.18)';ctx.fill(); } }
+  function bigCookie(cx,cy,R,alpha){ ctx.save();ctx.globalAlpha=alpha;
+    ctx.beginPath(); var N=30;
+    for(var i=0;i<=N;i++){ var a=i/N*6.283, rad=R*(0.96+0.04*Math.sin(a*5+1.2)+0.02*Math.sin(a*9));
+      var x=cx+Math.cos(a)*rad, y=cy+Math.sin(a)*rad; if(i===0)ctx.moveTo(x,y); else ctx.lineTo(x,y); }
+    ctx.closePath();
+    var g=ctx.createRadialGradient(cx-R*0.25,cy-R*0.28,R*0.1,cx,cy,R);
+    g.addColorStop(0,'#efc888');g.addColorStop(0.55,'#d89f57');g.addColorStop(0.85,'#b87a3a');g.addColorStop(1,'#9c6329');
+    ctx.fillStyle=g;ctx.fill(); ctx.lineWidth=R*0.035;ctx.strokeStyle='rgba(120,70,25,.35)';ctx.stroke();
+    for(var j=0;j<TOP.length;j++){ var t=TOP[j]; topping(cx+t.x*R,cy+t.y*R,t.r*R,t.c,t.mm); }
+    ctx.restore(); }
+  function particle(x,y,s,rot,mm,col,alpha){ if(s<=0.3||alpha<=0)return; ctx.save();ctx.globalAlpha=alpha;ctx.translate(x,y);ctx.rotate(rot);
+    if(mm){ ctx.fillStyle=col;ctx.beginPath();ctx.ellipse(0,0,s,s*0.8,0,0,6.283);ctx.fill();
+      ctx.fillStyle='rgba(255,255,255,.5)';ctx.beginPath();ctx.arc(-s*0.3,-s*0.3,s*0.3,0,6.283);ctx.fill(); }
+    else { var g=ctx.createRadialGradient(-s*0.3,-s*0.3,s*0.2,0,0,s);g.addColorStop(0,'#e9c084');g.addColorStop(1,'#b0722f');
+      ctx.fillStyle=g;ctx.beginPath();ctx.arc(0,0,s,0,6.283);ctx.fill();
+      ctx.fillStyle='#4a2c17'; var ch=[[-0.3,-0.2],[0.25,0.1],[0,0.35],[0.35,-0.3]];
+      for(var k=0;k<ch.length;k++){ ctx.beginPath();ctx.arc(ch[k][0]*s,ch[k][1]*s,s*0.16,0,6.283);ctx.fill(); } }
+    ctx.restore(); }
+  function drawCookie(p){ var W=innerWidth,H=innerHeight; ctx.clearRect(0,0,W,H);
+    if(p<0.05||p>0.34) return;
+    var cx=W/2, cy=H*0.46, minD=Math.min(W,H), maxD=Math.max(W,H), maxR=maxD*0.8;
+    if(p<0.15){ bigCookie(cx,cy, lerp(minD*0.05,maxR,eOut(seg(p,0.055,0.15))), 1); return; }
+    var b=seg(p,0.15,0.32);
+    var fa=1-seg(p,0.15,0.21); if(fa>0) bigCookie(cx,cy, maxR*(1+0.25*b), fa);
+    var spread=Math.hypot(W,H)*0.72, grav=H*0.12, a=Math.min(seg(b,0,0.05),1-seg(b,0.5,1));
+    for(var i=0;i<PART.length;i++){ var q=PART[i], d=eOut(b)*spread*q.sp;
+      var x=cx+Math.cos(q.an)*d, y=cy+Math.sin(q.an)*d + b*b*grav*q.gv;
+      particle(x,y,q.sz*(1-0.3*b), q.rot+(reduce?0:b*q.spin), q.mm, q.col, a); } }
+
+  var maxScroll=1,lastP=0;
+  function measure(){maxScroll=Math.max(1,document.documentElement.scrollHeight-window.innerHeight);}
+  measure();window.addEventListener('resize',measure);
+
+  function frame(p){
+    /* pure dark → giant cookie zooms in → bursts (canvas) */
+    drawCookie(p);
+    /* background snaps dark→blue at the burst */
+    var cx=seg(p,0.15,0.20);
+    bgDark.style.opacity=1-cx; bgBlue.style.opacity=cx;
+
+    /* signal — the FIRST CD glides in center-left, spinning */
+    var reveal=eOut(seg(p,0.50,0.74));            /* 0 in signal → 1 in burn: the CD's journey */
+    var cdTrav=(innerWidth<=640?-0.05:-0.50)*innerWidth;  /* portrait barely slides (stacked layout) */
+    set(E.cd1, lerp(cdTrav,0,reveal), 0, lerp(0.8,1,reveal),
+        ROT*lerp(p*300,0,eOut(seg(p,0.52,0.70))), seg(p,0.26,0.36));
+    set(E.c2, lerp(70,0,eOut(seg(p,0.32,0.44))),0,1,0, Math.min(seg(p,0.32,0.42),1-seg(p,0.50,0.60)));
+    bug.style.opacity=seg(p,0.20,0.30);
+    var bmax=innerWidth<=640?0.62:0.85;
+    bug.style.transform='scale('+lerp(0.5,bmax,eOut(seg(p,0.20,0.32)))+') rotate(-1.5deg)';
+
+    /* burn — that SAME CD settles right + its doodles resolve; a 2nd plain disc joins from the left */
+    E.doodle.style.opacity=seg(p,0.64,0.80);
+    E.doodle.style.transform='scale('+lerp(0.9,1,eOut(seg(p,0.64,0.82)))+')';
+    set(E.plain, lerp(-0.45*innerWidth,0,eOut(seg(p,0.58,0.78))), 0,
+        lerp(0.5,1,eOut(seg(p,0.58,0.78))), ROT*p*240, seg(p,0.56,0.68));
+    var cI=eOut(seg(p,0.68,0.84));
+    set(E.c3,0,lerp(24,0,cI),lerp(0.94,1,cI),0,seg(p,0.66,0.80));
+
+    /* scrubber + hud */
+    tcEl.textContent=fmt(p); fill.style.width=(p*100)+'%'; head.style.left=(p*100)+'%';
+    if(p<0.055){shotEl.textContent='암전 · black';shotEl.style.color='#9aa0b2';}
+    else if(p<0.22){shotEl.textContent='쿠키 · zoom & burst';shotEl.style.color='#e8b06a';}
+    else if(p<0.58){shotEl.textContent='전환 · into blue';shotEl.style.color='#eaf1ff';}
+    else{shotEl.textContent='굽는 시간 · the burn';shotEl.style.color='#eaf1ff';}
+    if(!reduce && lastP<0.15 && p>=0.15){flash.classList.remove('go');void flash.offsetWidth;flash.classList.add('go');}
+    lastP=p;
+    if(p>0.01) hint.classList.add('hide');
+  }
+
+  var ticking=false;
+  function onScroll(){ if(!ticking){ticking=true;requestAnimationFrame(function(){frame(clamp(window.scrollY/maxScroll,0,1));ticking=false;});} }
+  window.addEventListener('scroll',onScroll,{passive:true});
+
+  /* scrubber click / drag → jump scroll */
+  function jump(x){var r=bar.getBoundingClientRect();var f=clamp((x-r.left)/r.width,0,1);window.scrollTo({top:f*maxScroll,behavior:'smooth'});}
+  var dragging=false;
+  bar.addEventListener('pointerdown',function(e){dragging=true;bar.setPointerCapture(e.pointerId);jump(e.clientX);});
+  bar.addEventListener('pointermove',function(e){if(dragging)jump(e.clientX);});
+  bar.addEventListener('pointerup',function(){dragging=false;});
+
+  frame(clamp(window.scrollY/maxScroll,0,1));
+})();
+</script>
+</body>
+</html>
