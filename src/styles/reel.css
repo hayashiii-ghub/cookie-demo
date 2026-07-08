@@ -70,15 +70,19 @@ body{background:#050609;color:#fff;font-family:var(--sans);-webkit-font-smoothin
 /* anchors keep position; inner nodes get JS transform/opacity (origin:center) */
 .anchor{position:absolute;will-change:transform}
 .anchor>*{transform-origin:center center;will-change:transform,opacity}
-.a-cd1{left:78%;top:50%;transform:translate(-50%,-50%)}
-.a-c2{left:56%;top:50%;transform:translateY(-50%)}
-.a-plain{left:18%;top:50%;transform:translate(-50%,-50%)}
-.a-c3{left:50%;top:50%;transform:translate(-50%,-50%)}
+.a-cd1{left:72%;top:50%;transform:translate(-50%,-50%)}
+.a-c2{left:58%;top:50%;transform:translateY(-50%)}
+.a-c3{left:25%;top:50%;transform:translate(-50%,-50%)}
 
 .copy{z-index:6}
 .kick{font-family:var(--mono);font-size:13px;letter-spacing:.34em;text-transform:uppercase;display:flex;align-items:center;gap:14px;margin-bottom:22px}
 .kick::before{content:"";width:34px;height:1px;background:currentColor;opacity:.7}
-.copy h2{font-family:var(--display);font-weight:900;letter-spacing:-.01em;line-height:1.0;text-wrap:balance}
+/* Y2K broadcast title — chrome type: bright top, a hard reflection horizon at the mid-line,
+   then a lit bottom, extruded with a crisp offset edge + soft cast depth */
+.copy h2{font-family:var(--display);font-weight:900;letter-spacing:-.015em;line-height:1.0;text-wrap:balance;
+  background:linear-gradient(180deg,#eaf2ff 0%,#ffffff 30%,#dcecff 47%,#5f92ee 50%,#a7c9ff 53%,#ffffff 78%,#dbeaff 100%);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;
+  filter:drop-shadow(0 1px 0 #2b50b2) drop-shadow(0 2px 0 rgba(18,42,116,.5)) drop-shadow(0 9px 16px rgba(6,22,80,.45))}
 .lede{font-size:15.5px;line-height:1.7;font-weight:400}
 .lede b{font-weight:700}
 
@@ -91,7 +95,6 @@ body{background:#050609;color:#fff;font-family:var(--sans);-webkit-font-smoothin
 .disc::after{content:"";position:absolute;inset:0;border-radius:50%;mix-blend-mode:screen;opacity:.7;
   background:conic-gradient(from 210deg, rgba(255,255,255,.55), transparent 22%, transparent 60%, rgba(255,255,255,.4) 78%, transparent 100%)}
 .cd1{--dsz:504px}
-.plain{--dsz:468px}
 .doodle{position:absolute;inset:0;pointer-events:none;font-family:var(--doodle);will-change:transform,opacity}
 .doodle span{position:absolute;font-weight:700;line-height:.9;transform-origin:center;filter:drop-shadow(0 1px 0 rgba(255,255,255,.5))}
 .d-nj,.d-cookie,.d-hype{font-family:var(--marker)}
@@ -124,21 +127,39 @@ body{background:#050609;color:#fff;font-family:var(--sans);-webkit-font-smoothin
 /* ---- copy 2 / 3 ---- */
 .c2{max-width:min(34ch,384px)}
 .c2 .kick{color:#dbe8ff}
-.c2 h2{font-size:72px;color:#fff;text-shadow:0 6px 30px rgba(8,28,90,.5)}
+.c2 h2{font-size:72px}
 .c2 .lede{margin-top:24px;color:#d3e1ff}
 .c2 .lede b{color:#fff}
-.c3{text-align:center;max-width:min(30ch,480px);padding:26px 30px;border-radius:6px;
-  background:radial-gradient(120% 120% at 50% 40%,rgba(12,32,90,.74),rgba(12,32,90,.44));
-  backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);box-shadow:0 20px 50px -20px rgba(0,0,0,.6)}
-.c3 .kick{justify-content:center;color:#cfe0ff}
+/* c3 is a broadcast "ticket": a perforated stub torn off the bottom, punched notches on the sides */
+.c3{--stub:56px;text-align:center;max-width:min(30ch,470px);position:relative;
+  padding:22px 30px calc(16px + var(--stub));border-radius:12px;
+  background:linear-gradient(180deg,rgba(16,40,104,.82),rgba(11,28,78,.62));
+  backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);
+  box-shadow:0 22px 54px -20px rgba(0,0,0,.6),inset 0 0 0 1px rgba(255,255,255,.15);
+  -webkit-mask:radial-gradient(15px at 0 calc(100% - var(--stub)),transparent 96%,#000 100%),radial-gradient(15px at 100% calc(100% - var(--stub)),transparent 96%,#000 100%);
+  -webkit-mask-composite:source-in;
+  mask:radial-gradient(15px at 0 calc(100% - var(--stub)),transparent 96%,#000 100%),radial-gradient(15px at 100% calc(100% - var(--stub)),transparent 96%,#000 100%);
+  mask-composite:intersect}
+/* the perforation — a dashed tear line joining the two side notches */
+.c3::before{content:"";position:absolute;left:15px;right:15px;bottom:var(--stub);
+  border-top:1.6px dashed rgba(255,255,255,.5)}
+.tk-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;
+  margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,.15)}
+.tk-head .kick{margin-bottom:0;justify-content:flex-start;color:#cfe0ff;font-size:11px;letter-spacing:.2em;white-space:nowrap}
+.tk-serial{font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;color:#9dbbf2;white-space:nowrap}
 .c3 .kick::before{display:none}
-.c3 h2{font-size:55px;color:#fff;text-shadow:0 6px 30px rgba(6,24,80,.6)}
-.c3 .lede{margin:20px auto 0;color:#dbe6ff;max-width:32ch}
+.c3 h2{font-size:52px}
+.c3 .lede{margin:18px auto 0;color:#dbe6ff;max-width:32ch}
 .c3 .lede b{color:#fff}
-.tracklist{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin-top:22px}
+.tracklist{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin-top:20px}
 .tracklist i{font-family:var(--mono);font-style:normal;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#eaf2ff;border:1px solid rgba(255,255,255,.4);border-radius:20px;padding:4px 11px}
 .tracklist i.on{background:#fff;color:#1a45b0;border-color:#fff;font-weight:700}
-.endtag{margin-top:22px;font-family:var(--mono);font-size:12px;letter-spacing:.24em;color:#bcd2ff}
+/* the torn-off stub: a printed barcode + the outro timecode */
+.tk-stub{position:absolute;left:0;right:0;bottom:0;height:var(--stub);
+  display:flex;align-items:center;justify-content:space-between;gap:14px;padding:0 24px}
+.barcode{flex:0 0 auto;width:78px;height:26px;border-radius:2px;opacity:.9;
+  background:repeating-linear-gradient(90deg,#e6eeff 0 1.5px,transparent 1.5px 3px,#e6eeff 3px 5px,transparent 5px 6.5px,#e6eeff 6.5px 9px,transparent 9px 11px)}
+.endtag{font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:#bcd2ff;text-align:right;white-space:nowrap}
 
 /* ---- HUD (broadcast overlays, absolute within the monitor) ---- */
 .topbar{position:absolute;left:0;right:0;top:0;height:56px;z-index:40;display:flex;align-items:center;justify-content:space-between;

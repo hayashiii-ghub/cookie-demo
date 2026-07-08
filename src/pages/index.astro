@@ -41,14 +41,19 @@ import '../styles/reel.css';
         <p class="lede">한 번의 컷. 무대가 전기 블루로 뒤집히고, 방송용 로고에 불이 들어온다.<br><span style="opacity:.6">One hard cut. The room flips to electric blue and the broadcast bug lights up.</span></p>
       </div></div>
 
-      <!-- burn — a SECOND (plain) disc slides in to join it, plus the card -->
-      <div class="anchor a-plain"><div class="disc plain" id="plain"></div></div>
-      <div class="anchor a-c3"><div class="copy c3" id="c3">
-        <div class="kick">Shot 03 · 2:18</div>
+      <!-- burn — the doodled CD settles right; a ticket-style card slides in on the left to balance it -->
+      <div class="anchor a-c3"><div class="copy c3 ticket" id="c3">
+        <div class="tk-head">
+          <div class="kick">Shot 03 · 2:18</div>
+          <div class="tk-serial">ADMIT ONE</div>
+        </div>
         <h2>전부<br>한 장에<br>굽는다</h2>
         <p class="lede">그동안의 전부를 — 한 장의 구운 시디 위에 매직으로 적어 넣는다.<br><span style="opacity:.6">Everything the group is, doodled in marker onto one burned disc.</span></p>
         <div class="tracklist"><i>Attention</i><i>Hype Boy</i><i>Hurt</i><i class="on">Cookie</i></div>
-        <div class="endtag">2:20:00 — 다음 마디로 ↓</div>
+        <div class="tk-stub">
+          <div class="barcode" aria-hidden="true"></div>
+          <div class="endtag">2:20:00 — 다음 마디로 ↓</div>
+        </div>
       </div></div>
 
     </div>
@@ -89,7 +94,7 @@ import '../styles/reel.css';
   var bgDark=$('bgDark'),bgBlue=$('bgBlue'),bug=$('bug'),flash=$('flash'),
       tcEl=$('tc'),fill=$('fill'),head=$('head'),shotEl=$('shot'),hint=$('hint'),
       bar=$('bar'),marks=$('marks');
-  var E={cd1:$('cd1'),c2:$('c2'),plain:$('plain'),doodle:$('doodle'),c3:$('c3')};
+  var E={cd1:$('cd1'),c2:$('c2'),doodle:$('doodle'),c3:$('c3')};
   var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches, ROT=reduce?0:1;
 
   /* the whole reel is authored on a fixed 1200x900 (4:3) stage and scaled to fit */
@@ -173,20 +178,18 @@ import '../styles/reel.css';
 
     /* signal — the FIRST CD glides in center-left, spinning (offsets are in 1200x900 stage px) */
     var reveal=eOut(seg(p,0.50,0.74));            /* 0 in signal → 1 in burn: the CD's journey */
-    var cdTrav=-0.56*BW;
+    var cdTrav=-0.44*BW;                          /* signal-scene CD lands ~28% to mirror the burn layout (72% anchor) */
     set(E.cd1, lerp(cdTrav,0,reveal), 0, lerp(0.8,1,reveal),
         ROT*lerp(p*300,0,eOut(seg(p,0.52,0.70))), seg(p,0.26,0.36));
     set(E.c2, lerp(70,0,eOut(seg(p,0.32,0.44))),0,1,0, Math.min(seg(p,0.32,0.42),1-seg(p,0.50,0.60)));
     bug.style.opacity=seg(p,0.20,0.30);
     bug.style.transform='scale('+lerp(0.5,0.85,eOut(seg(p,0.20,0.32)))+') rotate(-1.5deg)';
 
-    /* burn — that SAME CD settles right + its doodles resolve; a 2nd plain disc joins from the left */
+    /* burn — that SAME CD settles right + its doodles resolve; the card fades up center as the focus */
     E.doodle.style.opacity=seg(p,0.64,0.80);
     E.doodle.style.transform='scale('+lerp(0.9,1,eOut(seg(p,0.64,0.82)))+')';
-    set(E.plain, lerp(-0.45*BW,0,eOut(seg(p,0.58,0.78))), 0,
-        lerp(0.5,1,eOut(seg(p,0.58,0.78))), ROT*p*240, seg(p,0.56,0.68));
-    var cI=eOut(seg(p,0.68,0.84));
-    set(E.c3,0,lerp(24,0,cI),lerp(0.94,1,cI),0,seg(p,0.66,0.80));
+    var cI=eOut(seg(p,0.58,0.84));                 /* the ticket slides in from the left + grows + fades, settling at a slight left lean */
+    set(E.c3,lerp(-58,0,cI),lerp(14,0,cI),lerp(0.955,1,cI),lerp(-5,-3,cI),eOut(seg(p,0.56,0.82)));
 
     /* scrubber + hud */
     tcEl.textContent=fmt(p); fill.style.width=(p*100)+'%'; head.style.left=(p*100)+'%';
