@@ -7,7 +7,7 @@ copyright notice.
 
 | Files | Family | Source | License |
 |---|---|---|---|
-| `Pretendard-{Regular,Medium,Bold,Black}.woff2` | Pretendard | <https://github.com/orioncactus/pretendard> (npm `pretendard@1.3.9`) | OFL 1.1 |
+| `Pretendard-{Regular,Bold}.woff2` | Pretendard | <https://github.com/orioncactus/pretendard> (npm `pretendard@1.3.9`) | OFL 1.1 |
 | `space-mono-latin-{400,700}.woff2` | Space Mono | Google Fonts / Fontsource | OFL 1.1 |
 | `nanum-pen-script-{korean,latin}-400.woff2` | Nanum Pen Script | Google Fonts / Fontsource | OFL 1.1 |
 | `permanent-marker-latin-400.woff2` | Permanent Marker | Google Fonts / Fontsource | OFL 1.1 |

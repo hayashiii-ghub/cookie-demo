@@ -1,8 +1,6 @@
 /* ---- fonts (self-hosted, no CDN) ---- */
 @font-face{font-family:"Pretendard";font-weight:400;font-display:swap;src:url("/fonts/Pretendard-Regular.woff2") format("woff2");}
-@font-face{font-family:"Pretendard";font-weight:500;font-display:swap;src:url("/fonts/Pretendard-Medium.woff2") format("woff2");}
 @font-face{font-family:"Pretendard";font-weight:700;font-display:swap;src:url("/fonts/Pretendard-Bold.woff2") format("woff2");}
-@font-face{font-family:"Pretendard";font-weight:900;font-display:swap;src:url("/fonts/Pretendard-Black.woff2") format("woff2");}
 @font-face{font-family:"Space Mono";font-weight:400;font-display:swap;src:url("/fonts/space-mono-latin-400.woff2") format("woff2");}
 @font-face{font-family:"Space Mono";font-weight:700;font-display:swap;src:url("/fonts/space-mono-latin-700.woff2") format("woff2");}
 /* real handwriting — kills the system-font "fake handwriting" tell */
@@ -175,6 +173,13 @@ body{background:#000;color:#fff;font-family:var(--sans);-webkit-font-smoothing:a
 
 .scrubber{position:fixed;left:0;right:0;bottom:0;height:var(--bar);z-index:45;display:flex;align-items:center;gap:clamp(12px,2vw,26px);
   padding:0 clamp(16px,3vw,30px);background:linear-gradient(180deg,rgba(6,6,10,0),rgba(6,6,10,.86) 40%);color:#fff;font-family:var(--mono)}
+.playbtn{flex:0 0 auto;display:flex;align-items:center;justify-content:center;width:38px;height:38px;padding:0;border-radius:50%;
+  border:1.5px solid rgba(255,255,255,.5);background:rgba(255,255,255,.06);color:#fff;cursor:pointer;
+  transition:background .2s,border-color .2s,transform .1s;-webkit-tap-highlight-color:transparent}
+.playbtn:hover{background:rgba(255,255,255,.16);border-color:#fff}
+.playbtn:active{transform:scale(.94)}
+.playbtn:focus-visible{outline:2px solid var(--tungsten);outline-offset:2px}
+.playbtn svg{width:14px;height:14px;display:block;fill:currentColor}
 .tc{font-size:clamp(15px,1.8vw,22px);font-weight:700;letter-spacing:.08em;white-space:nowrap;min-width:9.5ch;color:#fff}
 .tc small{font-size:.5em;letter-spacing:.2em;color:var(--tungsten);display:block;font-weight:400}
 .track-bar{position:relative;flex:1;height:26px;cursor:pointer}
@@ -208,20 +213,29 @@ body{background:#000;color:#fff;font-family:var(--sans);-webkit-font-smoothing:a
   .topbar .reel .dot{animation:none}
   .grain,.stage{animation:none}
 }
-@media (max-width:640px){
-  /* portrait: small doodled CD up top, compact card below — no overlap; 2nd disc hidden */
-  .cd1{--dsz:min(34vh,47vw)}
-  .a-cd1{left:50%;top:20%;transform:translate(-50%,-50%)}
-  .a-plain{display:none}
-  .a-c2{left:50%;top:60%;transform:translate(-50%,-50%);text-align:center}
-  .c2{max-width:86vw}
-  .a-c3{left:50%;top:auto;bottom:calc(var(--bar) + 8px);transform:translateX(-50%)}
-  .c3{max-width:90vw;padding:16px 18px}
-  .c3 .kick{margin-bottom:10px}
-  .c3 h2{font-size:clamp(26px,8vw,40px)}
-  .c3 .lede{font-size:12.5px;margin-top:13px}
-  .tracklist{margin-top:14px}
+/* landscape-first on phones — the reel is a wide 16:9 composition, so we build for
+   landscape and just compact the short-height (sideways-phone) case. No portrait layout. */
+@media (max-height:500px){
+  .cd1{--dsz:min(66vh,30vw)}
+  .plain{--dsz:min(58vh,27vw)}
+  .a-c2{left:56%}
+  .c2{max-width:min(32ch,34vw)}
+  .c2 h2{font-size:clamp(28px,9vh,58px)}
+  .c2 .lede{margin-top:12px;font-size:13px;line-height:1.55}
+  .c3{padding:13px 20px;max-width:min(30ch,44vw)}
+  .c3 .kick{margin-bottom:8px}
+  .c3 h2{font-size:clamp(23px,7.5vh,42px)}
+  .c3 .lede{margin-top:10px;font-size:12px;line-height:1.5}
+  .tracklist{margin-top:12px;gap:6px}
+  .tracklist i{padding:3px 9px;font-size:10px}
   .endtag{display:none}
-  .topbar{font-size:10px;letter-spacing:.08em;padding:0 14px}
-  .topbar .shot{display:none}
+  .topbar{height:46px;font-size:11px;padding:0 16px}
+  .bug{top:clamp(50px,7vh,60px)}
+  /* the fixed-size ADR tag covers too much of the shrunk "JEANS" on short screens — trim it */
+  .bug .adr{font-size:8px;padding:0 4px;right:5px;bottom:6px}
+}
+/* very short (small phones sideways, e.g. SE) — trim the top HUD line further */
+@media (max-height:400px){
+  .topbar .reel{font-size:10px}
+  .c2 .lede span,.c3 .lede span{display:none}  /* drop the English gloss when height is tight */
 }

@@ -65,7 +65,8 @@ import '../styles/reel.css';
 
 <div class="hint" id="hint" aria-hidden="true">아래로 스크롤 · scroll to play <span class="arw">↓</span></div>
 
-<div class="scrubber" role="region" aria-label="타임코드 스크러버 · 클릭이나 드래그로 이동">
+<div class="scrubber" role="region" aria-label="타임코드 스크러버 · 재생, 클릭이나 드래그로 이동">
+  <button class="playbtn" id="play" type="button" aria-label="재생" aria-pressed="false"><svg viewBox="0 0 24 24"><path d="M7 5 L19 12 L7 19 Z"/></svg></button>
   <div class="tc"><span id="tc">2:13:00</span><small>2:13 → 2:20</small></div>
   <div class="track-bar" id="bar">
     <div class="rail"></div><div class="fill" id="fill"></div>
@@ -158,13 +159,12 @@ import '../styles/reel.css';
 
     /* signal — the FIRST CD glides in center-left, spinning */
     var reveal=eOut(seg(p,0.50,0.74));            /* 0 in signal → 1 in burn: the CD's journey */
-    var cdTrav=(innerWidth<=640?-0.05:-0.50)*innerWidth;  /* portrait barely slides (stacked layout) */
+    var cdTrav=-0.50*innerWidth;
     set(E.cd1, lerp(cdTrav,0,reveal), 0, lerp(0.8,1,reveal),
         ROT*lerp(p*300,0,eOut(seg(p,0.52,0.70))), seg(p,0.26,0.36));
     set(E.c2, lerp(70,0,eOut(seg(p,0.32,0.44))),0,1,0, Math.min(seg(p,0.32,0.42),1-seg(p,0.50,0.60)));
     bug.style.opacity=seg(p,0.20,0.30);
-    var bmax=innerWidth<=640?0.62:0.85;
-    bug.style.transform='scale('+lerp(0.5,bmax,eOut(seg(p,0.20,0.32)))+') rotate(-1.5deg)';
+    bug.style.transform='scale('+lerp(0.5,0.85,eOut(seg(p,0.20,0.32)))+') rotate(-1.5deg)';
 
     /* burn — that SAME CD settles right + its doodles resolve; a 2nd plain disc joins from the left */
     E.doodle.style.opacity=seg(p,0.64,0.80);
@@ -192,11 +192,36 @@ import '../styles/reel.css';
   /* scrubber click / drag → jump scroll */
   function jump(x){var r=bar.getBoundingClientRect();var f=clamp((x-r.left)/r.width,0,1);window.scrollTo({top:f*maxScroll,behavior:'smooth'});}
   var dragging=false;
-  bar.addEventListener('pointerdown',function(e){dragging=true;bar.setPointerCapture(e.pointerId);jump(e.clientX);});
+  bar.addEventListener('pointerdown',function(e){userInterrupt();dragging=true;bar.setPointerCapture(e.pointerId);jump(e.clientX);});
   bar.addEventListener('pointermove',function(e){if(dragging)jump(e.clientX);});
   bar.addEventListener('pointerup',function(){dragging=false;});
 
+  /* ===== playback — a ▶ that scrolls the timeline; any scroll/touch/drag pauses it ===== */
+  var playBtn=$('play');
+  var ICON_PLAY='<svg viewBox="0 0 24 24"><path d="M7 5 L19 12 L7 19 Z"/></svg>';
+  var ICON_PAUSE='<svg viewBox="0 0 24 24"><path d="M7 5h4v14H7z M13 5h4v14h-4z"/></svg>';
+  var PLAY_MS=9000, playing=false, rafId=0, playStart=0, playFromP=0, userTouched=false;
+  function setBtn(on){ playBtn.innerHTML=on?ICON_PAUSE:ICON_PLAY; playBtn.setAttribute('aria-label',on?'일시정지':'재생'); playBtn.setAttribute('aria-pressed',on?'true':'false'); }
+  function stopPlay(){ if(rafId){cancelAnimationFrame(rafId);rafId=0;} if(playing){playing=false;setBtn(false);} }
+  function tickPlay(now){ var p=playFromP+(now-playStart)/PLAY_MS;
+    if(p>=1){ window.scrollTo(0,maxScroll); stopPlay(); return; }
+    window.scrollTo(0,p*maxScroll); rafId=requestAnimationFrame(tickPlay); }
+  function startPlay(){ var cur=clamp(window.scrollY/maxScroll,0,1); if(cur>=0.999)cur=0;
+    playFromP=cur; window.scrollTo(0,cur*maxScroll); playStart=performance.now(); playing=true; setBtn(true); rafId=requestAnimationFrame(tickPlay); }
+  function togglePlay(){ if(playing)stopPlay(); else startPlay(); }
+  function onButton(t){ return playBtn && (t===playBtn || playBtn.contains(t)); }
+  function userInterrupt(e){ if(e && onButton(e.target)) return; userTouched=true; stopPlay(); }
+  if(playBtn){ setBtn(false); playBtn.addEventListener('click',function(){userTouched=true;togglePlay();}); }
+  window.addEventListener('wheel',userInterrupt,{passive:true});
+  window.addEventListener('touchstart',userInterrupt,{passive:true});
+  window.addEventListener('keydown',function(e){
+    if(e.code==='Space'){ if(onButton(e.target))return; e.preventDefault(); userTouched=true; togglePlay(); }
+    else if(e.key==='ArrowDown'||e.key==='ArrowUp'||e.key==='PageDown'||e.key==='PageUp'||e.key==='Home'||e.key==='End'){ userInterrupt(); } });
+
   frame(clamp(window.scrollY/maxScroll,0,1));
+
+  /* autostart once — reveals the intended motion; skipped for reduced-motion or if the user already moved */
+  if(!reduce){ setTimeout(function(){ if(!userTouched && window.scrollY<2){ startPlay(); } }, 1100); }
 })();
 </script>
 </body>
