@@ -10,19 +10,18 @@ import '../styles/reel.css';
 <title>COOKIE — 2:13→2:20 (a seven-second scrub)</title>
 </head>
 <body>
-<div class="bg" id="bgDark"></div>
-<div class="bg" id="bgBlue"></div>
-<canvas id="cookie" aria-hidden="true"></canvas>
-<div class="grain"></div>
-<div class="vig"></div>
+<!-- everything lives on a fixed 1200x900 (4:3) "broadcast monitor" scaled to fit the viewport -->
+<main role="main" aria-label="COOKIE 2:13에서 2:20까지, 7초를 스크롤로 재생하는 릴">
+<h1 class="sr-only">COOKIE — 2:13에서 2:20까지, 7초의 스크럽</h1>
+<div id="frame">
+  <div id="box">
+    <div class="bg" id="bgDark"></div>
+    <div class="bg" id="bgBlue"></div>
+    <canvas id="cookie" aria-hidden="true"></canvas>
 
-<main class="track" id="track" role="main" aria-label="COOKIE 2:13에서 2:20까지, 7초를 스크롤로 재생하는 릴">
-  <h1 class="sr-only">COOKIE — 2:13에서 2:20까지, 7초의 스크럽</h1>
-  <div class="pin">
     <div class="stage">
 
       <!-- pure dark → giant cookie zooms in → bursts into scattering cookies (canvas) → blue -->
-
 
       <!-- the FIRST CD appears here, then travels right + gets doodled in the burn -->
       <div class="anchor a-cd1"><div class="disc cd1" id="cd1">
@@ -53,29 +52,36 @@ import '../styles/reel.css';
       </div></div>
 
     </div>
+
+    <div class="bug" id="bug" aria-hidden="true"><div class="lz"><div class="n1">NEW</div><div class="n2">JEANS</div><span class="adr">ADR</span></div></div>
+
+    <div class="grain"></div>
+    <div class="vig"></div>
+    <div class="scan" aria-hidden="true"></div>
+
+    <div class="topbar">
+      <div class="reel"><span class="dot"></span> COOKIE · 뉴진스 &nbsp;— &nbsp;REEL 02</div>
+      <div class="shot" id="shot">암전 · the dark floor</div>
+    </div>
+
+    <div class="hint" id="hint" aria-hidden="true">아래로 스크롤 · scroll to play <span class="arw">↓</span></div>
+
+    <div class="scrubber" role="region" aria-label="타임코드 스크러버 · 재생, 클릭이나 드래그로 이동">
+      <button class="playbtn" id="play" type="button" aria-label="재생" aria-pressed="false"><svg viewBox="0 0 24 24"><path d="M7 5 L19 12 L7 19 Z"/></svg></button>
+      <div class="tc"><span id="tc">2:13:00</span><small>2:13 → 2:20</small></div>
+      <div class="track-bar" id="bar">
+        <div class="rail"></div><div class="fill" id="fill"></div>
+        <div class="cut" style="left:16%"></div><div class="marks" id="marks"></div><div class="head" id="head"></div>
+      </div>
+      <div class="meta">00:07 · 168f · 24fps</div>
+    </div>
+
+    <div class="flash" id="flash"></div>
   </div>
+</div>
 </main>
 
-<div class="bug" id="bug" aria-hidden="true"><div class="lz"><div class="n1">NEW</div><div class="n2">JEANS</div><span class="adr">ADR</span></div></div>
-
-<div class="topbar" role="banner">
-  <div class="reel"><span class="dot"></span> COOKIE · 뉴진스 &nbsp;— &nbsp;REEL 02</div>
-  <div class="shot" id="shot">암전 · the dark floor</div>
-</div>
-
-<div class="hint" id="hint" aria-hidden="true">아래로 스크롤 · scroll to play <span class="arw">↓</span></div>
-
-<div class="scrubber" role="region" aria-label="타임코드 스크러버 · 재생, 클릭이나 드래그로 이동">
-  <button class="playbtn" id="play" type="button" aria-label="재생" aria-pressed="false"><svg viewBox="0 0 24 24"><path d="M7 5 L19 12 L7 19 Z"/></svg></button>
-  <div class="tc"><span id="tc">2:13:00</span><small>2:13 → 2:20</small></div>
-  <div class="track-bar" id="bar">
-    <div class="rail"></div><div class="fill" id="fill"></div>
-    <div class="cut" style="left:16%"></div><div class="marks" id="marks"></div><div class="head" id="head"></div>
-  </div>
-  <div class="meta">00:07 · 168f · 24fps</div>
-</div>
-
-<div class="flash" id="flash"></div>
+<div class="track" id="track" aria-hidden="true"></div>
 
 <script is:inline>
 (function(){
@@ -85,6 +91,13 @@ import '../styles/reel.css';
       bar=$('bar'),marks=$('marks');
   var E={cd1:$('cd1'),c2:$('c2'),plain:$('plain'),doodle:$('doodle'),c3:$('c3')};
   var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches, ROT=reduce?0:1;
+
+  /* the whole reel is authored on a fixed 1200x900 (4:3) stage and scaled to fit */
+  var BW=1200, BH=900;
+  function fitStage(){ var f=Math.min(innerWidth/BW, innerHeight/BH);
+    var d=document.documentElement.style; d.setProperty('--fit', f);
+    d.setProperty('--scan', f>=0.62?0.16:0);   /* kill scanlines when scaled small (moiré) */
+    return f; }
 
   var mh='';for(var s=0;s<=7;s++){mh+='<b style="left:'+(s/7*100)+'%">2:'+(13+s)+'</b>';}marks.innerHTML=mh;
 
@@ -96,10 +109,11 @@ import '../styles/reel.css';
   function pad(n){return(n<10?'0':'')+n;}
   function fmt(p){var f=133*24+Math.round(p*168),sec=Math.floor(f/24),ff=f%24;return Math.floor(sec/60)+':'+pad(sec%60)+':'+pad(ff);}
 
-  /* ===== cookie zoom + burst engine (canvas) ===== */
+  /* ===== cookie zoom + burst engine (canvas, drawn in 1200x900 stage coords) ===== */
   var cv=$('cookie'), ctx=cv.getContext('2d'), DPR=Math.min(2,window.devicePixelRatio||1);
-  function sizeCookie(){ cv.width=Math.round(innerWidth*DPR); cv.height=Math.round(innerHeight*DPR);
-    cv.style.width=innerWidth+'px'; cv.style.height=innerHeight+'px'; ctx.setTransform(DPR,0,0,DPR,0,0); }
+  function sizeCookie(){ var f=fitStage();
+    cv.width=Math.round(BW*f*DPR); cv.height=Math.round(BH*f*DPR);
+    cv.style.width=BW+'px'; cv.style.height=BH+'px'; ctx.setTransform(f*DPR,0,0,f*DPR,0,0); }
   sizeCookie(); window.addEventListener('resize',sizeCookie);
   var MM=['#3ea04b','#2f7fd6','#e23b2f','#f2c53d','#e77f2a','#7b3fa0'];
   var TOP=[ {x:-0.48,y:-0.42,r:0.17,c:'#3ea04b',mm:1},{x:0.34,y:-0.5,r:0.18,c:'#5a2d1c',mm:0},
@@ -135,7 +149,7 @@ import '../styles/reel.css';
       ctx.fillStyle='#4a2c17'; var ch=[[-0.3,-0.2],[0.25,0.1],[0,0.35],[0.35,-0.3]];
       for(var k=0;k<ch.length;k++){ ctx.beginPath();ctx.arc(ch[k][0]*s,ch[k][1]*s,s*0.16,0,6.283);ctx.fill(); } }
     ctx.restore(); }
-  function drawCookie(p){ var W=innerWidth,H=innerHeight; ctx.clearRect(0,0,W,H);
+  function drawCookie(p){ var W=BW,H=BH; ctx.clearRect(0,0,W,H);
     if(p<0.05||p>0.34) return;
     var cx=W/2, cy=H*0.46, minD=Math.min(W,H), maxD=Math.max(W,H), maxR=maxD*0.8;
     if(p<0.15){ bigCookie(cx,cy, lerp(minD*0.05,maxR,eOut(seg(p,0.055,0.15))), 1); return; }
@@ -157,9 +171,9 @@ import '../styles/reel.css';
     var cx=seg(p,0.15,0.20);
     bgDark.style.opacity=1-cx; bgBlue.style.opacity=cx;
 
-    /* signal — the FIRST CD glides in center-left, spinning */
+    /* signal — the FIRST CD glides in center-left, spinning (offsets are in 1200x900 stage px) */
     var reveal=eOut(seg(p,0.50,0.74));            /* 0 in signal → 1 in burn: the CD's journey */
-    var cdTrav=-0.50*innerWidth;
+    var cdTrav=-0.56*BW;
     set(E.cd1, lerp(cdTrav,0,reveal), 0, lerp(0.8,1,reveal),
         ROT*lerp(p*300,0,eOut(seg(p,0.52,0.70))), seg(p,0.26,0.36));
     set(E.c2, lerp(70,0,eOut(seg(p,0.32,0.44))),0,1,0, Math.min(seg(p,0.32,0.42),1-seg(p,0.50,0.60)));
@@ -169,7 +183,7 @@ import '../styles/reel.css';
     /* burn — that SAME CD settles right + its doodles resolve; a 2nd plain disc joins from the left */
     E.doodle.style.opacity=seg(p,0.64,0.80);
     E.doodle.style.transform='scale('+lerp(0.9,1,eOut(seg(p,0.64,0.82)))+')';
-    set(E.plain, lerp(-0.45*innerWidth,0,eOut(seg(p,0.58,0.78))), 0,
+    set(E.plain, lerp(-0.45*BW,0,eOut(seg(p,0.58,0.78))), 0,
         lerp(0.5,1,eOut(seg(p,0.58,0.78))), ROT*p*240, seg(p,0.56,0.68));
     var cI=eOut(seg(p,0.68,0.84));
     set(E.c3,0,lerp(24,0,cI),lerp(0.94,1,cI),0,seg(p,0.66,0.80));
