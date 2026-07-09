@@ -67,6 +67,12 @@ import '../styles/reel.css';
            the lid is the only 3D node, so opacity and the pan live on .case above it:
            opacity on a preserve-3d node collapses it to flat and kills backface-visibility. -->
       <div class="lid" id="lid">
+        <!-- the four walls. without them the lid is a plane, and a plane has no edge to show
+             halfway through the swing: it goes to a hairline and the case reads as paper. -->
+        <div class="rim r-top" aria-hidden="true"></div>
+        <div class="rim r-bot" aria-hidden="true"></div>
+        <div class="rim r-free" aria-hidden="true"></div>
+        <div class="rim r-hinge" aria-hidden="true"></div>
 
         <div class="face cover" id="cover">
           <div class="spine"><span>COOKIE · 뉴진스 · REEL 02 · CJ-0220</span></div>
