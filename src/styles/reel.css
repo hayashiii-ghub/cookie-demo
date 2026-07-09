@@ -186,8 +186,14 @@ body{background:#050609;color:#fff;font-family:var(--sans);-webkit-font-smoothin
 .d-squig{--ang:162deg;--rad:.800;--tilt:-22deg;color:var(--pen-light)}
 .d-squig svg{width:46px}
 .d-squig path{stroke-width:3.6}
+/* the reel opens on a cookie and ends on this disc — the same object, twice.
+   worth the second highlighter fill; nothing else on the face earns one. */
+.d-cookie{--ang:44deg;--rad:.810;--tilt:-8deg;color:var(--pen)}
+.d-cookie svg{width:36px}
+.d-cookie .crust{fill:var(--hi);stroke:currentColor;stroke-width:2.2}
+.d-cookie .chip{fill:currentColor;stroke:none}
 .d-bang{--ang:216deg;--rad:.820;--tilt:-20deg;font-size:26px;color:var(--ink-red)}
-.d-yeah{--ang:58deg;--rad:.755;--tilt:10deg;font-size:19px;letter-spacing:.02em;color:var(--pen)}
+.d-yeah{--ang:62deg;--rad:.700;--tilt:10deg;font-size:19px;letter-spacing:.02em;color:var(--pen)}
 
 /* ---- copy 2 / 3 ---- */
 .c2{max-width:min(32ch,360px)}
@@ -236,14 +242,27 @@ body{background:#050609;color:#fff;font-family:var(--sans);-webkit-font-smoothin
 @keyframes rec{50%{opacity:.2}}
 .topbar .shot{color:#fff;text-align:right;text-transform:uppercase;opacity:.92;transition:color .4s}
 
-.bug{position:absolute;right:48px;top:81px;z-index:39;transform-origin:top right;
-  filter:drop-shadow(0 8px 14px rgba(6,26,80,.5));opacity:0;will-change:transform,opacity}
-.bug .lz{background:linear-gradient(180deg,#8fc0ff 0%,#4f8bf5 46%,#1c50c8 54%,#123c9e 100%);
-  border:2px solid #0c2a72;border-radius:12px;padding:8px 16px 10px;position:relative;overflow:hidden}
-.bug .lz::before{content:"";position:absolute;left:6%;right:6%;top:5%;height:36%;border-radius:8px;background:linear-gradient(180deg,rgba(255,255,255,.75),rgba(255,255,255,0))}
-.bug .n1{position:relative;font-family:var(--mono);font-weight:700;font-size:31px;line-height:.86;letter-spacing:.02em;color:#dfeaff;font-style:italic;text-shadow:0 1px 0 #0c2a72,0 2px 0 #0c2a72,0 3px 4px rgba(0,0,0,.35)}
-.bug .n2{position:relative;font-family:var(--mono);font-weight:700;font-size:19px;letter-spacing:.16em;color:#eaf2ff;text-shadow:0 1px 0 #0c2a72,0 2px 3px rgba(0,0,0,.3)}
-.bug .adr{position:absolute;right:8px;bottom:9px;font-family:var(--mono);font-size:9px;letter-spacing:.14em;color:#0c2a72;background:#bcd6ff;border-radius:8px;padding:1px 6px;font-weight:700}
+/* station ident. the ADR tag used to sit inside the plate, landing on the tail of JEANS —
+   the crowding, not the size, was what made it read small. It hangs off the corner now,
+   like a sticker slapped on the plate, and the plate itself can breathe. */
+.bug{position:absolute;right:46px;top:76px;z-index:39;transform-origin:top right;
+  filter:drop-shadow(0 10px 18px rgba(6,26,80,.55));opacity:0;will-change:transform,opacity}
+.bug .lz{position:relative;overflow:hidden;padding:12px 22px 14px;border-radius:14px;
+  border:2.5px solid #0c2a72;
+  background:linear-gradient(180deg,#9fcaff 0%,#5b93f7 44%,#1c50c8 52%,#0f3893 100%);
+  box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.32)}
+.bug .lz::before{content:"";position:absolute;left:5%;right:5%;top:4%;height:40%;border-radius:10px;
+  background:linear-gradient(180deg,rgba(255,255,255,.8),rgba(255,255,255,0))}
+.bug .n1{display:block;position:relative;font-family:var(--mono);font-weight:700;font-style:italic;
+  font-size:42px;line-height:.84;letter-spacing:.01em;color:#eaf2ff;
+  text-shadow:0 1px 0 #0c2a72,0 2px 0 #0c2a72,0 4px 6px rgba(0,0,0,.4)}
+/* tracking leaves a trailing gap after the S, which would widen the plate on the right only */
+.bug .n2{display:block;position:relative;margin-top:3px;margin-right:-.155em;font-family:var(--mono);
+  font-weight:700;font-size:23px;letter-spacing:.155em;color:#f2f7ff;text-shadow:0 1px 0 #0c2a72,0 2px 4px rgba(0,0,0,.35)}
+.bug .adr{position:absolute;right:-9px;bottom:-10px;transform:rotate(-3deg);
+  font-family:var(--mono);font-weight:700;font-size:10px;letter-spacing:.16em;color:#0c2a72;
+  background:#cfe0ff;border:1.5px solid #0c2a72;border-radius:3px;padding:2px 7px 3px;
+  box-shadow:0 2px 6px rgba(4,16,60,.45)}
 
 .scrubber{position:absolute;left:0;right:0;bottom:0;height:var(--bar);z-index:45;display:flex;align-items:center;gap:20px;pointer-events:auto;
   padding:0 30px;background:linear-gradient(180deg,rgba(6,6,10,0),rgba(6,6,10,.86) 40%);color:#fff;font-family:var(--mono)}
