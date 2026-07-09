@@ -27,6 +27,11 @@
   --marker:"Permanent Marker","Nanum Pen Script",cursive;
   --display:"Black Han Sans","Pretendard",system-ui,sans-serif;
   --bar:64px;
+  /* ONE PANEL OF THE JEWEL CASE. 142:125, scaled so the 120mm disc lands at 549px.
+     JS reads these two off :root. Nothing may restate them: the crumbs are seated against
+     the shut panel's top-left corner, the pan is half a panel, and the gloss crosses two.
+     Change the numbers here and the whole reel follows. */
+  --panel-w:650px; --panel-h:572px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
@@ -257,7 +262,7 @@ body{background:#050609;color:#fff;font-family:var(--sans);-webkit-font-smoothin
    front cover; open, its inner face lies to the left, showing the booklet's back cover.
    Both are the same booklet. Nothing appears; a lid moves.
    ================================================================ */
-.case{width:650px;height:572px;opacity:0}
+.case{width:var(--panel-w);height:var(--panel-h);opacity:0}
 .persp{position:relative;width:100%;height:100%;perspective:2400px}
 
 /* --- the tray: smoked plastic, the disc clipped to its hub --- */
@@ -266,6 +271,9 @@ body{background:#050609;color:#fff;font-family:var(--sans);-webkit-font-smoothin
   box-shadow:0 34px 70px -26px rgba(2,10,44,.85),
     inset 0 0 0 1.5px rgba(190,214,255,.22), inset 0 1.5px 0 rgba(255,255,255,.18)}
 /* the hinge column, with the moulded ribs the pins sit between */
+/* the ribs cannot be lifted into a custom property: a custom property's own var() references
+   are resolved where it is DECLARED, so a --rib-a set here would never reach a --ribs on :root.
+   Three surfaces, three depths of shadow, three literals. */
 .tray::before{content:"";position:absolute;left:0;top:0;bottom:0;width:42px;border-radius:7px 0 0 7px;
   background:linear-gradient(90deg,rgba(150,180,235,.20),rgba(150,180,235,.04)),
     repeating-linear-gradient(180deg,rgba(198,220,255,.16) 0 3px,transparent 3px 11px);
@@ -339,14 +347,16 @@ body{background:#050609;color:#fff;font-family:var(--sans);-webkit-font-smoothin
    the tray but the booklet is pushed off the hinge, so 29px of disc rim sits under here.
    the moulded hinge is the one part of the lid that is not a clear window: without that,
    the rim and the well ghost through and read as a smudge on the shut cover. */
+/* the two spines are the same moulding seen from either side of the hinge: only the way the
+   light runs across it, and which corner is rounded, can differ. */
 .spine{position:absolute;top:0;bottom:0;left:0;width:80px;z-index:2;
   display:flex;align-items:center;justify-content:center;pointer-events:none;
   border-radius:7px 0 0 7px;
-  background:linear-gradient(90deg,rgba(20,33,78,.86) 0%,rgba(16,27,66,.74) 100%),
+  background:linear-gradient(var(--spine-dir,90deg),rgba(20,33,78,.86) 0%,rgba(16,27,66,.74) 100%),
     repeating-linear-gradient(180deg,rgba(198,220,255,.10) 0 3px,transparent 3px 11px)}
-.face.inside .spine{left:auto;right:0;border-radius:0 7px 7px 0;
-  background:linear-gradient(270deg,rgba(20,33,78,.86) 0%,rgba(16,27,66,.74) 100%),
-    repeating-linear-gradient(180deg,rgba(198,220,255,.10) 0 3px,transparent 3px 11px)}
+/* the same moulding, seen from the other side of the hinge: only the way the light runs across
+   it, and which corner is rounded, can differ. it used to be a second copy of the whole rule. */
+.face.inside .spine{left:auto;right:0;border-radius:0 7px 7px 0;--spine-dir:270deg}
 .spine span{font-family:var(--mono);font-size:9.5px;letter-spacing:.26em;white-space:nowrap;
   color:rgba(214,230,255,.62);writing-mode:vertical-rl;transform:rotate(180deg)}
 
