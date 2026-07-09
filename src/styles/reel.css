@@ -16,7 +16,11 @@
 
 :root{
   --tungsten:#e8a24a; --ember:#c9742b;
-  --ink-pink:#ff2e88; --ink-red:#e8382c; --ink-cyan:#39c6ea; --ink-yellow:#ffd23e; --ink-brown:#c06a2e;
+  /* three pens on the desk, no more: a red marker, a navy marker, a yellow highlighter.
+     Every mark on the disc is drawn with one of them. */
+  --pen:#16265e; --pen-light:#2f4796;
+  --ink-red:#e8382c; --ink-pink:#ff2e88;
+  --hi:#ffd84d;
   --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
   --sans:"Pretendard",system-ui,-apple-system,"Helvetica Neue",sans-serif;
   --doodle:"Nanum Pen Script","Chalkboard SE",cursive;
@@ -99,9 +103,11 @@ body{background:#050609;color:#fff;font-family:var(--sans);-webkit-font-smoothin
 .disc::after{content:"";position:absolute;inset:0;border-radius:50%;mix-blend-mode:screen;opacity:.7;
   background:conic-gradient(from 210deg, rgba(255,255,255,.55), transparent 22%, transparent 60%, rgba(255,255,255,.4) 78%, transparent 100%)}
 .cd1{--dsz:504px}
-/* ink cannot leave the disc: a physical guard, one hair inside the rim */
+/* ink cannot leave the disc: a physical guard, one hair inside the rim.
+   multiply sinks the ink into the iridescence instead of floating it on top —
+   the disc's own colour shows through every stroke, the way marker on polycarbonate does */
 .doodle{position:absolute;inset:0;pointer-events:none;font-family:var(--doodle);will-change:transform,opacity;
-  clip-path:circle(49.6% at 50% 50%)}
+  clip-path:circle(49.6% at 50% 50%);mix-blend-mode:multiply}
 /* Doodles are placed in POLAR coordinates, not in the disc's bounding square.
    --ang is the bearing (0deg = 3 o'clock, clockwise), --rad the distance from the
    spindle as a fraction of the disc radius. The disc is a circle, so a square's
@@ -113,59 +119,75 @@ body{background:#050609;color:#fff;font-family:var(--sans);-webkit-font-smoothin
   transform:translate(-50%,-50%)
     rotate(var(--ang,0deg)) translate(calc(var(--dsz) / 2 * var(--rad,0))) rotate(calc(-1 * var(--ang,0deg)))
     rotate(var(--tilt,0deg)) translate(var(--ox,0px));
-  font-weight:700;line-height:.9;transform-origin:center;filter:drop-shadow(0 1px 0 rgba(255,255,255,.5))}
+  font-weight:700;line-height:.9;transform-origin:center}
 
 /* --- title stack, written across the top of the face like anyone with a marker --- */
 .d-nj,.d-bang,.d-yeah{font-family:var(--marker)}
 /* Permanent Marker's ink sits right of its side bearings — nudge left for optical center */
 .d-nj{--ang:270deg;--rad:.575;--tilt:-6deg;--ox:-3px;font-size:50px;letter-spacing:-.015em;color:var(--ink-red);-webkit-text-stroke:1.5px var(--ink-pink)}
 /* Hangul sits on Nanum Pen (Permanent Marker is latin-only) */
-.d-njk{--ang:270deg;--rad:.833;--tilt:-2deg;font-size:24px;color:#1b2f66;letter-spacing:.06em;
-  -webkit-text-stroke:.8px #1b2f66;paint-order:stroke fill}
+.d-njk{--ang:270deg;--rad:.833;--tilt:-2deg;font-size:24px;color:var(--pen);letter-spacing:.06em;
+  -webkit-text-stroke:.8px var(--pen);paint-order:stroke fill}
 
-/* --- the three axes: one boxed set, hung off the rim at a common margin --- */
-.d-type,.d-color,.d-layout{font-family:var(--marker);border:3.4px solid currentColor;
-  border-radius:9px 7px 10px 8px;padding:4px 11px 5px;background:rgba(255,255,255,.22)}
-.d-type{--ang:188deg;--rad:.712;--tilt:-9deg;font-size:24px;color:#1a9ec6}
-.d-color{--ang:352deg;--rad:.659;--tilt:7deg;font-size:22px;color:#1b3fb0}
-.d-layout{--ang:92deg;--rad:.762;--tilt:-2deg;font-size:22px;color:var(--ink-brown)}
+/* --- the three axes: one pen, one box, one common rim margin, so they read as a set.
+   the angles are deliberately off the 120° thirds — a clean trisection reads as a pie
+   chart, and nobody hand-letters a disc that evenly. layout carries the highlighter
+   because layout is the chip lit up on the ticket card. --- */
+.d-type,.d-color,.d-layout{position:relative;font-family:var(--marker);color:var(--pen);
+  border:3.2px solid currentColor;border-radius:9px 7px 10px 8px;padding:4px 11px 5px}
+.d-type{--ang:200deg;--rad:.700;--tilt:-11deg;font-size:24px}
+.d-color{--ang:344deg;--rad:.672;--tilt:6deg;font-size:22px}
+.d-layout{--ang:106deg;--rad:.742;--tilt:-3deg;font-size:22px}
+/* a highlighter stroke never lands square on the word it marks */
+.d-layout::before{content:"";position:absolute;inset:1px -5px 2px -7px;z-index:-1;
+  background:var(--hi);border-radius:3px 6px 4px 5px;transform:rotate(-1.4deg) skewX(-7deg)}
 
-/* --- hand-drawn deco: outer ring hugs the rim, inner ring rides just clear of the hub --- */
+/* --- deco: pen strokes, not stickers.
+   Two rules keep this from turning back into confetti:
+   1. the marks that can point, point at something. The red arrow aims at NEWJEANS, the
+      navy one at COLOR. An arrow aimed at nothing is filler and reads as filler.
+   2. the field is uneven on purpose. The top of the face is where you write, so it stays
+      open either side of the title; the doodling piles up around the lower rim.
+   Scale carries the hierarchy: a 40px star down to a 15px cross. --- */
 .doodle svg{display:block;overflow:visible}
-.doodle svg path{fill:none;stroke:currentColor;stroke-width:3.4;stroke-linecap:round;stroke-linejoin:round}
-.d-star{--ang:200deg;--rad:.468;--tilt:-12deg;color:#caa100}
-.d-star svg{width:38px}
-.d-star path{fill:rgba(255,214,64,.95);stroke:#b8860b;stroke-width:2.8}
-.d-star2{--ang:328deg;--rad:.810;--tilt:18deg;color:var(--ink-yellow)}
-.d-star2 svg{width:26px}
-.d-star2 path{fill:rgba(255,210,62,.95);stroke:#caa100;stroke-width:2.4}
-.d-smile{--ang:62deg;--rad:.762;--tilt:6deg;color:#5a4200}
-.d-smile svg{width:38px}
-.d-smile .face{fill:var(--ink-yellow);stroke:#b8860b;stroke-width:3}
-.d-smile .dot{fill:#5a4200;stroke:none}
-.d-smile .mouth{fill:none;stroke:#5a4200;stroke-width:3.2}
-.d-arrow1{--ang:8deg;--rad:.778;--tilt:14deg;color:#1b3fb0}
-.d-arrow1 svg{width:46px}
-.d-arrow2{--ang:240deg;--rad:.397;--tilt:-150deg;color:var(--ink-pink)}
-.d-arrow2 svg{width:42px}
-.d-flow{--ang:126deg;--rad:.746;--tilt:-10deg;color:var(--ink-pink)}
-.d-flow svg{width:40px}
-.d-flow ellipse{fill:var(--ink-pink);stroke:#c81f6a;stroke-width:1.8}
-.d-flow .fillc{fill:var(--ink-yellow);stroke:#caa100;stroke-width:1.8}
-.d-heart{--ang:140deg;--rad:.476;--tilt:-14deg;color:var(--ink-pink)}
-.d-heart svg{width:30px}
-.d-heart path{fill:rgba(255,46,136,.92);stroke:#c81f6a;stroke-width:2.6}
-.d-squig{--ang:158deg;--rad:.778;--tilt:-20deg;color:var(--ink-cyan)}
-.d-squig svg{width:44px}
+/* `.doodle path`, not `.doodle svg path`: the extra type selector would out-specify every
+   per-mark `.d-x path` rule below, silently flattening their fill and stroke-width */
+.doodle path{fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+/* the one filled sticker on the disc — it can afford to be, nothing else competes */
+.d-star{--ang:150deg;--rad:.500;--tilt:-14deg;color:var(--pen)}
+.d-star svg{width:40px}
+.d-star path{fill:var(--hi);stroke-width:2.6}
+.d-star2{--ang:318deg;--rad:.800;--tilt:12deg;color:var(--pen)}
+.d-star2 svg{width:24px}
+.d-star2 path{stroke-width:3}
+.d-spark{--ang:252deg;--rad:.826;--tilt:18deg;color:var(--pen)}
+.d-spark svg{width:15px}
+.d-spark path{stroke-width:2.4}
+.d-smile{--ang:80deg;--rad:.742;--tilt:5deg;color:var(--pen)}
+.d-smile svg{width:30px}
+.d-smile .face{fill:var(--hi);stroke:currentColor;stroke-width:2.6}
+.d-smile .dot{fill:currentColor;stroke:none}
+.d-smile .mouth{fill:none;stroke:currentColor;stroke-width:2.8}
+/* the svg arrow reads up-and-right at about -25deg; the tilts below aim it from where it
+   sits at what it annotates, so they only make sense alongside --ang / --rad */
+.d-arrow1{--ang:22deg;--rad:.720;--tilt:-67deg;color:var(--pen)}   /* → COLOR */
+.d-arrow1 svg{width:40px}
+.d-arrow1 path{stroke-width:2.8}
+.d-arrow2{--ang:236deg;--rad:.420;--tilt:-18deg;color:var(--ink-red)}  /* → NEWJEANS */
+.d-arrow2 svg{width:36px}
+.d-arrow2 path{stroke-width:2.8}
+.d-flow{--ang:134deg;--rad:.755;--tilt:-12deg;color:var(--pen)}
+.d-flow svg{width:32px}
+.d-flow ellipse{fill:none;stroke:currentColor;stroke-width:2.2}
+.d-flow .fillc{fill:var(--hi);stroke:currentColor;stroke-width:2}
+.d-heart{--ang:186deg;--rad:.460;--tilt:-16deg;color:var(--ink-red)}
+.d-heart svg{width:26px}
+.d-heart path{fill:none;stroke:currentColor;stroke-width:2.8}
+.d-squig{--ang:162deg;--rad:.800;--tilt:-22deg;color:var(--pen-light)}
+.d-squig svg{width:46px}
 .d-squig path{stroke-width:3.6}
-.d-spark{--ang:312deg;--rad:.444;--tilt:12deg;color:var(--ink-yellow)}
-.d-spark svg{width:28px}
-.d-spark path{fill:rgba(255,210,62,.95);stroke:#caa100;stroke-width:2.2}
-.d-dots{--ang:100deg;--rad:.444;--tilt:-6deg;color:#1b3fb0}
-.d-dots svg{width:40px}
-.d-dots circle{fill:currentColor;stroke:none}
-.d-bang{--ang:212deg;--rad:.817;--tilt:-18deg;font-size:26px;color:var(--ink-pink);-webkit-text-stroke:.8px #c81f6a}
-.d-yeah{--ang:36deg;--rad:.746;--tilt:12deg;font-size:20px;letter-spacing:.02em;color:#1b3fb0;-webkit-text-stroke:.6px #1b3fb0}
+.d-bang{--ang:216deg;--rad:.820;--tilt:-20deg;font-size:26px;color:var(--ink-red)}
+.d-yeah{--ang:58deg;--rad:.755;--tilt:10deg;font-size:19px;letter-spacing:.02em;color:var(--pen)}
 
 /* ---- copy 2 / 3 ---- */
 .c2{max-width:min(32ch,360px)}
