@@ -1,8 +1,11 @@
 /* ---- fonts (self-hosted, no CDN) ---- */
 @font-face{font-family:"Pretendard";font-weight:400;font-display:swap;src:url("/fonts/Pretendard-Regular.woff2") format("woff2");}
 @font-face{font-family:"Pretendard";font-weight:700;font-display:swap;src:url("/fonts/Pretendard-Bold.woff2") format("woff2");}
-@font-face{font-family:"Space Mono";font-weight:400;font-display:swap;src:url("/fonts/space-mono-latin-400.woff2") format("woff2");}
-@font-face{font-family:"Space Mono";font-weight:700;font-display:swap;src:url("/fonts/space-mono-latin-700.woff2") format("woff2");}
+/* HUD / timecode — industrial mono (replaces Space Mono's rounded "portfolio tech" look) */
+@font-face{font-family:"IBM Plex Mono";font-weight:400;font-style:normal;font-display:swap;src:url("/fonts/ibm-plex-mono-latin-400.woff2") format("woff2");}
+@font-face{font-family:"IBM Plex Mono";font-weight:700;font-style:normal;font-display:swap;src:url("/fonts/ibm-plex-mono-latin-700.woff2") format("woff2");}
+@font-face{font-family:"IBM Plex Mono";font-weight:400;font-style:italic;font-display:swap;src:url("/fonts/ibm-plex-mono-latin-400-italic.woff2") format("woff2");}
+@font-face{font-family:"IBM Plex Mono";font-weight:700;font-style:italic;font-display:swap;src:url("/fonts/ibm-plex-mono-latin-700-italic.woff2") format("woff2");}
 /* real handwriting — kills the system-font "fake handwriting" tell */
 @font-face{font-family:"Nanum Pen Script";font-weight:400;font-display:swap;src:url("/fonts/nanum-pen-script-korean-400.woff2") format("woff2");unicode-range:U+1100-11FF,U+3130-318F,U+A960-A97F,U+AC00-D7A3,U+D7B0-D7FF;}
 @font-face{font-family:"Nanum Pen Script";font-weight:400;font-display:swap;src:url("/fonts/nanum-pen-script-latin-400.woff2") format("woff2");}
@@ -14,7 +17,7 @@
 :root{
   --tungsten:#e8a24a; --ember:#c9742b;
   --ink-pink:#ff2e88; --ink-red:#e8382c; --ink-cyan:#39c6ea; --ink-yellow:#ffd23e; --ink-brown:#c06a2e;
-  --mono:"Space Mono",ui-monospace,Menlo,monospace;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
   --sans:"Pretendard",system-ui,-apple-system,"Helvetica Neue",sans-serif;
   --doodle:"Nanum Pen Script","Chalkboard SE",cursive;
   --marker:"Permanent Marker","Nanum Pen Script",cursive;
@@ -163,7 +166,7 @@ body{background:#050609;color:#fff;font-family:var(--sans);-webkit-font-smoothin
 
 /* ---- HUD (broadcast overlays, absolute within the monitor) ---- */
 .topbar{position:absolute;left:0;right:0;top:0;height:56px;z-index:40;display:flex;align-items:center;justify-content:space-between;
-  padding:0 34px;pointer-events:none;font-family:var(--mono);font-size:12px;letter-spacing:.18em;
+  padding:0 34px;pointer-events:none;font-family:var(--mono);font-size:12px;letter-spacing:.1em;
   background:linear-gradient(180deg,rgba(0,0,0,.42),transparent)}
 .topbar .reel{color:#fff;display:flex;align-items:center;gap:12px;text-transform:uppercase}
 .topbar .reel .dot{width:8px;height:8px;border-radius:50%;background:#ff3b30;box-shadow:0 0 10px #ff3b30;animation:rec 1.6s steps(1) infinite}
@@ -179,38 +182,40 @@ body{background:#050609;color:#fff;font-family:var(--sans);-webkit-font-smoothin
 .bug .n2{position:relative;font-family:var(--mono);font-weight:700;font-size:19px;letter-spacing:.16em;color:#eaf2ff;text-shadow:0 1px 0 #0c2a72,0 2px 3px rgba(0,0,0,.3)}
 .bug .adr{position:absolute;right:8px;bottom:9px;font-family:var(--mono);font-size:9px;letter-spacing:.14em;color:#0c2a72;background:#bcd6ff;border-radius:8px;padding:1px 6px;font-weight:700}
 
-.scrubber{position:absolute;left:0;right:0;bottom:0;height:var(--bar);z-index:45;display:flex;align-items:center;gap:24px;pointer-events:auto;
+.scrubber{position:absolute;left:0;right:0;bottom:0;height:var(--bar);z-index:45;display:flex;align-items:center;gap:20px;pointer-events:auto;
   padding:0 30px;background:linear-gradient(180deg,rgba(6,6,10,0),rgba(6,6,10,.86) 40%);color:#fff;font-family:var(--mono)}
-.playbtn{flex:0 0 auto;display:flex;align-items:center;justify-content:center;width:38px;height:38px;padding:0;border-radius:50%;
-  border:1.5px solid rgba(255,255,255,.5);background:rgba(255,255,255,.06);color:#fff;cursor:pointer;
+/* deck button — square-ish, not a consumer-player pill */
+.playbtn{flex:0 0 auto;display:flex;align-items:center;justify-content:center;width:34px;height:28px;padding:0;border-radius:3px;
+  border:1px solid rgba(255,255,255,.35);background:transparent;color:#fff;cursor:pointer;
   transition:background .2s,border-color .2s,transform .1s;-webkit-tap-highlight-color:transparent}
-.playbtn:hover{background:rgba(255,255,255,.16);border-color:#fff}
-.playbtn:active{transform:scale(.94)}
+.playbtn:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.7)}
+.playbtn:active{transform:scale(.96)}
 .playbtn:focus-visible{outline:2px solid var(--tungsten);outline-offset:2px}
-.playbtn svg{width:14px;height:14px;display:block;fill:currentColor}
-.tc{font-size:21.5px;font-weight:700;letter-spacing:.08em;white-space:nowrap;min-width:9.5ch;color:#fff}
-.tc small{font-size:.5em;letter-spacing:.2em;color:var(--tungsten);display:block;font-weight:400}
+.playbtn svg{width:12px;height:12px;display:block;fill:currentColor}
+/* timecode readout — tabular, tight tracking, no accent glow on the range line */
+.tc{font-size:20px;font-weight:400;letter-spacing:.02em;white-space:nowrap;min-width:9.5ch;color:#fff;
+  font-variant-numeric:tabular-nums;font-feature-settings:"tnum"}
+.tc small{font-size:.55em;letter-spacing:.08em;color:#9aa0b2;display:block;font-weight:400;margin-top:2px}
 .track-bar{position:relative;flex:1;height:26px;cursor:pointer}
-.track-bar .rail{position:absolute;left:0;right:0;top:50%;height:12px;transform:translateY(-50%);border-radius:2px;overflow:hidden;
-  background:repeating-linear-gradient(90deg, rgba(255,255,255,.16) 0 2px, transparent 2px 4px),repeating-linear-gradient(90deg, rgba(255,255,255,.06) 0 1px, transparent 1px 8px),#16151b;
-  box-shadow:inset 0 0 0 1px rgba(255,255,255,.12)}
-.track-bar .rail::before{content:"";position:absolute;left:0;top:0;bottom:0;width:12%;
-  background:repeating-linear-gradient(90deg,transparent 0 7px,rgba(255,255,255,.5) 7px 10px,transparent 10px 17px);mask:linear-gradient(90deg,#000 65%,transparent);opacity:.5}
-.track-bar .fill{position:absolute;left:0;top:50%;height:12px;transform:translateY(-50%);border-radius:2px;width:0;
-  background:linear-gradient(90deg,var(--ember),var(--tungsten) 40%,#4f8bf5 46%,#7db0ff);opacity:.9}
-.track-bar .head{position:absolute;top:50%;left:0;width:2px;height:24px;transform:translate(-1px,-50%);background:#fff;box-shadow:0 0 10px rgba(255,255,255,.8)}
-.track-bar .head::after{content:"";position:absolute;left:50%;top:-5px;width:10px;height:10px;border-radius:50%;transform:translateX(-50%);background:#fff;box-shadow:0 0 12px rgba(255,255,255,.9)}
+/* flat film-ruler rail — no hatch texture, no thick strip */
+.track-bar .rail{position:absolute;left:0;right:0;top:50%;height:2px;transform:translateY(-50%);border-radius:0;
+  background:rgba(255,255,255,.22)}
+.track-bar .fill{position:absolute;left:0;top:50%;height:2px;transform:translateY(-50%);border-radius:0;width:0;
+  background:var(--tungsten)}
+/* needle head — no glow, no round knob */
+.track-bar .head{position:absolute;top:50%;left:0;width:1px;height:18px;transform:translate(-0.5px,-50%);background:#fff;box-shadow:none}
+.track-bar .head::after{display:none}
 .track-bar .marks{position:absolute;left:0;right:0;top:-14px;height:12px}
-.track-bar .marks b{position:absolute;transform:translateX(-50%);font-size:9px;letter-spacing:.1em;color:#8b93a6;font-weight:400}
-.track-bar .cut{position:absolute;top:50%;height:22px;width:2px;transform:translate(-1px,-50%);background:repeating-linear-gradient(180deg,#fff 0 4px,transparent 4px 7px);opacity:.7}
-.scrubber .meta{font-size:11px;letter-spacing:.16em;color:#9aa0b2;white-space:nowrap;text-transform:uppercase}
+.track-bar .marks b{position:absolute;transform:translateX(-50%);font-size:9px;letter-spacing:.04em;color:#8b93a6;font-weight:400}
+.track-bar .cut{position:absolute;top:50%;height:16px;width:1px;transform:translate(-0.5px,-50%);background:rgba(255,255,255,.55);opacity:1}
+.scrubber .meta{font-size:10px;letter-spacing:.08em;color:#9aa0b2;white-space:nowrap;text-transform:uppercase;opacity:.75}
 
 .flash{position:absolute;inset:0;z-index:55;background:#fff;opacity:0;pointer-events:none}
 .flash.go{animation:flash .5s ease-out}
 @keyframes flash{0%{opacity:0}9%{opacity:.97}100%{opacity:0}}
 
-.hint{position:absolute;left:50%;bottom:calc(var(--bar) + 22px);transform:translateX(-50%);z-index:44;font-family:var(--mono);font-size:12px;letter-spacing:.24em;color:#fff;text-transform:uppercase;
-  display:flex;align-items:center;gap:12px;transition:opacity .5s;pointer-events:none;background:rgba(0,0,0,.3);padding:8px 16px;border-radius:30px}
+.hint{position:absolute;left:50%;bottom:calc(var(--bar) + 22px);transform:translateX(-50%);z-index:44;font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:#fff;text-transform:uppercase;
+  display:flex;align-items:center;gap:12px;transition:opacity .5s;pointer-events:none;background:rgba(0,0,0,.35);padding:7px 12px;border-radius:2px}
 .hint .arw{animation:nudge 1.6s ease-in-out infinite;font-size:15px}
 @keyframes nudge{0%,100%{transform:translateY(0);opacity:.6}50%{transform:translateY(5px);opacity:1}}
 .hint.hide{opacity:0}
