@@ -101,32 +101,21 @@ body{background:#050609;color:#fff;font-family:var(--sans);-webkit-font-smoothin
 .cd1{--dsz:504px}
 .doodle{position:absolute;inset:0;pointer-events:none;font-family:var(--doodle);will-change:transform,opacity}
 .doodle span{position:absolute;font-weight:700;line-height:.9;transform-origin:center;filter:drop-shadow(0 1px 0 rgba(255,255,255,.5))}
-/* marker stickers — same Cookie-disc energy, labels are design axes not track titles */
+/* marker stickers — triangle: TYPE ~10h, COLOR ~2h, LAYOUT ~6h; deco = star + one arrow */
 .d-nj,.d-color,.d-layout{font-family:var(--marker)}
-.d-nj{left:50%;top:15%;transform:translateX(-50%) rotate(-7deg);font-size:38px;color:var(--ink-red);-webkit-text-stroke:1px var(--ink-pink)}
-.d-njk{left:50%;top:9%;transform:translateX(-50%);font-size:15px;color:#2a3a66}
-.d-type{left:12%;top:36%;transform:rotate(-8deg);font-size:22px;letter-spacing:.04em;color:var(--ink-cyan);text-decoration:underline;text-decoration-color:var(--ink-cyan);text-underline-offset:3px}
-.d-color{right:10%;top:34%;transform:rotate(7deg);font-size:20px;color:#1b3fb0;border:2.5px solid #1b3fb0;border-radius:8px;padding:2px 7px}
-.d-layout{left:50%;bottom:13%;transform:translateX(-50%) rotate(-3deg);font-size:20px;color:var(--ink-brown);border:2.5px solid var(--ink-brown);border-radius:4px 4px 8px 8px;padding:3px 9px 4px}
-/* hand-drawn deco doodles — real marker strokes as SVG, not font glyphs */
+.d-nj{left:50%;top:14%;transform:translateX(-50%) rotate(-7deg);font-size:42px;color:var(--ink-red);-webkit-text-stroke:1px var(--ink-pink)}
+.d-njk{left:50%;top:8%;transform:translateX(-50%);font-size:14px;color:#2a3a66}
+.d-type{left:10%;top:38%;transform:rotate(-9deg);font-size:18px;letter-spacing:.03em;color:var(--ink-cyan);text-decoration:underline;text-decoration-color:var(--ink-cyan);text-underline-offset:3px}
+.d-color{right:9%;top:30%;transform:rotate(8deg);font-size:17px;color:#1b3fb0;border:2.5px solid #1b3fb0;border-radius:8px;padding:2px 7px}
+.d-layout{left:50%;bottom:11%;transform:translateX(-50%) rotate(-2deg);font-size:17px;color:var(--ink-brown);border:2.5px solid var(--ink-brown);border-radius:4px 4px 8px 8px;padding:3px 9px 4px}
+/* hand-drawn deco — keep only star (near TYPE) + one arrow (toward COLOR) */
 .doodle svg{display:block;overflow:visible}
 .doodle svg path{fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
-.d-star{left:34%;top:30%;transform:rotate(-8deg);color:#caa100}
-.d-star svg{width:31px}
+.d-star{left:28%;top:31%;transform:rotate(-10deg);color:#caa100}
+.d-star svg{width:28px}
 .d-star path{fill:rgba(255,214,64,.9);stroke-width:2}
-.d-smile{right:30%;bottom:28%;transform:rotate(4deg);color:#5a4200}
-.d-smile svg{width:31px}
-.d-smile .face{fill:var(--ink-yellow);stroke:#b8860b;stroke-width:2}
-.d-smile .dot{fill:#5a4200;stroke:none}
-.d-smile .mouth{fill:none;stroke:#5a4200;stroke-width:2.4}
-.d-arrow1{right:27%;top:44%;transform:rotate(6deg);color:#2a3a66}
-.d-arrow1 svg{width:38px}
-.d-arrow2{left:22%;bottom:36%;transform:rotate(-150deg);color:var(--ink-pink)}
-.d-arrow2 svg{width:34px}
-.d-flow{right:14%;bottom:20%;color:var(--ink-pink);transform:rotate(-6deg)}
-.d-flow svg{width:34px}
-.d-flow ellipse{fill:var(--ink-pink);stroke:#c81f6a;stroke-width:1.2}
-.d-flow .fillc{fill:var(--ink-yellow);stroke:#caa100;stroke-width:1.2}
+.d-arrow1{right:22%;top:40%;transform:rotate(12deg);color:#2a3a66}
+.d-arrow1 svg{width:36px}
 
 /* ---- copy 2 / 3 ---- */
 .c2{max-width:min(32ch,360px)}
