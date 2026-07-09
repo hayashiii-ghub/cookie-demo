@@ -179,7 +179,7 @@ import '../styles/reel.css';
   function sizeCookie(){ var f=fitStage();
     cv.width=Math.round(BW*f*DPR); cv.height=Math.round(BH*f*DPR);
     cv.style.width=BW+'px'; cv.style.height=BH+'px'; ctx.setTransform(f*DPR,0,0,f*DPR,0,0); }
-  sizeCookie(); window.addEventListener('resize',sizeCookie);
+  sizeCookie();   /* the resize listener is installed below, once frame() exists to repaint */
   var MM=['#3ea04b','#2f7fd6','#e23b2f','#f2c53d','#e77f2a','#7b3fa0'];
   var TOP=[ {x:-0.48,y:-0.42,r:0.17,c:'#3ea04b',mm:1},{x:0.34,y:-0.5,r:0.18,c:'#5a2d1c',mm:0},
     {x:-0.56,y:0.48,r:0.16,c:'#2f7fd6',mm:1},{x:0.6,y:0.42,r:0.15,c:'#f2c53d',mm:1},
@@ -438,13 +438,27 @@ import '../styles/reel.css';
      coordinates, and from then on they are part of the lid. so when it swings they go face
      down with it, and when it shuts at 2:20 they come back. the swap is a hard cut, not a
      crossfade: the art is the same and the positions are the same, so nothing can show. */
-  var CRUMB_P=0.30, crumbLayer=$('crumbs');
+  /* the contact shadow is BAKED, not filtered. as a CSS drop-shadow it was 47 composited
+     layers inside the lid's preserve-3d subtree, switched on all at once at CRUMB_P: 17ms a
+     frame, arriving at exactly the moment the crumbs appear. baked, it costs nothing.
+     PAD is the shadow's reach — 3px down plus 2.6px of blur — because the piece is drawn
+     within 1.2*sz of the middle and the smallest crumb is 2px across. */
+  var CRUMB_P=0.30, CRUMB_PAD=7, crumbLayer=$('crumbs');
   (function(){ var PANEL_X=(BW-650)/2, PANEL_Y=(BH-572)/2;   /* the shut case's top-left */
-    for(var i=0;i<CRUMB.length;i++){ var q=CRUMB[i], S=Math.ceil(q.sz*4);
+    for(var i=0;i<CRUMB.length;i++){ var q=CRUMB[i], S=Math.ceil(q.sz*4)+CRUMB_PAD*2;
+      /* the piece alone, so the shadow can be cast from its silhouette in one go: particle()
+         clips while it draws, and a clip region clips the shadow away with it. */
+      var t=document.createElement('canvas'); t.width=t.height=S*2;
+      var tg=t.getContext('2d'); tg.scale(2,2);
+      particle(tg, S/2, S/2, q.sz, flight(q,q.tL,FL).rot, q.mm, q.col, 1, q);
+
       var c=document.createElement('canvas');
       c.width=c.height=S*2; c.style.width=c.style.height=S+'px';
       var g=c.getContext('2d'); g.scale(2,2);
-      particle(g, S/2, S/2, q.sz, flight(q,q.tL,FL).rot, q.mm, q.col, 1, q);
+      /* the cover's paper gradient runs 158deg, so the key is top-left and the shadow falls
+         down-right. one drawImage lays down the shadow and the piece together. */
+      g.shadowColor='rgba(34,24,10,.42)'; g.shadowOffsetX=2; g.shadowOffsetY=3; g.shadowBlur=2.6;
+      g.drawImage(t,0,0,S,S);
       c.style.cssText+=';position:absolute;left:'+(q.rx-PANEL_X).toFixed(1)+'px;top:'
         +(q.ry-PANEL_Y).toFixed(1)+'px;transform:translate(-50%,-50%)';
       crumbLayer.appendChild(c); }
@@ -484,7 +498,7 @@ import '../styles/reel.css';
 
   var maxScroll=1,lastP=0;
   function measure(){maxScroll=Math.max(1,document.documentElement.scrollHeight-window.innerHeight);}
-  measure();window.addEventListener('resize',measure);
+  measure();
 
   /* ===== the burn, in the order a hand would do it =====
      [class, start, duration] in timeline p. Nothing here fades in: SVG marks are drawn by
@@ -570,6 +584,14 @@ import '../styles/reel.css';
   var ticking=false;
   function onScroll(){ if(!ticking){ticking=true;requestAnimationFrame(function(){frame(clamp(window.scrollY/maxScroll,0,1));ticking=false;});} }
   window.addEventListener('scroll',onScroll,{passive:true});
+
+  /* A resize wipes the canvas: assigning cv.width resets the bitmap, and frame() is otherwise
+     only ever driven by scroll. On a phone every show and hide of the URL bar is a resize, so
+     stopping the scroll at the wrong moment left the reel blank. Repaint at once, and do the
+     whole thing in one listener so the layout is read once and the stage is sized before the
+     new maxScroll is used to place the playhead. */
+  window.addEventListener('resize',function(){
+    sizeCookie(); measure(); frame(clamp(window.scrollY/maxScroll,0,1)); });
 
   /* scrubber click / drag → jump scroll */
   function jump(x){var r=bar.getBoundingClientRect();var f=clamp((x-r.left)/r.width,0,1);window.scrollTo({top:f*maxScroll,behavior:'smooth'});}
