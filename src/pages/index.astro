@@ -182,11 +182,136 @@ import '../styles/reel.css';
     {x:0.42,y:-0.05,r:0.10,c:'#e23b2f',mm:1},{x:0.66,y:-0.34,r:0.07,c:'#7b3fa0',mm:1},
     {x:0.04,y:0.12,r:0.11,c:'#4a2c17',mm:0},{x:-0.18,y:-0.08,r:0.08,c:'#4a2c17',mm:0},
     {x:-0.32,y:0.2,r:0.09,c:'#4a2c17',mm:0},{x:0.16,y:0.5,r:0.09,c:'#4a2c17',mm:0},{x:-0.04,y:-0.5,r:0.08,c:'#4a2c17',mm:0} ];
+
+  /* the crust wobble, one law, shared by the canvas cookie, the disc doodle and the jacket art */
+  function crustPath(g,cx,cy,R,N){ g.beginPath();
+    for(var i=0;i<=N;i++){ var a=i/N*6.283, rad=R*(0.96+0.04*Math.sin(a*5+1.2)+0.02*Math.sin(a*9));
+      var x=cx+Math.cos(a)*rad, y=cy+Math.sin(a)*rad; i?g.lineTo(x,y):g.moveTo(x,y); }
+    g.closePath(); }
+
+  /* a chocolate chunk is a broken solid: a body, a facet where the break caught the light,
+     and one small specular on the facet's edge. a flat polygon with a soft blob on it is
+     the plastic look — the facet is what makes it read as broken chocolate. */
+  function chunk(g,x,y,r,rot,jag){ var i,pts=[];
+    for(i=0;i<jag.length;i++){ var a=rot+i/jag.length*6.283;
+      pts.push([x+Math.cos(a)*r*jag[i], y+Math.sin(a)*r*jag[i]]); }
+    function poly(sh,dx,dy){ g.beginPath();
+      for(i=0;i<pts.length;i++){ var px=x+(pts[i][0]-x)*sh+dx, py=y+(pts[i][1]-y)*sh+dy;
+        i?g.lineTo(px,py):g.moveTo(px,py); } g.closePath(); }
+    g.save();
+    g.shadowColor='rgba(58,28,7,.5)'; g.shadowBlur=r*0.3; g.shadowOffsetY=r*0.1;
+    poly(1,0,0);
+    var cg=g.createLinearGradient(x-r*0.8,y-r*0.8,x+r*0.7,y+r*0.9);
+    cg.addColorStop(0,'#6a4527');cg.addColorStop(0.42,'#3a2213');cg.addColorStop(1,'#1b0f08');
+    g.fillStyle=cg; g.fill(); g.shadowColor='transparent';
+    poly(0.6,-r*0.17,-r*0.19);
+    g.fillStyle='rgba(150,102,60,.28)'; g.fill();
+    g.beginPath(); g.ellipse(x-r*0.33,y-r*0.37,r*0.19,r*0.1,-0.7,0,6.283);
+    g.fillStyle='rgba(255,238,212,.28)'; g.fill();
+    g.restore(); }
+
+  /* a candy shell is matte, not chrome. a broad soft light off the top-left, a thin dark rim
+     where the shell turns away, and a specular small enough to stay a shell and not a marble. */
+  function candy(g,x,y,r,c,tilt){ var ry=r*0.95; g.save();
+    g.shadowColor='rgba(58,28,7,.45)'; g.shadowBlur=r*0.42; g.shadowOffsetY=r*0.15;
+    g.beginPath(); g.ellipse(x,y,r,ry,tilt,0,6.283); g.fillStyle=c; g.fill();
+    g.shadowColor='transparent';
+    /* the light stays flat across the middle and only falls off in the last fifth of the
+       radius. a gradient that brightens from the centre outward is what makes a marble. */
+    var rg=g.createRadialGradient(x-r*0.22,y-ry*0.26,r*0.02,x,y,r*1.04);
+    rg.addColorStop(0,'rgba(255,255,255,.17)');rg.addColorStop(0.44,'rgba(255,255,255,.04)');
+    rg.addColorStop(0.8,'rgba(0,0,0,.02)');rg.addColorStop(0.94,'rgba(0,0,0,.13)');rg.addColorStop(1,'rgba(0,0,0,.26)');
+    g.fillStyle=rg; g.beginPath(); g.ellipse(x,y,r,ry,tilt,0,6.283); g.fill();
+    g.beginPath(); g.ellipse(x-r*0.33,y-ry*0.38,r*0.145,ry*0.085,-0.45,0,6.283);
+    g.fillStyle='rgba(255,255,255,.34)'; g.fill(); g.restore(); }
+
+  /* ===== the cookie is BAKED ONCE into an offscreen canvas, then blitted =====
+     A flat radial gradient with circles on it reads as clip art at any size. What makes a
+     cookie look baked is the stuff you cannot draw per frame: mottled dough, a few thousand
+     specks of flour and toasted sugar, craquelure, and a rim that caught more heat than the
+     middle. Bake it into one texture and the zoom becomes a macro shot instead of a scale-up.
+     The crumbs are then literal crops of this same texture, so they are made of the cookie. */
+  var TEX=1600, ctex=document.createElement('canvas'); ctex.width=ctex.height=TEX;
+  (function(){ var tg=ctex.getContext('2d');
+    var r=0.4242; function rnd(){ r=(r*9301+49297)%233280; return r/233280; }
+    var C=TEX/2, R=C*0.98, i;
+
+    tg.save(); crustPath(tg,C,C,R,180); tg.clip();
+    var g=tg.createRadialGradient(C-R*0.26,C-R*0.3,R*0.06,C,C,R*1.02);
+    g.addColorStop(0,'#f4d79f');g.addColorStop(0.42,'#e0b073');g.addColorStop(0.74,'#c78c48');g.addColorStop(1,'#a3652d');
+    tg.fillStyle=g; tg.fillRect(0,0,TEX,TEX);
+
+    /* mottling — dough never bakes evenly */
+    for(i=0;i<240;i++){ var a=rnd()*6.283, d=Math.sqrt(rnd())*R,
+        x=C+Math.cos(a)*d, y=C+Math.sin(a)*d, rr=R*(0.03+rnd()*0.13), dark=rnd()<0.5;
+      var lg=tg.createRadialGradient(x,y,0,x,y,rr);
+      lg.addColorStop(0, dark?'rgba(120,70,26,.11)':'rgba(255,232,186,.11)');
+      lg.addColorStop(1, dark?'rgba(120,70,26,0)':'rgba(255,232,186,0)');
+      tg.fillStyle=lg; tg.beginPath(); tg.arc(x,y,rr,0,6.283); tg.fill(); }
+
+    /* flour, toasted sugar, and the odd over-baked fleck */
+    for(i=0;i<5200;i++){ var a2=rnd()*6.283, d2=Math.sqrt(rnd())*R*0.99,
+        sx=C+Math.cos(a2)*d2, sy=C+Math.sin(a2)*d2, big=rnd()<0.06,
+        sr=R*(big?0.0035+rnd()*0.004:0.0008+rnd()*0.0026);
+      tg.fillStyle = big ? 'rgba(92,52,18,.26)' : (rnd()<0.55 ? 'rgba(86,50,18,.2)' : 'rgba(255,243,214,.2)');
+      tg.beginPath(); tg.arc(sx,sy,sr,0,6.283); tg.fill(); }
+
+    /* craquelure: the pale lip goes down FIRST, then the split is cut into it. the other way
+       round and the crack reads as a light thread lying on top of the cookie. both passes have
+       to trace the SAME wobble, so the walk is resolved to points before anything is stroked. */
+    tg.lineCap='round'; tg.lineJoin='round';
+    for(i=0;i<6;i++){ var a3=rnd()*6.283, d3=rnd()*R*0.6, len=R*(0.2+rnd()*0.42),
+        px=C+Math.cos(a3)*d3, py=C+Math.sin(a3)*d3, dir=rnd()*6.283, k;
+      var lw=R*(0.004+rnd()*0.005), pts=[[px,py]];
+      for(k=0;k<6;k++){ dir+=(rnd()-0.5)*1.15; px+=Math.cos(dir)*len/6; py+=Math.sin(dir)*len/6; pts.push([px,py]); }
+      function walk(){ tg.beginPath(); tg.moveTo(pts[0][0],pts[0][1]);
+        for(var j=1;j<pts.length;j++) tg.lineTo(pts[j][0],pts[j][1]); }
+      tg.save(); tg.translate(0,-lw*0.75); walk();
+      tg.lineWidth=lw*0.7; tg.strokeStyle='rgba(255,238,202,.2)'; tg.stroke(); tg.restore();
+      walk(); tg.lineWidth=lw; tg.strokeStyle='rgba(84,44,12,.5)'; tg.stroke(); }
+
+    /* the rim caught the heat */
+    var eg=tg.createRadialGradient(C,C,R*0.66,C,C,R);
+    eg.addColorStop(0,'rgba(120,66,22,0)');eg.addColorStop(0.7,'rgba(116,62,20,.2)');eg.addColorStop(1,'rgba(80,42,11,.74)');
+    tg.fillStyle=eg; tg.fillRect(0,0,TEX,TEX);
+    /* and the key light sits top-left, the same place it sits on the disc */
+    var hg=tg.createRadialGradient(C-R*0.42,C-R*0.46,R*0.02,C-R*0.28,C-R*0.3,R*0.98);
+    hg.addColorStop(0,'rgba(255,241,208,.30)');hg.addColorStop(1,'rgba(255,241,208,0)');
+    tg.fillStyle=hg; tg.fillRect(0,0,TEX,TEX);
+    tg.restore();
+
+    crustPath(tg,C,C,R,180); tg.lineWidth=R*0.02; tg.strokeStyle='rgba(104,58,20,.45)'; tg.stroke();
+
+    for(i=0;i<TOP.length;i++){ var t=TOP[i], tx=C+t.x*R, ty=C+t.y*R, tr=t.r*R;
+      if(t.mm) candy(tg,tx,ty,tr,t.c,rnd()*0.7);
+      else { var jag=[],n=7,j; for(j=0;j<n;j++) jag.push(0.78+rnd()*0.34);
+        chunk(tg,tx,ty,tr,rnd()*6.283,jag); } }
+  })();
+
+  function bigCookie(cx,cy,R,alpha){ ctx.save(); ctx.globalAlpha=alpha;
+    ctx.shadowColor='rgba(58,26,4,.5)'; ctx.shadowBlur=R*0.09; ctx.shadowOffsetY=R*0.045;
+    ctx.drawImage(ctex, cx-R, cy-R, R*2, R*2); ctx.restore(); }
+
+  /* a crumb is a torn piece of the same texture, not a small drawing of a cookie */
+  function particle(x,y,s,rot,mm,col,alpha,q){ if(s<=0.3||alpha<=0)return;
+    ctx.save(); ctx.globalAlpha=alpha; ctx.translate(x,y); ctx.rotate(rot);
+    if(mm){ candy(ctx,0,0,s,col,0); }
+    else { ctx.save(); ctx.beginPath();
+      for(var i=0;i<q.wob.length;i++){ var a=i/q.wob.length*6.283, rr=s*q.wob[i];
+        var px=Math.cos(a)*rr, py=Math.sin(a)*rr; i?ctx.lineTo(px,py):ctx.moveTo(px,py); }
+      ctx.closePath(); ctx.save(); ctx.clip();
+      ctx.drawImage(ctex, q.sx, q.sy, TEX*0.42, TEX*0.42, -s*1.2, -s*1.2, s*2.4, s*2.4);
+      ctx.restore();
+      ctx.lineWidth=s*0.1; ctx.strokeStyle='rgba(92,50,16,.5)'; ctx.stroke(); ctx.restore(); }
+    ctx.restore(); }
+
+  function crumbShape(rnd){ var w=[],i; for(i=0;i<9;i++) w.push(0.8+rnd()*0.34); return w; }
   var PART=[];
   (function(){ var r=0.1234; function rnd(){ r=(r*9301+49297)%233280; return r/233280; }
     for(var i=0;i<40;i++){ var mm=rnd()<0.3;
       PART.push({an:rnd()*6.283, sp:0.42+rnd()*0.95, sz:mm?14+rnd()*12:26+rnd()*26,
-        rot:rnd()*6.283, spin:(rnd()*2-1)*3.2, gv:0.6+rnd()*0.8, mm:mm, col:mm?MM[(rnd()*MM.length)|0]:'#c88a44'}); }
+        rot:rnd()*6.283, spin:(rnd()*2-1)*3.2, gv:0.6+rnd()*0.8, mm:mm, col:mm?MM[(rnd()*MM.length)|0]:'#c88a44',
+        wob:crumbShape(rnd), sx:TEX*(0.12+rnd()*0.46), sy:TEX*(0.12+rnd()*0.46)}); }
   })();
   /* the burst throws everything off-screen, but a handful of crumbs stay in frame, arc up,
      and drop onto the blue floor. they are what carries the cookie into the next shot —
@@ -196,30 +321,9 @@ import '../styles/reel.css';
     for(var i=0;i<7;i++){ var mm=rnd()<0.45;
       CRUMB.push({dx:(rnd()*2-1)*270, up:230+rnd()*250, sz:mm?7+rnd()*4:9+rnd()*7,
         rot:rnd()*6.283, spin:(rnd()*2-1)*2.4, gv:0.85+rnd()*0.65, mm:mm,
-        col:mm?MM[(rnd()*MM.length)|0]:'#c88a44', floor:0.83+rnd()*0.05}); }
+        col:mm?MM[(rnd()*MM.length)|0]:'#c88a44', floor:0.83+rnd()*0.05,
+        wob:crumbShape(rnd), sx:TEX*(0.12+rnd()*0.46), sy:TEX*(0.12+rnd()*0.46)}); }
   })();
-  function topping(x,y,r,c,mm){ ctx.beginPath();ctx.arc(x,y,r,0,6.283);ctx.fillStyle=c;ctx.fill();
-    if(mm){ ctx.beginPath();ctx.arc(x-r*0.3,y-r*0.32,r*0.34,0,6.283);ctx.fillStyle='rgba(255,255,255,.55)';ctx.fill(); }
-    else { ctx.beginPath();ctx.arc(x-r*0.25,y-r*0.25,r*0.3,0,6.283);ctx.fillStyle='rgba(255,255,255,.10)';ctx.fill();
-           ctx.beginPath();ctx.arc(x+r*0.2,y+r*0.2,r*0.3,0,6.283);ctx.fillStyle='rgba(0,0,0,.18)';ctx.fill(); } }
-  function bigCookie(cx,cy,R,alpha){ ctx.save();ctx.globalAlpha=alpha;
-    ctx.beginPath(); var N=30;
-    for(var i=0;i<=N;i++){ var a=i/N*6.283, rad=R*(0.96+0.04*Math.sin(a*5+1.2)+0.02*Math.sin(a*9));
-      var x=cx+Math.cos(a)*rad, y=cy+Math.sin(a)*rad; if(i===0)ctx.moveTo(x,y); else ctx.lineTo(x,y); }
-    ctx.closePath();
-    var g=ctx.createRadialGradient(cx-R*0.25,cy-R*0.28,R*0.1,cx,cy,R);
-    g.addColorStop(0,'#efc888');g.addColorStop(0.55,'#d89f57');g.addColorStop(0.85,'#b87a3a');g.addColorStop(1,'#9c6329');
-    ctx.fillStyle=g;ctx.fill(); ctx.lineWidth=R*0.035;ctx.strokeStyle='rgba(120,70,25,.35)';ctx.stroke();
-    for(var j=0;j<TOP.length;j++){ var t=TOP[j]; topping(cx+t.x*R,cy+t.y*R,t.r*R,t.c,t.mm); }
-    ctx.restore(); }
-  function particle(x,y,s,rot,mm,col,alpha){ if(s<=0.3||alpha<=0)return; ctx.save();ctx.globalAlpha=alpha;ctx.translate(x,y);ctx.rotate(rot);
-    if(mm){ ctx.fillStyle=col;ctx.beginPath();ctx.ellipse(0,0,s,s*0.8,0,0,6.283);ctx.fill();
-      ctx.fillStyle='rgba(255,255,255,.5)';ctx.beginPath();ctx.arc(-s*0.3,-s*0.3,s*0.3,0,6.283);ctx.fill(); }
-    else { var g=ctx.createRadialGradient(-s*0.3,-s*0.3,s*0.2,0,0,s);g.addColorStop(0,'#e9c084');g.addColorStop(1,'#b0722f');
-      ctx.fillStyle=g;ctx.beginPath();ctx.arc(0,0,s,0,6.283);ctx.fill();
-      ctx.fillStyle='#4a2c17'; var ch=[[-0.3,-0.2],[0.25,0.1],[0,0.35],[0.35,-0.3]];
-      for(var k=0;k<ch.length;k++){ ctx.beginPath();ctx.arc(ch[k][0]*s,ch[k][1]*s,s*0.16,0,6.283);ctx.fill(); } }
-    ctx.restore(); }
   /* crumbs outlive the burst: thrown up, pulled down hard, settled on the floor well before
      the disc arrives, and swept away before the burn. they only have to prove the cookie was
      in this room — a crumb still hanging in mid-air at 2:16 proves the opposite. */
@@ -229,7 +333,7 @@ import '../styles/reel.css';
     for(var i=0;i<CRUMB.length;i++){ var q=CRUMB[i];
       var x=cx+q.dx*t, y=cy-q.up*t + t*t*BH*2.2*q.gv;
       var fl=BH*q.floor, land=y>=fl; if(land) y=fl;
-      particle(x,y,q.sz, q.rot+(reduce||land?0:t*q.spin), q.mm, q.col, a); } }
+      particle(x,y,q.sz, q.rot+(reduce||land?0:t*q.spin), q.mm, q.col, a, q); } }
 
   function drawCookie(p){ var W=BW,H=BH; ctx.clearRect(0,0,W,H);
     if(p<0.05||p>0.56) return;
@@ -237,11 +341,16 @@ import '../styles/reel.css';
     if(p<0.15){ bigCookie(cx,cy, lerp(minD*0.05,maxR,eOut(seg(p,0.055,0.15))), 1); return; }
     if(p<=0.34){
       var b=seg(p,0.15,0.32);
-      var fa=1-seg(p,0.15,0.21); if(fa>0) bigCookie(cx,cy, maxR*(1+0.25*b), fa);
+      /* the cookie is rushing past the lens now. once it is bigger than the frame its chips
+         are metre-wide polygons, and a sharp one reads as a grey mess rather than as speed.
+         defocus it as it goes: what stays is a warm bloom, which is what a camera would see. */
+      var fa=1-seg(p,0.15,0.19);
+      if(fa>0){ ctx.save(); ctx.filter='blur('+((1-fa)*70+4).toFixed(1)+'px)';
+        bigCookie(cx,cy, maxR*(1+0.25*b), fa*0.9); ctx.restore(); }
       var spread=Math.hypot(W,H)*0.72, grav=H*0.12, a=Math.min(seg(b,0,0.05),1-seg(b,0.5,1));
       for(var i=0;i<PART.length;i++){ var q=PART[i], d=eOut(b)*spread*q.sp;
         var x=cx+Math.cos(q.an)*d, y=cy+Math.sin(q.an)*d + b*b*grav*q.gv;
-        particle(x,y,q.sz*(1-0.3*b), q.rot+(reduce?0:b*q.spin), q.mm, q.col, a); }
+        particle(x,y,q.sz*(1-0.3*b), q.rot+(reduce?0:b*q.spin), q.mm, q.col, a, q); }
     }
     crumbs(p); }
 
