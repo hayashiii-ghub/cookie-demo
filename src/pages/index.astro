@@ -216,7 +216,7 @@ import '../styles/reel.css';
   var playBtn=$('play');
   var ICON_PLAY='<svg viewBox="0 0 24 24"><path d="M7 5 L19 12 L7 19 Z"/></svg>';
   var ICON_PAUSE='<svg viewBox="0 0 24 24"><path d="M7 5h4v14H7z M13 5h4v14h-4z"/></svg>';
-  var PLAY_MS=5500, playing=false, rafId=0, playStart=0, playFromP=0, userTouched=false;
+  var PLAY_MS=6000, playing=false, rafId=0, playStart=0, playFromP=0, userTouched=false;
   function setBtn(on){ playBtn.innerHTML=on?ICON_PAUSE:ICON_PLAY; playBtn.setAttribute('aria-label',on?'일시정지':'재생'); playBtn.setAttribute('aria-pressed',on?'true':'false'); }
   function stopPlay(){ if(rafId){cancelAnimationFrame(rafId);rafId=0;} if(playing){playing=false;setBtn(false);} }
   function tickPlay(now){ var p=playFromP+(now-playStart)/PLAY_MS;
