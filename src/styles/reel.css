@@ -137,63 +137,83 @@ body{background:#050609;color:#fff;font-family:var(--sans);-webkit-font-smoothin
   border:3.2px solid currentColor;border-radius:9px 7px 10px 8px;padding:4px 11px 5px}
 .d-type{--ang:200deg;--rad:.700;--tilt:-11deg;font-size:24px}
 .d-color{--ang:344deg;--rad:.672;--tilt:6deg;font-size:22px}
-.d-layout{--ang:106deg;--rad:.742;--tilt:-3deg;font-size:22px}
+.d-layout{--ang:114deg;--rad:0.742;--tilt:-3deg;font-size:22px}
 /* a highlighter stroke never lands square on the word it marks */
 .d-layout::before{content:"";position:absolute;inset:1px -5px 2px -7px;z-index:-1;
   background:var(--hi);border-radius:3px 6px 4px 5px;transform:rotate(-1.4deg) skewX(-7deg)}
 
 /* --- deco: pen strokes, not stickers.
-   Two rules keep this from turning back into confetti:
+   Three rules keep this from turning back into confetti:
    1. the marks that can point, point at something. The red arrow aims at NEWJEANS, the
       navy one at COLOR. An arrow aimed at nothing is filler and reads as filler.
    2. the field is uneven on purpose. The top of the face is where you write, so it stays
       open either side of the title; the doodling piles up around the lower rim.
-   Scale carries the hierarchy: a 40px star down to a 15px cross. --- */
+   3. every mark sits on one of two rings — an outer one hugging the rim (--rad ~.75-.83)
+      and an inner one riding just clear of the hub (~.42-.53). Both rings run the whole
+      way round. Filling only one side of the inner ring is what makes a disc look lopsided.
+   Scale carries the hierarchy, and it has to actually span: 12px cross → 48px star.
+   Marks repeat across that span (star/star3, heart/heart2) rather than all landing at 30px. --- */
 .doodle svg{display:block;overflow:visible}
 /* `.doodle path`, not `.doodle svg path`: the extra type selector would out-specify every
    per-mark `.d-x path` rule below, silently flattening their fill and stroke-width */
 .doodle path{fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
 /* the one filled sticker on the disc — it can afford to be, nothing else competes */
-.d-star{--ang:150deg;--rad:.500;--tilt:-14deg;color:var(--pen)}
-.d-star svg{width:40px}
-.d-star path{fill:var(--hi);stroke-width:2.6}
-.d-star2{--ang:318deg;--rad:.800;--tilt:12deg;color:var(--pen)}
-.d-star2 svg{width:24px}
-.d-star2 path{stroke-width:3}
-.d-spark{--ang:252deg;--rad:.826;--tilt:18deg;color:var(--pen)}
-.d-spark svg{width:15px}
-.d-spark path{stroke-width:2.4}
-.d-smile{--ang:80deg;--rad:.742;--tilt:5deg;color:var(--pen)}
-.d-smile svg{width:30px}
+.d-star{--ang:178deg;--rad:0.500;--tilt:-14deg;color:var(--pen)}
+.d-star svg{width:48px}
+.d-star path{fill:var(--hi);stroke-width:2.4}
+.d-star3{--ang:314deg;--rad:0.520;--tilt:14deg;color:var(--pen)}
+.d-star3 svg{width:15px}
+.d-star3 path{stroke-width:3.4}
+.d-star2{--ang:322deg;--rad:0.820;--tilt:12deg;color:var(--pen)}
+.d-star2 svg{width:30px}
+.d-star2 path{stroke-width:2.8}
+.d-spark{--ang:294deg;--rad:0.850;--tilt:18deg;color:var(--pen)}
+.d-spark svg{width:12px}
+.d-spark path{stroke-width:2.6}
+.d-smile{--ang:84deg;--rad:0.775;--tilt:5deg;color:var(--pen)}
+.d-smile svg{width:34px}
 .d-smile .face{fill:var(--hi);stroke:currentColor;stroke-width:2.6}
 .d-smile .dot{fill:currentColor;stroke:none}
 .d-smile .mouth{fill:none;stroke:currentColor;stroke-width:2.8}
 /* the svg arrow reads up-and-right at about -25deg; the tilts below aim it from where it
    sits at what it annotates, so they only make sense alongside --ang / --rad */
-.d-arrow1{--ang:22deg;--rad:.720;--tilt:-67deg;color:var(--pen)}   /* → COLOR */
-.d-arrow1 svg{width:40px}
-.d-arrow1 path{stroke-width:2.8}
-.d-arrow2{--ang:236deg;--rad:.420;--tilt:-18deg;color:var(--ink-red)}  /* → NEWJEANS */
-.d-arrow2 svg{width:36px}
-.d-arrow2 path{stroke-width:2.8}
-.d-flow{--ang:134deg;--rad:.755;--tilt:-12deg;color:var(--pen)}
-.d-flow svg{width:32px}
-.d-flow ellipse{fill:none;stroke:currentColor;stroke-width:2.2}
-.d-flow .fillc{fill:var(--hi);stroke:currentColor;stroke-width:2}
-.d-heart{--ang:186deg;--rad:.460;--tilt:-16deg;color:var(--ink-red)}
-.d-heart svg{width:26px}
-.d-heart path{fill:none;stroke:currentColor;stroke-width:2.8}
-.d-squig{--ang:162deg;--rad:.800;--tilt:-22deg;color:var(--pen-light)}
-.d-squig svg{width:46px}
-.d-squig path{stroke-width:3.6}
+.d-arrow1{--ang:16deg;--rad:0.750;--tilt:-76deg;color:var(--pen)}   /* → COLOR */
+.d-arrow1 svg{width:34px}
+.d-arrow1 path{stroke-width:3}
+.d-arrow2{--ang:232deg;--rad:0.425;--tilt:-18deg;color:var(--ink-red)}  /* → NEWJEANS */
+.d-arrow2 svg{width:30px}
+.d-arrow2 path{stroke-width:3.2}
+.d-flow{--ang:140deg;--rad:0.780;--tilt:-12deg;color:var(--pen)}
+.d-flow svg{width:26px}
+.d-flow ellipse{fill:none;stroke:currentColor;stroke-width:2.6}
+.d-flow .fillc{fill:var(--hi);stroke:currentColor;stroke-width:2.2}
+.d-heart{--ang:148deg;--rad:0.440;--tilt:-16deg;color:var(--ink-red)}
+.d-heart svg{width:22px}
+.d-heart path{fill:none;stroke:currentColor;stroke-width:3}
+/* the small one is solid — same motif, opposite technique */
+.d-heart2{--ang:84deg;--rad:0.540;--tilt:12deg;color:var(--ink-red)}
+.d-heart2 svg{width:13px}
+.d-heart2 path{fill:currentColor;stroke:none}
+.d-note{--ang:40deg;--rad:0.470;--tilt:-10deg;color:var(--pen)}
+.d-note svg{width:26px}
+.d-note path{stroke-width:2.4}
+.d-note .head{fill:currentColor;stroke:none}
+.d-loop{--ang:130deg;--rad:0.470;--tilt:-8deg;color:var(--pen-light)}
+.d-loop svg{width:24px}
+.d-loop path{stroke-width:2.6}
+.d-squig{--ang:168deg;--rad:0.800;--tilt:-22deg;color:var(--pen-light)}
+.d-squig svg{width:40px}
+.d-squig path{stroke-width:3.8}
 /* the reel opens on a cookie and ends on this disc — the same object, twice.
-   worth the second highlighter fill; nothing else on the face earns one. */
-.d-cookie{--ang:44deg;--rad:.810;--tilt:-8deg;color:var(--pen)}
-.d-cookie svg{width:36px}
+   worth the second highlighter fill; nothing else on the face earns one.
+   the two crumbs live inside this svg, not as their own mark: they have to sit
+   right against the cookie, which no separate span is allowed to do. */
+.d-cookie{--ang:40deg;--rad:0.760;--tilt:-8deg;color:var(--pen)}
+.d-cookie svg{width:54px}
 .d-cookie .crust{fill:var(--hi);stroke:currentColor;stroke-width:2.2}
-.d-cookie .chip{fill:currentColor;stroke:none}
-.d-bang{--ang:216deg;--rad:.820;--tilt:-20deg;font-size:26px;color:var(--ink-red)}
-.d-yeah{--ang:62deg;--rad:.700;--tilt:10deg;font-size:19px;letter-spacing:.02em;color:var(--pen)}
+.d-cookie .chip,.d-cookie .crumb{fill:currentColor;stroke:none}
+.d-bang{--ang:222deg;--rad:0.825;--tilt:-20deg;font-size:30px;color:var(--ink-red)}
+.d-yeah{--ang:62deg;--rad:0.640;--tilt:10deg;font-size:17px;letter-spacing:.02em;color:var(--pen)}
 
 /* ---- copy 2 / 3 ---- */
 .c2{max-width:min(32ch,360px)}
