@@ -104,7 +104,7 @@ body{background:#050609;color:#fff;font-family:var(--sans);-webkit-font-smoothin
 /* marker stickers — bigger Y2K marks; NEWJEANS optically centered (Permanent Marker leans right) */
 .d-nj,.d-type,.d-color,.d-layout,.d-bang,.d-yeah{font-family:var(--marker)}
 /* Permanent Marker’s visual weight sits right of the bbox — bias left for optical center */
-.d-nj{left:50%;top:12%;width:82%;text-align:center;transform:translateX(-56%) rotate(-6deg);font-size:50px;letter-spacing:-.015em;color:var(--ink-red);-webkit-text-stroke:1.5px var(--ink-pink)}
+.d-nj{left:50%;top:12%;width:82%;text-align:center;transform:translateX(-51.5%) rotate(-6deg);font-size:50px;letter-spacing:-.015em;color:var(--ink-red);-webkit-text-stroke:1.5px var(--ink-pink)}
 /* Hangul sits on Nanum Pen (Permanent Marker is latin-only) */
 .d-njk{left:50%;top:5.5%;transform:translateX(-50%);font-family:var(--doodle);font-size:24px;font-weight:700;color:#1b2f66;letter-spacing:.06em;
   -webkit-text-stroke:.8px #1b2f66;paint-order:stroke fill}
