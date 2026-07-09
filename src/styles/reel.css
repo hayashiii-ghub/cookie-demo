@@ -435,7 +435,12 @@ body{background:#050609;color:#fff;font-family:var(--sans);-webkit-font-smoothin
 .tc{font-size:20px;font-weight:400;letter-spacing:.02em;white-space:nowrap;min-width:9.5ch;color:#fff;
   font-variant-numeric:tabular-nums;font-feature-settings:"tnum"}
 .tc small{font-size:.55em;letter-spacing:.08em;color:#9aa0b2;display:block;font-weight:400;margin-top:2px}
-.track-bar{position:relative;flex:1;height:26px;cursor:pointer}
+/* touch-action:none so the browser hands us every pointermove instead of stealing the gesture
+   for a page scroll halfway through a drag (which is what fires pointercancel on iOS). */
+.track-bar{position:relative;flex:1;height:26px;cursor:pointer;touch-action:none;
+  -webkit-tap-highlight-color:transparent}
+.track-bar:focus{outline:none}
+.track-bar:focus-visible{outline:2px solid var(--tungsten);outline-offset:6px}
 /* flat film-ruler rail — no hatch texture, no thick strip */
 .track-bar .rail{position:absolute;left:0;right:0;top:50%;height:2px;transform:translateY(-50%);border-radius:0;
   background:rgba(255,255,255,.22)}

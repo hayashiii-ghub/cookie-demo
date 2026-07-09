@@ -134,7 +134,11 @@ import '../styles/reel.css';
     <div class="scrubber" role="region" aria-label="타임코드 스크러버 · 재생, 클릭이나 드래그로 이동">
       <button class="playbtn" id="play" type="button" aria-label="재생" aria-pressed="false"><svg viewBox="0 0 24 24"><path d="M7 5 L19 12 L7 19 Z"/></svg></button>
       <div class="tc"><span id="tc">2:13:00</span><small>2:13 → 2:20</small></div>
-      <div class="track-bar" id="bar">
+      <!-- it looks like a slider and it drags like a slider, so it says it is one. valuenow is
+           a percentage of the reel; valuetext is the timecode, which is what a reader wants. -->
+      <div class="track-bar" id="bar" tabindex="0" role="slider"
+           aria-label="타임코드 · timecode" aria-orientation="horizontal"
+           aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-valuetext="2:13:00">
         <div class="rail"></div><div class="fill" id="fill"></div>
         <div class="cut" style="left:16%"></div><div class="marks" id="marks"></div><div class="head" id="head"></div>
       </div>
@@ -496,7 +500,7 @@ import '../styles/reel.css';
     }
     crumbs(p); }
 
-  var maxScroll=1,lastP=0;
+  var maxScroll=1,lastP=0,lastPct=-1,lastTc='';
   function measure(){maxScroll=Math.max(1,document.documentElement.scrollHeight-window.innerHeight);}
   measure();
 
@@ -568,8 +572,12 @@ import '../styles/reel.css';
     /* the highlighter is pulled through LAYOUT after the box around it is closed */
     layoutEl.style.setProperty('--hw', seg(p,0.780,0.808).toFixed(3));
 
-    /* scrubber + hud */
-    tcEl.textContent=fmt(p); fill.style.width=(p*100)+'%'; head.style.left=(p*100)+'%';
+    /* scrubber + hud. the aria pair is only rewritten when the whole percent turns over:
+       a screen reader does not want 60 announcements a second, and neither does the DOM. */
+    var tc=fmt(p); tcEl.textContent=tc; fill.style.width=(p*100)+'%'; head.style.left=(p*100)+'%';
+    var pct=Math.round(p*100);
+    if(pct!==lastPct){ lastPct=pct; bar.setAttribute('aria-valuenow',pct); }
+    if(tc!==lastTc){ lastTc=tc; bar.setAttribute('aria-valuetext',tc); }
     if(p<0.055){shotEl.textContent='암전 · black';shotEl.style.color='#9aa0b2';}
     else if(p<0.22){shotEl.textContent='쿠키 · zoom & burst';shotEl.style.color='#e8b06a';}
     else if(p<0.34){shotEl.textContent='파랑 · into blue';shotEl.style.color='#eaf1ff';}
@@ -593,12 +601,37 @@ import '../styles/reel.css';
   window.addEventListener('resize',function(){
     sizeCookie(); measure(); frame(clamp(window.scrollY/maxScroll,0,1)); });
 
-  /* scrubber click / drag → jump scroll */
-  function jump(x){var r=bar.getBoundingClientRect();var f=clamp((x-r.left)/r.width,0,1);window.scrollTo({top:f*maxScroll,behavior:'smooth'});}
-  var dragging=false;
-  bar.addEventListener('pointerdown',function(e){userInterrupt();dragging=true;bar.setPointerCapture(e.pointerId);jump(e.clientX);});
-  bar.addEventListener('pointermove',function(e){if(dragging)jump(e.clientX);});
-  bar.addEventListener('pointerup',function(){dragging=false;});
+  /* ===== the scrubber =====
+     A single tap eases to its mark. A DRAG must not: a phone delivers pointermove at 120Hz,
+     and a smooth scroll started on every one of them spends its life being cancelled by the
+     next, so the playhead lags the thumb by however long the easing had left. While the
+     thumb is down the scroll is instantaneous and the film moves exactly with it. */
+  function jump(x,smooth){ var r=bar.getBoundingClientRect(), f=clamp((x-r.left)/r.width,0,1);
+    window.scrollTo({top:f*maxScroll, behavior:smooth?'smooth':'auto'}); }
+  function seek(p){ window.scrollTo({top:clamp(p,0,1)*maxScroll, behavior:'auto'}); }
+  var dragging=0;   /* the captured pointerId, or 0 */
+  /* release on cancel as well as on up. iOS cancels a gesture the moment it decides the touch
+     belongs to the page, and a drag that is never released leaves the bar seeking under any
+     finger that later crosses it. */
+  function endDrag(e){ if(!dragging) return;
+    if(bar.hasPointerCapture(e.pointerId)) bar.releasePointerCapture(e.pointerId);
+    dragging=0; }
+  bar.addEventListener('pointerdown',function(e){ userInterrupt(); dragging=e.pointerId;
+    bar.setPointerCapture(e.pointerId); bar.focus(); jump(e.clientX,true); });
+  bar.addEventListener('pointermove',function(e){ if(dragging===e.pointerId) jump(e.clientX,false); });
+  bar.addEventListener('pointerup',endDrag);
+  bar.addEventListener('pointercancel',endDrag);
+
+  /* the bar is a slider, so it answers to a keyboard. one frame of the reel is 1/168. */
+  var STEP=1/168, PAGE=24/168;   /* a frame, and a second */
+  bar.addEventListener('keydown',function(e){
+    var p=clamp(window.scrollY/maxScroll,0,1), k=e.key, d=0;
+    if(k==='ArrowRight'||k==='ArrowUp') d=STEP; else if(k==='ArrowLeft'||k==='ArrowDown') d=-STEP;
+    else if(k==='PageUp') d=PAGE; else if(k==='PageDown') d=-PAGE;
+    else if(k==='Home'){ userInterrupt(); e.preventDefault(); seek(0); return; }
+    else if(k==='End'){ userInterrupt(); e.preventDefault(); seek(1); return; }
+    else return;
+    userInterrupt(); e.preventDefault(); seek(p+d); });
 
   /* ===== playback — a ▶ that scrolls the timeline; any scroll/touch/drag pauses it ===== */
   var playBtn=$('play');
