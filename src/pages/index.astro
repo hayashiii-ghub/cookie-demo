@@ -3,16 +3,16 @@ import '../styles/reel.css';
 ---
 
 <!doctype html>
-<html lang="ko">
+<html lang="ja">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>COOKIE — 2:13→2:20 (a seven-second scrub)</title>
+<title>COOKIE — 2:13→2:20 (Astro scroll reel)</title>
 </head>
 <body>
 <!-- everything lives on a fixed 1200x900 (4:3) "broadcast monitor" scaled to fit the viewport -->
-<main role="main" aria-label="COOKIE 2:13에서 2:20까지, 7초를 스크롤로 재생하는 릴">
-<h1 class="sr-only">COOKIE — 2:13에서 2:20까지, 7초의 스크럽</h1>
+<main role="main" aria-label="COOKIE 2:13から2:20まで、スクロール駆動でscrubする7秒のリール">
+<h1 class="sr-only">COOKIE — 2:13から2:20まで、スクロール駆動でscrubする7秒</h1>
 <div id="frame">
   <div id="box">
     <div class="bg" id="bgDark"></div>
@@ -36,23 +36,23 @@ import '../styles/reel.css';
         </div>
       </div></div>
       <div class="anchor a-c2"><div class="copy c2" id="c2">
-        <div class="kick">Shot 02 · 2:16</div>
-        <h2>그리고,<br>파랑.</h2>
-        <p class="lede">한 번의 컷. 무대가 전기 블루로 뒤집히고, 방송용 로고에 불이 들어온다.<br><span style="opacity:.6">One hard cut. The room flips to electric blue and the broadcast bug lights up.</span></p>
+        <div class="kick">Layer 02 · CSS cut</div>
+        <h2>そして、<br>グラデ。</h2>
+        <p class="lede">実写なし。#bgDark と #bgBlue を opacity でクロスフェードし、.bug を absolute で点灯させる。<br><span style="opacity:.6">No footage. Cross-fade two background layers; light the absolute-positioned bug.</span></p>
       </div></div>
 
       <!-- burn — the doodled CD settles right; a ticket-style card slides in on the left to balance it -->
       <div class="anchor a-c3"><div class="copy c3 ticket" id="c3">
         <div class="tk-head">
-          <div class="kick">Shot 03 · 2:18</div>
-          <div class="tk-serial">ADMIT ONE</div>
+          <div class="kick">Layer 03 · compose</div>
+          <div class="tk-serial">STATIC OUT</div>
         </div>
-        <h2>전부<br>한 장에<br>굽는다</h2>
-        <p class="lede">그동안의 전부를 — 한 장의 구운 시디 위에 매직으로 적어 넣는다.<br><span style="opacity:.6">Everything the group is, doodled in marker onto one burned disc.</span></p>
-        <div class="tracklist"><i>Attention</i><i>Hype Boy</i><i>Hurt</i><i class="on">Cookie</i></div>
+        <h2>全部<br>一枚に<br>焼く</h2>
+        <p class="lede">Astro の静的1ページに Canvas 2D・CSS・スクラバーを載せる。スクロール位置 p∈[0,1] がタイムラインになる。<br><span style="opacity:.6">One static Astro page. Canvas 2D, CSS, and the scrubber share scroll progress p∈[0,1].</span></p>
+        <div class="tracklist"><i>Astro</i><i>Canvas</i><i>CSS</i><i class="on">Scroll</i></div>
         <div class="tk-stub">
           <div class="barcode" aria-hidden="true"></div>
-          <div class="endtag">2:20:00 — 다음 마디로 ↓</div>
+          <div class="endtag">2:20:00 — dist/ へ ↓</div>
         </div>
       </div></div>
 
@@ -65,14 +65,14 @@ import '../styles/reel.css';
     <div class="scan" aria-hidden="true"></div>
 
     <div class="topbar">
-      <div class="reel"><span class="dot"></span> COOKIE · 뉴진스 &nbsp;— &nbsp;REEL 02</div>
-      <div class="shot" id="shot">암전 · the dark floor</div>
+      <div class="reel"><span class="dot"></span> COOKIE · ASTRO &nbsp;— &nbsp;BUILD 02</div>
+      <div class="shot" id="shot">暗転 · boot</div>
     </div>
 
-    <div class="hint" id="hint" aria-hidden="true">아래로 스크롤 · scroll to play <span class="arw">↓</span></div>
+    <div class="hint" id="hint" aria-hidden="true">スクロールで再生 · scroll to play <span class="arw">↓</span></div>
 
-    <div class="scrubber" role="region" aria-label="타임코드 스크러버 · 재생, 클릭이나 드래그로 이동">
-      <button class="playbtn" id="play" type="button" aria-label="재생" aria-pressed="false"><svg viewBox="0 0 24 24"><path d="M7 5 L19 12 L7 19 Z"/></svg></button>
+    <div class="scrubber" role="region" aria-label="タイムコードスクラバー · 再生、クリックやドラッグで移動">
+      <button class="playbtn" id="play" type="button" aria-label="再生" aria-pressed="false"><svg viewBox="0 0 24 24"><path d="M7 5 L19 12 L7 19 Z"/></svg></button>
       <div class="tc"><span id="tc">2:13:00</span><small>2:13 → 2:20</small></div>
       <div class="track-bar" id="bar">
         <div class="rail"></div><div class="fill" id="fill"></div>
@@ -192,10 +192,10 @@ import '../styles/reel.css';
 
     /* scrubber + hud */
     tcEl.textContent=fmt(p); fill.style.width=(p*100)+'%'; head.style.left=(p*100)+'%';
-    if(p<0.055){shotEl.textContent='암전 · black';shotEl.style.color='#9aa0b2';}
-    else if(p<0.22){shotEl.textContent='쿠키 · zoom & burst';shotEl.style.color='#e8b06a';}
-    else if(p<0.58){shotEl.textContent='전환 · into blue';shotEl.style.color='#eaf1ff';}
-    else{shotEl.textContent='굽는 시간 · the burn';shotEl.style.color='#eaf1ff';}
+    if(p<0.055){shotEl.textContent='暗転 · boot';shotEl.style.color='#9aa0b2';}
+    else if(p<0.22){shotEl.textContent='Canvas · zoom & burst';shotEl.style.color='#e8b06a';}
+    else if(p<0.58){shotEl.textContent='CSS · into blue';shotEl.style.color='#eaf1ff';}
+    else{shotEl.textContent='compose · the burn';shotEl.style.color='#eaf1ff';}
     if(!reduce && lastP<0.15 && p>=0.15){flash.classList.remove('go');void flash.offsetWidth;flash.classList.add('go');}
     lastP=p;
     if(p>0.01) hint.classList.add('hide');
@@ -217,7 +217,7 @@ import '../styles/reel.css';
   var ICON_PLAY='<svg viewBox="0 0 24 24"><path d="M7 5 L19 12 L7 19 Z"/></svg>';
   var ICON_PAUSE='<svg viewBox="0 0 24 24"><path d="M7 5h4v14H7z M13 5h4v14h-4z"/></svg>';
   var PLAY_MS=6000, playing=false, rafId=0, playStart=0, playFromP=0, userTouched=false;
-  function setBtn(on){ playBtn.innerHTML=on?ICON_PAUSE:ICON_PLAY; playBtn.setAttribute('aria-label',on?'일시정지':'재생'); playBtn.setAttribute('aria-pressed',on?'true':'false'); }
+  function setBtn(on){ playBtn.innerHTML=on?ICON_PAUSE:ICON_PLAY; playBtn.setAttribute('aria-label',on?'一時停止':'再生'); playBtn.setAttribute('aria-pressed',on?'true':'false'); }
   function stopPlay(){ if(rafId){cancelAnimationFrame(rafId);rafId=0;} if(playing){playing=false;setBtn(false);} }
   function tickPlay(now){ var p=playFromP+(now-playStart)/PLAY_MS;
     if(p>=1){ window.scrollTo(0,maxScroll); stopPlay(); return; }
