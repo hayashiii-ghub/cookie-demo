@@ -16,7 +16,11 @@
 
 :root{
   --tungsten:#e8a24a; --ember:#c9742b;
-  --ink-pink:#ff2e88; --ink-red:#e8382c; --ink-cyan:#39c6ea; --ink-yellow:#ffd23e; --ink-brown:#c06a2e;
+  /* three pens on the desk, no more: a red marker, a navy marker, a yellow highlighter.
+     Every mark on the disc is drawn with one of them. */
+  --pen:#16265e; --pen-light:#2f4796;
+  --ink-red:#e8382c; --ink-pink:#ff2e88;
+  --hi:#ffd84d;
   --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
   --sans:"Pretendard",system-ui,-apple-system,"Helvetica Neue",sans-serif;
   --doodle:"Nanum Pen Script","Chalkboard SE",cursive;
@@ -78,15 +82,16 @@ body{background:#050609;color:#fff;font-family:var(--sans);-webkit-font-smoothin
 .a-c3{left:25%;top:50%;transform:translate(-50%,-50%)}
 
 .copy{z-index:6}
-.kick{font-family:var(--mono);font-size:13px;letter-spacing:.34em;text-transform:uppercase;display:flex;align-items:center;gap:14px;margin-bottom:22px}
-.kick::before{content:"";width:34px;height:1px;background:currentColor;opacity:.7}
-/* Y2K broadcast title — chrome type: bright top, a hard reflection horizon at the mid-line,
-   then a lit bottom, extruded with a crisp offset edge + soft cast depth */
-.copy h2{font-family:var(--display);font-weight:900;letter-spacing:-.015em;line-height:1.0;text-wrap:balance;
-  background:linear-gradient(180deg,#eaf2ff 0%,#ffffff 30%,#dcecff 47%,#5f92ee 50%,#a7c9ff 53%,#ffffff 78%,#dbeaff 100%);
+/* Cookie MV–inspired kick: tight mono, short rule, less “portfolio tracking” */
+.kick{font-family:var(--mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;display:flex;align-items:center;gap:12px;margin-bottom:18px}
+.kick::before{content:"";width:28px;height:1px;background:currentColor;opacity:.65}
+/* Y2K broadcast title — chrome type from the Cookie blue-room look:
+   bright top, hard mid reflection, extruded edge + soft cast */
+.copy h2{font-family:var(--display);font-weight:400;letter-spacing:-.03em;line-height:.92;text-wrap:balance;
+  background:linear-gradient(180deg,#ffffff 0%,#f3f8ff 28%,#dcecff 46%,#4f86e8 50%,#9ec4ff 54%,#ffffff 78%,#eaf2ff 100%);
   -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;
-  filter:drop-shadow(0 1px 0 #2b50b2) drop-shadow(0 2px 0 rgba(18,42,116,.5)) drop-shadow(0 9px 16px rgba(6,22,80,.45))}
-.lede{font-size:15.5px;line-height:1.7;font-weight:400}
+  filter:drop-shadow(0 1px 0 #1e4aa8) drop-shadow(0 2px 0 rgba(14,36,100,.55)) drop-shadow(0 10px 18px rgba(6,22,80,.4))}
+.lede{font-size:15px;line-height:1.65;font-weight:400;letter-spacing:-.01em}
 .lede b{font-weight:700}
 
 /* ---- discs (sizes are px in the 1200x900 stage) ---- */
@@ -98,40 +103,124 @@ body{background:#050609;color:#fff;font-family:var(--sans);-webkit-font-smoothin
 .disc::after{content:"";position:absolute;inset:0;border-radius:50%;mix-blend-mode:screen;opacity:.7;
   background:conic-gradient(from 210deg, rgba(255,255,255,.55), transparent 22%, transparent 60%, rgba(255,255,255,.4) 78%, transparent 100%)}
 .cd1{--dsz:504px}
-.doodle{position:absolute;inset:0;pointer-events:none;font-family:var(--doodle);will-change:transform,opacity}
-.doodle span{position:absolute;font-weight:700;line-height:.9;transform-origin:center;filter:drop-shadow(0 1px 0 rgba(255,255,255,.5))}
-.d-nj,.d-cookie,.d-hype{font-family:var(--marker)}
-.d-nj{left:50%;top:15%;transform:translateX(-50%) rotate(-7deg);font-size:38px;color:var(--ink-red);-webkit-text-stroke:1px var(--ink-pink)}
-.d-njk{left:50%;top:9%;transform:translateX(-50%);font-size:15px;color:#2a3a66}
-.d-att{left:11%;top:36%;transform:rotate(-8deg);font-size:19px;color:var(--ink-cyan);text-decoration:underline;text-decoration-color:var(--ink-cyan)}
-.d-hype{right:9%;top:33%;transform:rotate(7deg);font-size:19px;color:#1b3fb0;border:2.5px solid #1b3fb0;border-radius:8px;padding:2px 6px}
-.d-hurt{left:14%;bottom:24%;transform:rotate(-5deg);font-size:21px;color:var(--ink-pink)}
-.d-cookie{left:50%;bottom:12%;transform:translateX(-50%) rotate(-3deg);font-size:21px;color:var(--ink-brown);border:2.5px solid var(--ink-brown);border-radius:4px 4px 8px 8px;padding:3px 8px 4px}
-/* hand-drawn deco doodles — real marker strokes as SVG, not font glyphs */
+/* ink cannot leave the disc: a physical guard, one hair inside the rim.
+   multiply sinks the ink into the iridescence instead of floating it on top —
+   the disc's own colour shows through every stroke, the way marker on polycarbonate does */
+.doodle{position:absolute;inset:0;pointer-events:none;font-family:var(--doodle);will-change:transform,opacity;
+  clip-path:circle(49.6% at 50% 50%);mix-blend-mode:multiply}
+/* Doodles are placed in POLAR coordinates, not in the disc's bounding square.
+   --ang is the bearing (0deg = 3 o'clock, clockwise), --rad the distance from the
+   spindle as a fraction of the disc radius. The disc is a circle, so a square's
+   top/left/right/bottom put its corners outside the ink surface and its middle on
+   the spindle; an annulus (hub ~0.26 → rim 1.0) is the only sane coordinate space. */
+/* defaults live in the var() fallbacks: a `--rad:0` declaration here would out-specify
+   the single-class placements below and stack every doodle on the spindle */
+.doodle span{position:absolute;left:50%;top:50%;width:max-content;
+  transform:translate(-50%,-50%)
+    rotate(var(--ang,0deg)) translate(calc(var(--dsz) / 2 * var(--rad,0))) rotate(calc(-1 * var(--ang,0deg)))
+    rotate(var(--tilt,0deg)) translate(var(--ox,0px));
+  font-weight:700;line-height:.9;transform-origin:center}
+
+/* --- title stack, written across the top of the face like anyone with a marker --- */
+.d-nj,.d-bang,.d-yeah{font-family:var(--marker)}
+/* Permanent Marker's ink sits right of its side bearings — nudge left for optical center */
+.d-nj{--ang:270deg;--rad:.575;--tilt:-6deg;--ox:-3px;font-size:50px;letter-spacing:-.015em;color:var(--ink-red);-webkit-text-stroke:1.5px var(--ink-pink)}
+/* Hangul sits on Nanum Pen (Permanent Marker is latin-only) */
+.d-njk{--ang:270deg;--rad:.833;--tilt:-2deg;font-size:24px;color:var(--pen);letter-spacing:.06em;
+  -webkit-text-stroke:.8px var(--pen);paint-order:stroke fill}
+
+/* --- the three axes: one pen, one box, one common rim margin, so they read as a set.
+   the angles are deliberately off the 120° thirds — a clean trisection reads as a pie
+   chart, and nobody hand-letters a disc that evenly. layout carries the highlighter
+   because layout is the chip lit up on the ticket card. --- */
+.d-type,.d-color,.d-layout{position:relative;font-family:var(--marker);color:var(--pen);
+  border:3.2px solid currentColor;border-radius:9px 7px 10px 8px;padding:4px 11px 5px}
+.d-type{--ang:200deg;--rad:.700;--tilt:-11deg;font-size:24px}
+.d-color{--ang:344deg;--rad:.672;--tilt:6deg;font-size:22px}
+.d-layout{--ang:114deg;--rad:0.742;--tilt:-3deg;font-size:22px}
+/* a highlighter stroke never lands square on the word it marks */
+.d-layout::before{content:"";position:absolute;inset:1px -5px 2px -7px;z-index:-1;
+  background:var(--hi);border-radius:3px 6px 4px 5px;transform:rotate(-1.4deg) skewX(-7deg)}
+
+/* --- deco: pen strokes, not stickers.
+   Three rules keep this from turning back into confetti:
+   1. the marks that can point, point at something. The red arrow aims at NEWJEANS, the
+      navy one at COLOR. An arrow aimed at nothing is filler and reads as filler.
+   2. the field is uneven on purpose. The top of the face is where you write, so it stays
+      open either side of the title; the doodling piles up around the lower rim.
+   3. every mark sits on one of two rings — an outer one hugging the rim (--rad ~.75-.83)
+      and an inner one riding just clear of the hub (~.42-.53). Both rings run the whole
+      way round. Filling only one side of the inner ring is what makes a disc look lopsided.
+   Scale carries the hierarchy, and it has to actually span: 12px cross → 48px star.
+   Marks repeat across that span (star/star3, heart/heart2) rather than all landing at 30px. --- */
 .doodle svg{display:block;overflow:visible}
-.doodle svg path{fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
-.d-star{left:33%;top:30%;transform:rotate(-8deg);color:#caa100}
-.d-star svg{width:31px}
-.d-star path{fill:rgba(255,214,64,.9);stroke-width:2}
-.d-smile{right:34%;bottom:25%;transform:rotate(4deg);color:#5a4200}
-.d-smile svg{width:31px}
-.d-smile .face{fill:var(--ink-yellow);stroke:#b8860b;stroke-width:2}
-.d-smile .dot{fill:#5a4200;stroke:none}
-.d-smile .mouth{fill:none;stroke:#5a4200;stroke-width:2.4}
-.d-arrow1{right:28%;top:43%;transform:rotate(6deg);color:#2a3a66}
-.d-arrow1 svg{width:38px}
-.d-arrow2{left:24%;bottom:35%;transform:rotate(-150deg);color:var(--ink-pink)}
-.d-arrow2 svg{width:34px}
-.d-flow{right:15%;bottom:18%;color:var(--ink-pink);transform:rotate(-6deg)}
-.d-flow svg{width:34px}
-.d-flow ellipse{fill:var(--ink-pink);stroke:#c81f6a;stroke-width:1.2}
-.d-flow .fillc{fill:var(--ink-yellow);stroke:#caa100;stroke-width:1.2}
+/* `.doodle path`, not `.doodle svg path`: the extra type selector would out-specify every
+   per-mark `.d-x path` rule below, silently flattening their fill and stroke-width */
+.doodle path{fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+/* the one filled sticker on the disc — it can afford to be, nothing else competes */
+.d-star{--ang:178deg;--rad:0.500;--tilt:-14deg;color:var(--pen)}
+.d-star svg{width:48px}
+.d-star path{fill:var(--hi);stroke-width:2.4}
+.d-star3{--ang:314deg;--rad:0.520;--tilt:14deg;color:var(--pen)}
+.d-star3 svg{width:15px}
+.d-star3 path{stroke-width:3.4}
+.d-star2{--ang:322deg;--rad:0.820;--tilt:12deg;color:var(--pen)}
+.d-star2 svg{width:30px}
+.d-star2 path{stroke-width:2.8}
+.d-spark{--ang:294deg;--rad:0.850;--tilt:18deg;color:var(--pen)}
+.d-spark svg{width:12px}
+.d-spark path{stroke-width:2.6}
+.d-smile{--ang:84deg;--rad:0.775;--tilt:5deg;color:var(--pen)}
+.d-smile svg{width:34px}
+.d-smile .face{fill:var(--hi);stroke:currentColor;stroke-width:2.6}
+.d-smile .dot{fill:currentColor;stroke:none}
+.d-smile .mouth{fill:none;stroke:currentColor;stroke-width:2.8}
+/* the svg arrow reads up-and-right at about -25deg; the tilts below aim it from where it
+   sits at what it annotates, so they only make sense alongside --ang / --rad */
+.d-arrow1{--ang:16deg;--rad:0.750;--tilt:-76deg;color:var(--pen)}   /* → COLOR */
+.d-arrow1 svg{width:34px}
+.d-arrow1 path{stroke-width:3}
+.d-arrow2{--ang:232deg;--rad:0.425;--tilt:-18deg;color:var(--ink-red)}  /* → NEWJEANS */
+.d-arrow2 svg{width:30px}
+.d-arrow2 path{stroke-width:3.2}
+.d-flow{--ang:140deg;--rad:0.780;--tilt:-12deg;color:var(--pen)}
+.d-flow svg{width:26px}
+.d-flow ellipse{fill:none;stroke:currentColor;stroke-width:2.6}
+.d-flow .fillc{fill:var(--hi);stroke:currentColor;stroke-width:2.2}
+.d-heart{--ang:12deg;--rad:0.545;--tilt:-10deg;color:var(--ink-red)}
+.d-heart svg{width:22px}
+.d-heart path{fill:none;stroke:currentColor;stroke-width:3}
+/* the two hearts echo across the disc: big + outline at 3 o'clock, small + solid
+   opposite it. same motif, opposite technique, opposite side. */
+.d-heart2{--ang:152deg;--rad:0.475;--tilt:12deg;color:var(--ink-red)}
+.d-heart2 svg{width:13px}
+.d-heart2 path{fill:currentColor;stroke:none}
+.d-note{--ang:40deg;--rad:0.470;--tilt:-10deg;color:var(--pen)}
+.d-note svg{width:26px}
+.d-note path{stroke-width:2.4}
+.d-note .head{fill:currentColor;stroke:none}
+.d-loop{--ang:130deg;--rad:0.470;--tilt:-8deg;color:var(--pen-light)}
+.d-loop svg{width:24px}
+.d-loop path{stroke-width:2.6}
+.d-squig{--ang:168deg;--rad:0.800;--tilt:-22deg;color:var(--pen-light)}
+.d-squig svg{width:40px}
+.d-squig path{stroke-width:3.8}
+/* the reel opens on a cookie and ends on this disc — the same object, twice.
+   worth the second highlighter fill; nothing else on the face earns one.
+   the two crumbs live inside this svg, not as their own mark: they have to sit
+   right against the cookie, which no separate span is allowed to do. */
+.d-cookie{--ang:40deg;--rad:0.760;--tilt:-8deg;color:var(--pen)}
+.d-cookie svg{width:54px}
+.d-cookie .crust{fill:var(--hi);stroke:currentColor;stroke-width:2.2}
+.d-cookie .chip,.d-cookie .crumb{fill:currentColor;stroke:none}
+.d-bang{--ang:222deg;--rad:0.825;--tilt:-20deg;font-size:30px;color:var(--ink-red)}
+.d-yeah{--ang:62deg;--rad:0.640;--tilt:10deg;font-size:17px;letter-spacing:.02em;color:var(--pen)}
 
 /* ---- copy 2 / 3 ---- */
-.c2{max-width:min(34ch,384px)}
+.c2{max-width:min(32ch,360px)}
 .c2 .kick{color:#dbe8ff}
-.c2 h2{font-size:72px}
-.c2 .lede{margin-top:24px;color:#d3e1ff}
+.c2 h2{font-size:78px}
+.c2 .lede{margin-top:22px;color:#d3e1ff}
 .c2 .lede b{color:#fff}
 /* c3 is a broadcast "ticket": a perforated stub torn off the bottom, punched notches on the sides */
 .c3{--stub:56px;text-align:center;max-width:min(30ch,470px);position:relative;
@@ -148,14 +237,15 @@ body{background:#050609;color:#fff;font-family:var(--sans);-webkit-font-smoothin
   border-top:1.6px dashed rgba(255,255,255,.5)}
 .tk-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;
   margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,.15)}
-.tk-head .kick{margin-bottom:0;justify-content:flex-start;color:#cfe0ff;font-size:11px;letter-spacing:.2em;white-space:nowrap}
-.tk-serial{font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;color:#9dbbf2;white-space:nowrap}
+.tk-head .kick{margin-bottom:0;justify-content:flex-start;color:#cfe0ff;font-size:11px;letter-spacing:.14em;white-space:nowrap}
+.tk-serial{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;color:#9dbbf2;white-space:nowrap}
 .c3 .kick::before{display:none}
-.c3 h2{font-size:52px}
-.c3 .lede{margin:18px auto 0;color:#dbe6ff;max-width:32ch}
+.c3 h2{font-size:48px;letter-spacing:-.02em}
+.c3 .lede{margin:16px auto 0;color:#dbe6ff;max-width:30ch}
 .c3 .lede b{color:#fff}
-.tracklist{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin-top:20px}
-.tracklist i{font-family:var(--mono);font-style:normal;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#eaf2ff;border:1px solid rgba(255,255,255,.4);border-radius:20px;padding:4px 11px}
+/* three design axes — sticker chips, not soft pills */
+.tracklist{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:18px}
+.tracklist i{font-family:var(--marker);font-style:normal;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:#eaf2ff;border:2px solid rgba(255,255,255,.55);border-radius:6px;padding:3px 10px}
 .tracklist i.on{background:#fff;color:#1a45b0;border-color:#fff;font-weight:700}
 /* the torn-off stub: a printed barcode + the outro timecode */
 .tk-stub{position:absolute;left:0;right:0;bottom:0;height:var(--stub);
@@ -173,14 +263,27 @@ body{background:#050609;color:#fff;font-family:var(--sans);-webkit-font-smoothin
 @keyframes rec{50%{opacity:.2}}
 .topbar .shot{color:#fff;text-align:right;text-transform:uppercase;opacity:.92;transition:color .4s}
 
-.bug{position:absolute;right:48px;top:81px;z-index:39;transform-origin:top right;
-  filter:drop-shadow(0 8px 14px rgba(6,26,80,.5));opacity:0;will-change:transform,opacity}
-.bug .lz{background:linear-gradient(180deg,#8fc0ff 0%,#4f8bf5 46%,#1c50c8 54%,#123c9e 100%);
-  border:2px solid #0c2a72;border-radius:12px;padding:8px 16px 10px;position:relative;overflow:hidden}
-.bug .lz::before{content:"";position:absolute;left:6%;right:6%;top:5%;height:36%;border-radius:8px;background:linear-gradient(180deg,rgba(255,255,255,.75),rgba(255,255,255,0))}
-.bug .n1{position:relative;font-family:var(--mono);font-weight:700;font-size:31px;line-height:.86;letter-spacing:.02em;color:#dfeaff;font-style:italic;text-shadow:0 1px 0 #0c2a72,0 2px 0 #0c2a72,0 3px 4px rgba(0,0,0,.35)}
-.bug .n2{position:relative;font-family:var(--mono);font-weight:700;font-size:19px;letter-spacing:.16em;color:#eaf2ff;text-shadow:0 1px 0 #0c2a72,0 2px 3px rgba(0,0,0,.3)}
-.bug .adr{position:absolute;right:8px;bottom:9px;font-family:var(--mono);font-size:9px;letter-spacing:.14em;color:#0c2a72;background:#bcd6ff;border-radius:8px;padding:1px 6px;font-weight:700}
+/* station ident. the ADR tag used to sit inside the plate, landing on the tail of JEANS —
+   the crowding, not the size, was what made it read small. It hangs off the corner now,
+   like a sticker slapped on the plate, and the plate itself can breathe. */
+.bug{position:absolute;right:46px;top:76px;z-index:39;transform-origin:top right;
+  filter:drop-shadow(0 10px 18px rgba(6,26,80,.55));opacity:0;will-change:transform,opacity}
+.bug .lz{position:relative;overflow:hidden;padding:12px 22px 14px;border-radius:14px;
+  border:2.5px solid #0c2a72;
+  background:linear-gradient(180deg,#9fcaff 0%,#5b93f7 44%,#1c50c8 52%,#0f3893 100%);
+  box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.32)}
+.bug .lz::before{content:"";position:absolute;left:5%;right:5%;top:4%;height:40%;border-radius:10px;
+  background:linear-gradient(180deg,rgba(255,255,255,.8),rgba(255,255,255,0))}
+.bug .n1{display:block;position:relative;font-family:var(--mono);font-weight:700;font-style:italic;
+  font-size:42px;line-height:.84;letter-spacing:.01em;color:#eaf2ff;
+  text-shadow:0 1px 0 #0c2a72,0 2px 0 #0c2a72,0 4px 6px rgba(0,0,0,.4)}
+/* tracking leaves a trailing gap after the S, which would widen the plate on the right only */
+.bug .n2{display:block;position:relative;margin-top:3px;margin-right:-.155em;font-family:var(--mono);
+  font-weight:700;font-size:23px;letter-spacing:.155em;color:#f2f7ff;text-shadow:0 1px 0 #0c2a72,0 2px 4px rgba(0,0,0,.35)}
+.bug .adr{position:absolute;right:-9px;bottom:-10px;transform:rotate(-3deg);
+  font-family:var(--mono);font-weight:700;font-size:10px;letter-spacing:.16em;color:#0c2a72;
+  background:#cfe0ff;border:1.5px solid #0c2a72;border-radius:3px;padding:2px 7px 3px;
+  box-shadow:0 2px 6px rgba(4,16,60,.45)}
 
 .scrubber{position:absolute;left:0;right:0;bottom:0;height:var(--bar);z-index:45;display:flex;align-items:center;gap:20px;pointer-events:auto;
   padding:0 30px;background:linear-gradient(180deg,rgba(6,6,10,0),rgba(6,6,10,.86) 40%);color:#fff;font-family:var(--mono)}
