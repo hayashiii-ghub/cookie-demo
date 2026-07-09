@@ -274,14 +274,45 @@ body{background:#050609;color:#fff;font-family:var(--sans);-webkit-font-smoothin
 /* --- the lid --- */
 /* nothing that groups (opacity, filter, will-change:opacity) may live on this node:
    any of them silently collapses preserve-3d to flat and the back face never shows */
-.lid{position:absolute;inset:0;transform-style:preserve-3d;will-change:transform;
+/* THE LID IS A BOX, NOT A PLANE.
+   --t is 4.8mm of polystyrene at this panel's scale (650px = 142mm). The lid's local z runs
+   0 at the inner face to --t at the printed cover, and the hinge axis sits on the INNER face
+   (transform-origin z = 0), where the pins actually are. Swung a full 180deg, the inner face
+   lands back on z=0 and the leaf is coplanar with the tray: the spread opens genuinely flat.
+   Everything here has to stay free of opacity and filters, which quietly collapse preserve-3d. */
+.lid{--t:22px;position:absolute;inset:0;transform-style:preserve-3d;will-change:transform;
   transform-origin:left center}
 /* the lid frame is translucent blue-grey plastic; the booklet is a card seated inside it */
 .face{position:absolute;inset:0;border-radius:7px;color:var(--pen);
   backface-visibility:hidden;-webkit-backface-visibility:hidden;
   background:linear-gradient(150deg,rgba(26,42,92,.56) 0%,rgba(9,17,52,.70) 100%);
   box-shadow:0 34px 70px -26px rgba(2,10,44,.82), inset 0 0 0 1.4px rgba(206,226,255,.30)}
+.face.cover{transform:translateZ(var(--t))}
 .face.inside{transform:rotateY(180deg)}
+
+/* The walls. Each is a strip hinged along the edge it belongs to and folded back through 90deg,
+   so it spans z = 0 to --t. Cast polystyrene pipes light along its edges, so every wall runs
+   from the shadowed inner face to a lit outer lip; the gradient direction differs per wall
+   because folding maps each one's own width axis onto z. No backface-visibility here: a wall
+   seen from inside the case is still a wall, and the browser sorts the six planes for us. */
+.rim{position:absolute;pointer-events:none;
+  --wall:rgba(11,20,54,.90) 0%, rgba(38,60,120,.74) 40%, rgba(140,172,232,.60) 76%,
+    rgba(232,242,255,.92) 100%}
+.r-top  {left:0;right:0;top:0;height:var(--t);
+  transform-origin:center top;   transform:rotateX(90deg);
+  background:linear-gradient(180deg,var(--wall))}
+.r-bot  {left:0;right:0;bottom:0;height:var(--t);
+  transform-origin:center bottom;transform:rotateX(-90deg);
+  background:linear-gradient(0deg,var(--wall))}
+/* the free edge: the one your thumb opens, and the only wall square to the lens mid-swing */
+.r-free {top:0;bottom:0;right:0;width:var(--t);
+  transform-origin:right center; transform:rotateY(90deg);
+  background:linear-gradient(270deg,var(--wall))}
+/* the hinge wall carries the moulded pins, and is buried against the tray whenever it shows */
+.r-hinge{top:0;bottom:0;left:0;width:var(--t);
+  transform-origin:left center;  transform:rotateY(-90deg);
+  background:linear-gradient(90deg,rgba(8,15,44,.94) 0%,rgba(26,42,92,.80) 70%,rgba(150,180,235,.55) 100%),
+    repeating-linear-gradient(180deg,rgba(198,220,255,.14) 0 3px,transparent 3px 11px)}
 
 /* the clear window. only the OUTER face has one: opened, you look straight at the card. */
 .plastic{position:absolute;inset:0;z-index:3;border-radius:7px;overflow:hidden;pointer-events:none;

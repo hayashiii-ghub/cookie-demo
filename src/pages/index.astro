@@ -67,6 +67,12 @@ import '../styles/reel.css';
            the lid is the only 3D node, so opacity and the pan live on .case above it:
            opacity on a preserve-3d node collapses it to flat and kills backface-visibility. -->
       <div class="lid" id="lid">
+        <!-- the four walls. without them the lid is a plane, and a plane has no edge to show
+             halfway through the swing: it goes to a hairline and the case reads as paper. -->
+        <div class="rim r-top" aria-hidden="true"></div>
+        <div class="rim r-bot" aria-hidden="true"></div>
+        <div class="rim r-free" aria-hidden="true"></div>
+        <div class="rim r-hinge" aria-hidden="true"></div>
 
         <div class="face cover" id="cover">
           <div class="spine"><span>COOKIE · 뉴진스 · REEL 02 · CJ-0220</span></div>
@@ -364,11 +370,39 @@ import '../styles/reel.css';
     [470,330, 5.5,-1], [836,336, 4.5,-1]
   ];
 
-  /* Landing time follows distance from the burst, so the ring assembles from the inside out
-     rather than on a schedule somebody typed. Each launch is then solved backwards from where
-     the piece has to end up: given tL and a gravity G, up = (CY + G*tL^2 - ry) / tL. Throwing
-     them forward and freezing them on impact knots them together in the middle, because a
-     crumb frozen at tL has only travelled dx*tL. */
+  /* ONE EXPLOSION, TWO FATES.
+     Everything in frame is a piece of the same cookie, so everything obeys one law. What
+     separates the pieces that leave from the pieces that stay is not the law, it is mass.
+
+     THROW. A crumb is fired straight OUTWARD from the break, along the bearing of the point
+     it has to reach, and the air takes the speed away: v(t) = v0·e^-kt. It arrives and stops.
+     Ballistics were wrong here. Gravity's drop over a 0.42 flight is 253px against a ring of
+     radius 142, so solving the launch backwards forced every piece to be lobbed upward first,
+     hard enough to cancel a fall taller than the figure it was drawing. The whole population
+     rose 95–271px above its own resting point and hung there in a knot; the highest cleared
+     the top of the case and sat in the blue. Gravity is now a sag, not the subject: GS is
+     small, so it bends the outward line without deciding it.
+
+       S(t) = (1-e^-kt)/k         distance carried by a decaying push
+       B(t) = (t - S(t))/k        distance carried by a constant pull against that same air
+       k = DRAG/tL                so e^-k·tL ≈ 0.06: the piece has spent its speed on arrival
+
+     Solve v0 from where it must end up, exactly as before, but now the sag GS·B is a 36–82px
+     correction rather than the dominant term, and what is left over points outward.
+
+     DEPTH. Sizes used to be a free parameter, which is why the burst read as one event and the
+     crumbs as another: 40 pieces at 26–52px flying out, 47 pieces at 2–34px lobbing about. They
+     are all the same distance from the lens at the instant of the break, so they are now drawn
+     at one plane and their sizes only diverge afterwards, by perspective.
+
+       the leavers — the light pieces. blown past the lens, so they GROW (1 → KG) and go.
+       the stayers — the heavy ones. the blast could not carry them, so they fall back onto the
+                     lid, receding from the lens, and SHRINK (K0 → 1) to their resting size.
+
+     1/scale is what is linear in depth, not scale — hence lerp on the reciprocal. And note the
+     three ring anchors start out the biggest things on screen. The pieces that stay are the
+     pieces that were too heavy to throw. That is why they are the ones drawing the cover. */
+  var DRAG=2.8, GS=900, K0=1.85, KG=2.2;
   var CRUMB=[], CX=BW/2, CY=BH*0.46;
   (function(){ var r=0.777; function rnd(){ r=(r*9301+49297)%233280; return r/233280; }
     var pts=[], i, s;
@@ -383,11 +417,21 @@ import '../styles/reel.css';
         wob:crumbShape(rnd), sx:TEX*(0.12+rnd()*0.46), sy:TEX*(0.12+rnd()*0.46)};
       var d=Math.min(Math.sqrt((q.rx-CX)*(q.rx-CX)+(q.ry-CY)*(q.ry-CY))/250,1);
       q.tL=0.28+0.34*d+(rnd()-0.5)*0.03;
-      q.G=BH*2.2*(1.32+rnd()*0.26);
-      q.up=(CY+q.G*q.tL*q.tL-q.ry)/q.tL;
-      q.dx=(q.rx-CX)/q.tL;
+      q.k=DRAG/q.tL;
+      q.A=(1-Math.exp(-DRAG))/q.k;          /* S(tL) */
+      q.B=(q.tL-q.A)/q.k;                   /* B(tL) */
+      q.vx=(q.rx-CX)/q.A;
+      q.vy=(q.ry-CY-GS*q.B)/q.A;
       CRUMB.push(q); }
   })();
+  /* where a crumb is, and how big, at flight time tt. u is its progress into the depth of the
+     shot: 0 at the cookie's plane, 1 lying on the lid. spin decays on the same S(t) as speed,
+     so it coasts to a stop instead of freezing mid-turn. */
+  function flight(q,tt,o){ var S=(1-Math.exp(-q.k*tt))/q.k, u=Math.min(S/q.A,1);
+    o.x=CX+q.vx*S; o.y=CY+q.vy*S+GS*(tt-S)/q.k;
+    o.s=q.sz/lerp(1/K0,1,u);
+    o.rot=q.rot+(reduce?0:q.spin*S); return o; }
+  var FL={x:0,y:0,s:0,rot:0};
 
   /* HAND-OFF. up to 0.30 the crumbs are canvas: they fly, they land, they stop. at 0.30 the
      identical pixels are swapped for little canvases parked on the cover at the same stage
@@ -400,7 +444,7 @@ import '../styles/reel.css';
       var c=document.createElement('canvas');
       c.width=c.height=S*2; c.style.width=c.style.height=S+'px';
       var g=c.getContext('2d'); g.scale(2,2);
-      particle(g, S/2, S/2, q.sz, q.rot+(reduce?0:q.tL*q.spin), q.mm, q.col, 1, q);
+      particle(g, S/2, S/2, q.sz, flight(q,q.tL,FL).rot, q.mm, q.col, 1, q);
       c.style.cssText+=';position:absolute;left:'+(q.rx-PANEL_X).toFixed(1)+'px;top:'
         +(q.ry-PANEL_Y).toFixed(1)+'px;transform:translate(-50%,-50%)';
       crumbLayer.appendChild(c); }
@@ -408,11 +452,11 @@ import '../styles/reel.css';
 
   function crumbs(p){ if(p>=CRUMB_P) return;
     var t=seg(p,0.15,0.34); if(t<=0) return;
-    var a=seg(p,0.16,0.19); if(a<=0) return;   /* full opacity: the DOM copy is opaque too */
+    /* the same ramp the burst pieces get. these leave the cookie, they do not fade up out of it */
+    var a=seg(p,0.15,0.159); if(a<=0) return;   /* full opacity: the DOM copy is opaque too */
     for(var i=0;i<CRUMB.length;i++){ var q=CRUMB[i];
-      var tt=Math.min(t,q.tL);
-      var x=CX+q.dx*tt, y=CY-q.up*tt+tt*tt*q.G;
-      particle(ctx,x,y,q.sz, q.rot+(reduce?0:tt*q.spin), q.mm, q.col, a, q); } }
+      var f=flight(q,Math.min(t,q.tL),FL);
+      particle(ctx,f.x,f.y,f.s,f.rot,q.mm,q.col,a,q); } }
 
   function drawCookie(p){ var W=BW,H=BH; ctx.clearRect(0,0,W,H);
     if(p<0.05||p>0.56) return;
@@ -428,10 +472,13 @@ import '../styles/reel.css';
         bigCookie(cx,cy, maxR*(1+0.25*b), fa*0.9); ctx.restore(); }
       /* gone by p=0.30. the canvas now draws over the stage, so a burst piece lingering at
          low alpha does not read as debris in the air, it reads as dirt on the lens. */
+      /* the light pieces. same plane, same instant as the crumbs, so q.sz is read at the break
+         and only depth moves it afterwards: these are coming AT the lens, so they grow. they
+         used to shrink, which said "receding" while they were plainly rushing past you. */
       var spread=Math.hypot(W,H)*0.72, grav=H*0.12, a=Math.min(seg(b,0,0.05),1-seg(b,0.45,0.88));
-      for(var i=0;i<PART.length;i++){ var q=PART[i], d=eOut(b)*spread*q.sp;
+      for(var i=0;i<PART.length;i++){ var q=PART[i], e=eOut(b), d=e*spread*q.sp;
         var x=cx+Math.cos(q.an)*d, y=cy+Math.sin(q.an)*d + b*b*grav*q.gv;
-        particle(ctx,x,y,q.sz*(1-0.3*b), q.rot+(reduce?0:b*q.spin), q.mm, q.col, a, q); }
+        particle(ctx,x,y,q.sz/lerp(1,1/KG,e), q.rot+(reduce?0:b*q.spin), q.mm, q.col, a, q); }
     }
     crumbs(p); }
 
