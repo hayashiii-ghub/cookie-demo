@@ -208,7 +208,6 @@ body{background:#050609;color:#fff;font-family:var(--sans);-webkit-font-smoothin
 .track-bar .marks{position:absolute;left:0;right:0;top:-14px;height:12px}
 .track-bar .marks b{position:absolute;transform:translateX(-50%);font-size:9px;letter-spacing:.04em;color:#8b93a6;font-weight:400}
 .track-bar .cut{position:absolute;top:50%;height:16px;width:1px;transform:translate(-0.5px,-50%);background:rgba(255,255,255,.55);opacity:1}
-.scrubber .meta{font-size:10px;letter-spacing:.08em;color:#9aa0b2;white-space:nowrap;text-transform:uppercase;opacity:.75}
 
 .flash{position:absolute;inset:0;z-index:55;background:#fff;opacity:0;pointer-events:none}
 .flash.go{animation:flash .5s ease-out}
