@@ -158,12 +158,22 @@ import '../styles/reel.css';
       tcEl=$('tc'),fill=$('fill'),head=$('head'),shotEl=$('shot'),hint=$('hint'),
       bar=$('bar'),marks=$('marks');
   var E={cd1:$('cd1'),doodle:$('doodle'),kase:$('case'),lid:$('lid'),cover:$('cover')};
-  /* half a panel: shut, the case is centred on the stage; open, the 1300px spread is. */
-  var PAN=325;
   var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   /* the whole reel is authored on a fixed 1200x900 (4:3) stage and scaled to fit */
   var BW=1200, BH=900;
+
+  /* THE PANEL IS DECLARED ONCE, IN CSS, AND EVERYTHING HERE IS DERIVED FROM IT.
+     It used to be written out four times: .case in the stylesheet, PAN, the crumbs' seat, and
+     the gloss travel. Three of those were in this file, and none of them knew about the first.
+     Editing the stylesheet moved the case and left the crumbs behind, silently, with a clean
+     build. Read it instead. */
+  var ROOT=getComputedStyle(document.documentElement);
+  function cssPx(n){ return parseFloat(ROOT.getPropertyValue(n)); }
+  var PW=cssPx('--panel-w'), PH=cssPx('--panel-h');
+  var PAN=PW/2;          /* shut, the case is centred on the stage; open, the spread is */
+  var SPREAD=PW*2;       /* two leaves, and the distance the gloss band has to cross */
+  var PANEL_X=(BW-PW)/2, PANEL_Y=(BH-PH)/2;   /* the shut case's top-left, in stage coords */
   function fitStage(){ var f=Math.min(innerWidth/BW, innerHeight/BH);
     var d=document.documentElement.style; d.setProperty('--fit', f);
     d.setProperty('--scan', f>=0.62?0.16:0);   /* kill scanlines when scaled small (moiré) */
@@ -448,7 +458,7 @@ import '../styles/reel.css';
      PAD is the shadow's reach — 3px down plus 2.6px of blur — because the piece is drawn
      within 1.2*sz of the middle and the smallest crumb is 2px across. */
   var CRUMB_P=0.30, CRUMB_PAD=7, crumbLayer=$('crumbs');
-  (function(){ var PANEL_X=(BW-650)/2, PANEL_Y=(BH-572)/2;   /* the shut case's top-left */
+  (function(){
     for(var i=0;i<CRUMB.length;i++){ var q=CRUMB[i], S=Math.ceil(q.sz*4)+CRUMB_PAD*2;
       /* the piece alone, so the shadow can be cast from its silhouette in one go: particle()
          clips while it draws, and a clip region clips the shadow away with it. */
@@ -563,7 +573,7 @@ import '../styles/reel.css';
     /* light drags across the lid twice: once when the cookie uncovers it, once as it shuts.
        between 0.52 and 0.90 the cover faces away, so resetting the band at 0.86 is unseen. */
     E.cover.style.setProperty('--gloss',
-      ((p<0.86?seg(p,0.20,0.33):seg(p,0.90,1.00))*1300).toFixed(0)+'px');
+      ((p<0.86?seg(p,0.20,0.33):seg(p,0.90,1.00))*SPREAD).toFixed(0)+'px');
 
     /* one rake of light across the face — a still disc with a frozen highlight reads as printed */
     E.cd1.style.setProperty('--sweep', lerp(-62,32,eOut(seg(p,0.46,0.72))).toFixed(1)+'deg');
@@ -603,8 +613,17 @@ import '../styles/reel.css';
      stopping the scroll at the wrong moment left the reel blank. Repaint at once, and do the
      whole thing in one listener so the layout is read once and the stage is sized before the
      new maxScroll is used to place the playhead. */
+  /* p is the truth; scrollY is only what carries it. maxScroll is scrollHeight minus the
+     viewport, so anything that changes the viewport changes p without the page having moved.
+     On a phone that is the URL bar sliding away: the reel would jump a couple of percent down
+     its own timeline while the finger held still. Read p first, then put scrollY back where it
+     has to be to mean the same p. The reel is position:fixed, so nothing on screen moves. */
   window.addEventListener('resize',function(){
-    sizeCookie(); measure(); frame(clamp(window.scrollY/maxScroll,0,1)); });
+    var p=clamp(window.scrollY/maxScroll,0,1);
+    sizeCookie(); measure();
+    var y=p*maxScroll;
+    if(Math.abs(y-window.scrollY)>0.5) window.scrollTo(0,y);
+    frame(p); });
 
   /* ===== the scrubber =====
      A single tap eases to its mark. A DRAG must not: a phone delivers pointermove at 120Hz,

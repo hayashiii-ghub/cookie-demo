@@ -27,6 +27,11 @@
   --marker:"Permanent Marker","Nanum Pen Script",cursive;
   --display:"Black Han Sans","Pretendard",system-ui,sans-serif;
   --bar:64px;
+  /* ONE PANEL OF THE JEWEL CASE. 142:125, scaled so the 120mm disc lands at 549px.
+     JS reads these two off :root. Nothing may restate them: the crumbs are seated against
+     the shut panel's top-left corner, the pan is half a panel, and the gloss crosses two.
+     Change the numbers here and the whole reel follows. */
+  --panel-w:650px; --panel-h:572px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
@@ -257,7 +262,7 @@ body{background:#050609;color:#fff;font-family:var(--sans);-webkit-font-smoothin
    front cover; open, its inner face lies to the left, showing the booklet's back cover.
    Both are the same booklet. Nothing appears; a lid moves.
    ================================================================ */
-.case{width:650px;height:572px;opacity:0}
+.case{width:var(--panel-w);height:var(--panel-h);opacity:0}
 .persp{position:relative;width:100%;height:100%;perspective:2400px}
 
 /* --- the tray: smoked plastic, the disc clipped to its hub --- */
