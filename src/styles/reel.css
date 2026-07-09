@@ -61,7 +61,9 @@ body{background:#050609;color:#fff;font-family:var(--sans);-webkit-font-smoothin
   radial-gradient(125% 98% at 50% 38%, rgba(44,97,171,0) 48%, rgba(30,72,140,.62) 100%),
   linear-gradient(180deg, #2f68bd 0%, #3a7ede 46%, #4a86d6 100%);}
 
-#cookie{position:absolute;inset:0;z-index:2;pointer-events:none}
+/* above the stage, not below it: the giant cookie has to cover the closed case, and the
+   crumbs have to land ON its lid. the canvas is cleared outside 0.05<p<0.56 either way. */
+#cookie{position:absolute;inset:0;z-index:4;pointer-events:none}
 .grain{position:absolute;inset:0;pointer-events:none;z-index:60;mix-blend-mode:overlay;opacity:.09;background-repeat:repeat;
   background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
   animation:grain .9s steps(5) infinite;}
@@ -77,21 +79,10 @@ body{background:#050609;color:#fff;font-family:var(--sans);-webkit-font-smoothin
 /* anchors keep position; inner nodes get JS transform/opacity (origin:center) */
 .anchor{position:absolute;will-change:transform}
 .anchor>*{transform-origin:center center;will-change:transform,opacity}
-/* the disc rides ON the sleeve, so it has to sit above it */
-.a-cd1{left:72%;top:50%;transform:translate(-50%,-50%);z-index:7}
-.a-c2{left:58%;top:50%;transform:translateY(-50%);z-index:6}
-.a-c3{left:25%;top:50%;transform:translate(-50%,-50%);z-index:5}
+/* one object, one anchor. the case is centred while it is shut; opening pans it right by
+   half a panel so the finished spread lands centred on the stage. */
+.a-case{left:50%;top:50%;transform:translate(-50%,-50%);z-index:5}
 
-.copy{z-index:6}
-/* Cookie MV–inspired kick: tight mono, short rule, less “portfolio tracking” */
-.kick{font-family:var(--mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;display:flex;align-items:center;gap:12px;margin-bottom:18px}
-.kick::before{content:"";width:28px;height:1px;background:currentColor;opacity:.65}
-/* Y2K broadcast title — chrome type from the Cookie blue-room look:
-   bright top, hard mid reflection, extruded edge + soft cast */
-.copy h2{font-family:var(--display);font-weight:400;letter-spacing:-.03em;line-height:.92;text-wrap:balance;
-  background:linear-gradient(180deg,#ffffff 0%,#f3f8ff 28%,#dcecff 46%,#4f86e8 50%,#9ec4ff 54%,#ffffff 78%,#eaf2ff 100%);
-  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;
-  filter:drop-shadow(0 1px 0 #1e4aa8) drop-shadow(0 2px 0 rgba(14,36,100,.55)) drop-shadow(0 10px 18px rgba(6,22,80,.4))}
 .lede{font-size:15px;line-height:1.65;font-weight:400;letter-spacing:-.01em}
 .lede b{font-weight:700}
 
@@ -106,7 +97,17 @@ body{background:#050609;color:#fff;font-family:var(--sans);-webkit-font-smoothin
 .disc::after{content:"";position:absolute;inset:0;border-radius:50%;mix-blend-mode:screen;opacity:.7;
   transform:rotate(var(--sweep,0deg));transform-origin:center;will-change:transform;
   background:conic-gradient(from 210deg, rgba(255,255,255,.55), transparent 22%, transparent 60%, rgba(255,255,255,.4) 78%, transparent 100%)}
-.cd1{--dsz:504px}
+/* clipped to the hub, dead centre of the tray, and it never moves again. the doodle is sized
+   in px against this 504px box, so the disc is grown with scale() and not with --dsz —
+   changing --dsz would leave every mark behind at its old size. 504 * 1.089 = 549 = 120mm. */
+.cd1{--dsz:504px;position:absolute;left:50%;top:50%;
+  transform:translate(-50%,-50%) scale(1.089);
+  box-shadow:0 7px 15px -10px rgba(2,10,40,.85), inset 0 0 0 2px rgba(255,255,255,.35)}
+/* the tray's clip, seen through the disc's centre hole */
+.hub{position:absolute;left:50%;top:50%;width:8.5%;height:8.5%;transform:translate(-50%,-50%);
+  border-radius:50%;z-index:2;
+  background:radial-gradient(circle at 44% 38%,#f6f9fd 0 38%,#dbe3ef 38% 62%,#aebbcd 62% 100%);
+  box-shadow:0 0 0 1px rgba(30,48,96,.35), inset 0 -1px 2px rgba(20,34,74,.4)}
 /* ink cannot leave the disc: a physical guard, one hair inside the rim.
    multiply sinks the ink into the iridescence instead of floating it on top —
    the disc's own colour shows through every stroke, the way marker on polycarbonate does */
@@ -238,85 +239,131 @@ body{background:#050609;color:#fff;font-family:var(--sans);-webkit-font-smoothin
 .d-bang{--ang:222deg;--rad:0.825;--tilt:-20deg;font-size:30px;color:var(--ink-red)}
 .d-yeah{--ang:62deg;--rad:0.640;--tilt:10deg;font-size:17px;letter-spacing:.02em;color:var(--pen)}
 
-/* ---- copy 2 / 3 ---- */
-.c2{max-width:min(32ch,360px)}
-.c2 .kick{color:#dbe8ff}
-.c2 h2{font-size:78px}
-.c2 .lede{margin-top:22px;color:#d3e1ff}
-.c2 .lede b{color:#fff}
 /* ================================================================
-   the sleeve — one sheet of paper, two faces.
-   front  = the jacket the disc was lying on. printed, restrained, one object on it.
-   back   = the inlay. the same three axes the disc carries, set in type instead of marker.
-   The disc and this sheet are the only two objects in the burn, and they are made of the
-   same materials: navy ink, a yellow highlighter, a red marker, on a light ground.
+   THE JEWEL CASE — 142 x 125 x 10mm, hinged on the left.
+
+   One panel is 650 x 572px, which is 142:125 scaled so that the 120mm disc lands at
+   549px. Shut, the lid lies on the tray. Opened flat the spread is 1300 wide, so it
+   hangs 50px off each edge of the 1200px stage: a jewel case does not fit inside a
+   broadcast frame. 50px is also the largest crop the back cover survives — its outer
+   margin (21px) plus its padding (44px) is the only slack a 120mm booklet has.
+
+   The lid swings -180deg about its LEFT edge (negative, so the free edge lifts toward
+   the camera and arcs over). Shut we look through its clear plastic at the booklet's
+   front cover; open, its inner face lies to the left, showing the booklet's back cover.
+   Both are the same booklet. Nothing appears; a lid moves.
    ================================================================ */
-.lift{width:400px;height:544px;opacity:0;perspective:1600px}
+.case{width:650px;height:572px;opacity:0}
+.persp{position:relative;width:100%;height:100%;perspective:2400px}
+
+/* --- the tray: smoked plastic, the disc clipped to its hub --- */
+.tray{position:absolute;inset:0;border-radius:7px;
+  background:linear-gradient(158deg,rgba(18,30,70,.62) 0%,rgba(7,14,40,.74) 100%);
+  box-shadow:0 34px 70px -26px rgba(2,10,44,.85),
+    inset 0 0 0 1.5px rgba(190,214,255,.22), inset 0 1.5px 0 rgba(255,255,255,.18)}
+/* the hinge column, with the moulded ribs the pins sit between */
+.tray::before{content:"";position:absolute;left:0;top:0;bottom:0;width:42px;border-radius:7px 0 0 7px;
+  background:linear-gradient(90deg,rgba(150,180,235,.20),rgba(150,180,235,.04)),
+    repeating-linear-gradient(180deg,rgba(198,220,255,.16) 0 3px,transparent 3px 11px);
+  box-shadow:inset -1px 0 0 rgba(190,214,255,.18)}
+/* the circular well the disc drops into. it clears the disc by 5px and no more: the lid frame
+   is translucent, so anything wider than the booklet ghosts through it while the case is shut. */
+.well{position:absolute;left:50%;top:50%;width:559px;height:559px;transform:translate(-50%,-50%);
+  border-radius:50%;box-shadow:inset 0 0 0 1px rgba(190,214,255,.16),0 0 0 1px rgba(3,9,30,.55)}
+
+/* --- the lid --- */
 /* nothing that groups (opacity, filter, will-change:opacity) may live on this node:
    any of them silently collapses preserve-3d to flat and the back face never shows */
-.sleeve{position:relative;width:100%;height:100%;transform-style:preserve-3d;will-change:transform}
-.face{position:absolute;inset:0;border-radius:5px;overflow:hidden;color:var(--pen);
+.lid{position:absolute;inset:0;transform-style:preserve-3d;will-change:transform;
+  transform-origin:left center}
+/* the lid frame is translucent blue-grey plastic; the booklet is a card seated inside it */
+.face{position:absolute;inset:0;border-radius:7px;color:var(--pen);
   backface-visibility:hidden;-webkit-backface-visibility:hidden;
+  background:linear-gradient(150deg,rgba(26,42,92,.56) 0%,rgba(9,17,52,.70) 100%);
+  box-shadow:0 34px 70px -26px rgba(2,10,44,.82), inset 0 0 0 1.4px rgba(206,226,255,.30)}
+.face.inside{transform:rotateY(180deg)}
+
+/* the clear window. only the OUTER face has one: opened, you look straight at the card. */
+.plastic{position:absolute;inset:0;z-index:3;border-radius:7px;overflow:hidden;pointer-events:none;
+  background:linear-gradient(118deg,rgba(255,255,255,.16) 0 11%,transparent 28% 72%,rgba(255,255,255,.07) 89% 100%);
+  box-shadow:inset 0 0 0 1.4px rgba(226,238,255,.42), inset 0 1.5px 0 rgba(255,255,255,.5),
+    inset 0 -1.5px 0 rgba(8,18,50,.5)}
+/* JS drags --gloss across once when the case is uncovered, and once as it shuts */
+.plastic::before{content:"";position:absolute;top:-25%;bottom:-25%;left:-45%;width:26%;
+  transform:skewX(-16deg) translateX(var(--gloss,0px));will-change:transform;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.32) 42%,rgba(255,255,255,.06) 66%,transparent)}
+
+/* what the burst left on the lid. z above .plastic because they are lying on the clear
+   window, not sealed under it. opacity is a hard 0 or 1: JS cuts from the canvas crumbs. */
+.crumbs{position:absolute;inset:0;z-index:4;pointer-events:none;opacity:0}
+/* the contact shadow lives here and not in the canvas crumbs, because only these ones are
+   touching anything. the cover's paper gradient runs 158deg, so the key is top-left. */
+.crumbs canvas{display:block;filter:drop-shadow(2px 3px 2.6px rgba(34,24,10,.42))}
+
+/* the hinge gutter, on the hinge side of whichever face is showing. the disc is centred in
+   the tray but the booklet is pushed off the hinge, so 29px of disc rim sits under here.
+   the moulded hinge is the one part of the lid that is not a clear window: without that,
+   the rim and the well ghost through and read as a smudge on the shut cover. */
+.spine{position:absolute;top:0;bottom:0;left:0;width:80px;z-index:2;
+  display:flex;align-items:center;justify-content:center;pointer-events:none;
+  border-radius:7px 0 0 7px;
+  background:linear-gradient(90deg,rgba(20,33,78,.86) 0%,rgba(16,27,66,.74) 100%),
+    repeating-linear-gradient(180deg,rgba(198,220,255,.10) 0 3px,transparent 3px 11px)}
+.face.inside .spine{left:auto;right:0;border-radius:0 7px 7px 0;
+  background:linear-gradient(270deg,rgba(20,33,78,.86) 0%,rgba(16,27,66,.74) 100%),
+    repeating-linear-gradient(180deg,rgba(198,220,255,.10) 0 3px,transparent 3px 11px)}
+.spine span{font-family:var(--mono);font-size:9.5px;letter-spacing:.26em;white-space:nowrap;
+  color:rgba(214,230,255,.62);writing-mode:vertical-rl;transform:rotate(180deg)}
+
+/* --- the booklet: 120mm square of card, seated in the lid --- */
+.bk{position:absolute;z-index:1;top:11px;bottom:11px;left:80px;right:21px;border-radius:2px;
+  padding:38px 44px 32px;display:flex;flex-direction:column;overflow:hidden;
   background:linear-gradient(158deg,#f7f0e2 0%,#efe5d1 54%,#e6d9c0 100%);
-  box-shadow:0 30px 62px -24px rgba(3,14,52,.78), inset 0 0 0 1px rgba(22,38,94,.16)}
-.face.back{transform:rotateY(180deg)}
+  box-shadow:0 2px 10px -2px rgba(3,14,52,.6), inset 0 0 0 1px rgba(22,38,94,.14)}
+.face.inside .bk{left:21px;right:80px}
 /* card stock, not a flat swatch */
-.face::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:.28;mix-blend-mode:multiply;
+.bk::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:.28;mix-blend-mode:multiply;
   background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='p'><feTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3'/></filter><rect width='100%25' height='100%25' filter='url(%23p)'/></svg>")}
-/* where the card folds into the jewel case. it is the same fold seen from both sides,
-   so it swaps to the right edge on the back. */
-.spine{position:absolute;top:0;bottom:0;left:0;width:38px;z-index:2;
-  display:flex;align-items:center;justify-content:center;
-  background:linear-gradient(90deg,#e3d6bc 0%,#f1e8d6 100%);
-  border-right:1px solid rgba(22,38,94,.2);box-shadow:inset -7px 0 11px -9px rgba(22,38,94,.5)}
-.face.back .spine{left:auto;right:0;border-right:0;border-left:1px solid rgba(22,38,94,.2);
-  box-shadow:inset 7px 0 11px -9px rgba(22,38,94,.5)}
-.spine span{font-family:var(--mono);font-size:9.5px;letter-spacing:.24em;white-space:nowrap;
-  color:#6f6650;writing-mode:vertical-rl;transform:rotate(180deg)}
 
-/* --- front: the jacket --- */
-.jk{position:absolute;z-index:1;inset:0 0 0 38px;padding:26px 28px 22px;display:flex;flex-direction:column}
+/* --- front cover: what you see through the plastic, shut. also the last frame. --- */
 .jk-top{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
-.jk-kr{font-family:var(--display);font-size:21px;letter-spacing:.01em;color:var(--pen)}
-.jk-ser{font-family:var(--mono);font-size:9px;letter-spacing:.16em;color:#7d735c}
-.jk-art{flex:1;display:flex;align-items:center;justify-content:center;margin:6px 0 2px}
-.jk-art svg{width:196px;display:block;overflow:visible}
-.jk-art .crust{fill:none;stroke:var(--pen);stroke-width:1.5;stroke-linejoin:round}
-.jk-art .chip{fill:var(--pen)}
-/* the one pen mark on this face: somebody ringed the cookie before filing the sleeve away */
-.jk-art .ring{fill:none;stroke:var(--ink-red);stroke-width:0.85;opacity:.85;stroke-linecap:round;
-  stroke-dasharray:60 1.6}
-.jk-title{font-family:var(--display);font-weight:400;font-size:76px;line-height:.84;
+.jk-kr{font-family:var(--display);font-size:28px;letter-spacing:.01em;color:var(--pen)}
+.jk-ser{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;color:#7d735c}
+.jk-void{flex:1}
+.jk-title{font-family:var(--display);font-weight:400;font-size:106px;line-height:.82;
   letter-spacing:-.035em;color:var(--pen)}
-.jk-foot{margin-top:11px;font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;color:#7d735c}
+.jk-foot{margin-top:14px;padding-top:11px;border-top:1.4px solid rgba(22,38,94,.24);
+  display:flex;align-items:flex-end;justify-content:space-between;gap:14px;
+  font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:#7d735c}
+.endtag{font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:#6f6650;
+  text-align:right;white-space:nowrap}
 
-/* --- back: the inlay --- */
-.ib{position:absolute;z-index:1;inset:0 38px 0 0;padding:26px 28px 20px;display:flex;flex-direction:column}
+/* --- back cover: the left leaf of the open spread --- */
 .ib-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;
-  padding-bottom:10px;border-bottom:1.4px solid rgba(22,38,94,.26)}
-.ib-kick{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:#6f6650}
-.ib-ser{font-family:var(--mono);font-size:9px;letter-spacing:.14em;color:#8b8069}
-.ib h2{position:relative;margin-top:19px;font-family:var(--display);font-weight:400;
-  font-size:45px;line-height:.95;letter-spacing:-.02em;color:var(--pen)}
-/* red marker, dragged under the axis the disc is already shouting about */
-.ib-ul{position:absolute;left:-3px;bottom:-8px;width:172px;overflow:visible}
-.ib-ul path{fill:none;stroke:var(--ink-red);stroke-width:2.8;stroke-linecap:round}
-.ib .lede{margin-top:19px;font-size:13.5px;line-height:1.62;color:#4d5570}
-.tl{margin-top:17px;list-style:none;display:flex;flex-direction:column;gap:3px}
+  padding-bottom:11px;border-bottom:1.4px solid rgba(22,38,94,.26)}
+.ib-kick{font-family:var(--mono);font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:#6f6650}
+.ib-ser{font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:#8b8069}
+.ib h2{position:relative;margin-top:24px;font-family:var(--display);font-weight:400;
+  font-size:75px;line-height:.9;letter-spacing:-.025em;color:var(--pen)}
+/* red marker, dragged under the last line */
+.ib-ul{position:absolute;left:-4px;bottom:-11px;width:218px;overflow:visible}
+.ib-ul path{fill:none;stroke:var(--ink-red);stroke-width:3;stroke-linecap:round}
+.ib .lede{margin-top:28px;font-size:14.5px;line-height:1.66;color:#4d5570}
+.tl{margin-top:22px;list-style:none;display:flex;flex-direction:column;gap:4px}
 /* the highlighter has to end where the word ends, so the row cannot be full-bleed */
-.tl li{position:relative;width:max-content;display:flex;align-items:baseline;gap:11px;padding:2px 7px;
-  font-family:var(--marker);font-size:15px;letter-spacing:.05em;text-transform:uppercase;color:var(--pen)}
-.tl b{font-family:var(--mono);font-weight:400;font-size:10px;color:#8b8069}
+.tl li{position:relative;width:max-content;display:flex;align-items:baseline;gap:12px;padding:3px 8px;
+  font-family:var(--marker);font-size:17.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--pen)}
+.tl b{font-family:var(--mono);font-weight:400;font-size:11.5px;color:#8b8069}
 .tl b,.tl span{position:relative;z-index:1}
 /* the same highlighter that ran through LAYOUT on the disc, run through it again here */
-.tl li.on::before{content:"";position:absolute;z-index:0;left:-3px;right:-9px;top:2px;bottom:2px;
+.tl li.on::before{content:"";position:absolute;z-index:0;left:-4px;right:-11px;top:2px;bottom:2px;
   background:var(--hi);border-radius:3px 6px 4px 5px;transform:rotate(-.8deg) skewX(-6deg)}
-.ib-fine{margin-top:20px;font-family:var(--mono);font-size:8.6px;line-height:1.85;
+.ib-fine{margin-top:24px;font-family:var(--mono);font-size:9.2px;line-height:1.85;
   letter-spacing:.055em;text-transform:uppercase;color:#948972}
-.ib-foot{margin-top:auto;padding-top:16px;display:flex;align-items:flex-end;justify-content:space-between;gap:14px}
-.barcode{flex:0 0 auto;width:96px;height:30px;opacity:.82;
+.ib-foot{margin-top:auto;padding-top:16px;display:flex;align-items:flex-end;justify-content:space-between;gap:12px}
+.barcode{flex:0 0 auto;width:112px;height:35px;opacity:.82;
   background:repeating-linear-gradient(90deg,var(--pen) 0 1.5px,transparent 1.5px 3px,var(--pen) 3px 5px,transparent 5px 6.5px,var(--pen) 6.5px 9px,transparent 9px 11px)}
-.endtag{font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:#6f6650;text-align:right;white-space:nowrap}
+.ib-cat{font-family:var(--mono);font-size:9.6px;letter-spacing:.16em;color:#8b8069;text-align:right;white-space:nowrap}
 
 /* ---- HUD (broadcast overlays, absolute within the monitor) ---- */
 .topbar{position:absolute;left:0;right:0;top:0;height:56px;z-index:40;display:flex;align-items:center;justify-content:space-between;
