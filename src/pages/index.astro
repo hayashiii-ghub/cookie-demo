@@ -72,22 +72,15 @@ import '../styles/reel.css';
           <div class="spine"><span>COOKIE · 뉴진스 · REEL 02 · CJ-0220</span></div>
           <div class="bk">
             <div class="jk-top"><span class="jk-kr">뉴진스</span><span class="jk-ser">LOOK BOOK 02</span></div>
-            <div class="jk-art">
-              <!-- printed, not drawn: same crust as the canvas cookie and the disc doodle,
-                   but struck in one navy line. the object that opened the reel, on the cover. -->
-              <svg viewBox="0 0 34 34" aria-hidden="true">
-                <ellipse class="ring" cx="17" cy="17" rx="15.6" ry="15.1" transform="rotate(-7 17 17)"/>
-                <path class="crust" d="M31 17 C31.06 18.1 30.9 19.3 30.54 20.34 C30.19 21.38 29.45 22.3 28.88 23.24 C28.31 24.17 27.81 25.13 27.12 25.97 C26.43 26.8 25.64 27.6 24.77 28.25 C23.89 28.9 22.89 29.42 21.88 29.87 C20.87 30.31 19.78 30.81 18.69 30.93 C17.6 31.04 16.42 30.79 15.36 30.54 C14.29 30.29 13.31 29.81 12.28 29.43 C11.26 29.06 10.16 28.82 9.21 28.28 C8.27 27.74 7.38 26.99 6.64 26.18 C5.9 25.37 5.27 24.4 4.76 23.43 C4.24 22.45 3.75 21.38 3.56 20.31 C3.37 19.24 3.55 18.09 3.61 17 C3.68 15.91 3.79 14.87 3.96 13.79 C4.13 12.7 4.19 11.51 4.63 10.51 C5.08 9.51 5.86 8.61 6.62 7.81 C7.39 7.01 8.29 6.31 9.21 5.72 C10.14 5.13 11.14 4.59 12.17 4.26 C13.2 3.93 14.31 3.89 15.39 3.74 C16.47 3.59 17.56 3.35 18.66 3.36 C19.76 3.37 20.98 3.43 21.99 3.83 C23.01 4.23 23.91 5.04 24.77 5.74 C25.63 6.44 26.43 7.19 27.14 8.02 C27.84 8.85 28.5 9.74 29 10.7 C29.5 11.66 29.81 12.71 30.15 13.76 C30.48 14.81 30.93 15.9 31 17 Z"/>
-                <circle class="chip" cx="12.4" cy="11.6" r="2.3"/><circle class="chip" cx="21.9" cy="13.2" r="1.6"/>
-                <circle class="chip" cx="16" cy="17.6" r="2.5"/><circle class="chip" cx="23" cy="21.4" r="1.9"/>
-                <circle class="chip" cx="11.3" cy="21.9" r="1.7"/><circle class="chip" cx="17.6" cy="25.3" r="1.2"/>
-                <circle class="chip" cx="9.8" cy="16.4" r="1.1"/>
-              </svg>
-            </div>
+            <!-- nothing is printed here. the crumbs land in this space and stay. -->
+            <div class="jk-void" aria-hidden="true"></div>
             <h3 class="jk-title">COOKIE</h3>
             <div class="jk-foot"><span>2:13 → 2:20 · INSPIRED LOOK</span><span class="endtag">2:20:00 — next look ↓</span></div>
           </div>
           <div class="plastic" aria-hidden="true"></div>
+          <!-- above the plastic: they fell on the outside of the lid, not inside it. JS bakes
+               one little canvas per crumb at the coordinates the physics left it. -->
+          <div class="crumbs" id="crumbs" aria-hidden="true"></div>
         </div>
 
         <div class="face inside">
@@ -297,18 +290,20 @@ import '../styles/reel.css';
     ctx.shadowColor='rgba(58,26,4,.5)'; ctx.shadowBlur=R*0.09; ctx.shadowOffsetY=R*0.045;
     ctx.drawImage(ctex, cx-R, cy-R, R*2, R*2); ctx.restore(); }
 
-  /* a crumb is a torn piece of the same texture, not a small drawing of a cookie */
-  function particle(x,y,s,rot,mm,col,alpha,q){ if(s<=0.3||alpha<=0)return;
-    ctx.save(); ctx.globalAlpha=alpha; ctx.translate(x,y); ctx.rotate(rot);
-    if(mm){ candy(ctx,0,0,s,col,0); }
-    else { ctx.save(); ctx.beginPath();
+  /* a crumb is a torn piece of the same texture, not a small drawing of a cookie.
+     g is passed in because the landed crumbs are re-baked into their own little canvases
+     and handed to the DOM, where they can ride the lid. */
+  function particle(g,x,y,s,rot,mm,col,alpha,q){ if(s<=0.3||alpha<=0)return;
+    g.save(); g.globalAlpha=alpha; g.translate(x,y); g.rotate(rot);
+    if(mm){ candy(g,0,0,s,col,0); }
+    else { g.save(); g.beginPath();
       for(var i=0;i<q.wob.length;i++){ var a=i/q.wob.length*6.283, rr=s*q.wob[i];
-        var px=Math.cos(a)*rr, py=Math.sin(a)*rr; i?ctx.lineTo(px,py):ctx.moveTo(px,py); }
-      ctx.closePath(); ctx.save(); ctx.clip();
-      ctx.drawImage(ctex, q.sx, q.sy, TEX*0.42, TEX*0.42, -s*1.2, -s*1.2, s*2.4, s*2.4);
-      ctx.restore();
-      ctx.lineWidth=s*0.1; ctx.strokeStyle='rgba(92,50,16,.5)'; ctx.stroke(); ctx.restore(); }
-    ctx.restore(); }
+        var px=Math.cos(a)*rr, py=Math.sin(a)*rr; i?g.lineTo(px,py):g.moveTo(px,py); }
+      g.closePath(); g.save(); g.clip();
+      g.drawImage(ctex, q.sx, q.sy, TEX*0.42, TEX*0.42, -s*1.2, -s*1.2, s*2.4, s*2.4);
+      g.restore();
+      g.lineWidth=s*0.1; g.strokeStyle='rgba(92,50,16,.5)'; g.stroke(); g.restore(); }
+    g.restore(); }
 
   function crumbShape(rnd){ var w=[],i; for(i=0;i<9;i++) w.push(0.8+rnd()*0.34); return w; }
   var PART=[];
@@ -319,31 +314,51 @@ import '../styles/reel.css';
         wob:crumbShape(rnd), sx:TEX*(0.12+rnd()*0.46), sy:TEX*(0.12+rnd()*0.46)}); }
   })();
   /* the burst throws everything off-screen, but a handful of crumbs stay in frame, arc up,
-     and drop onto the blue floor. they are what carries the cookie into the next shot —
-     without them the CD would arrive in a room the cookie never entered. */
-  var CRUMB=[];
+     and drop onto the shut lid. nothing is printed on the cover where they land: what the
+     jacket carries is not a drawing of a cookie, it is what is left of one. */
+  /* these are aimed, not thrown. the resting points are scattered over the cover's empty
+     middle first, then each crumb's launch is solved backwards from where it has to end up:
+     given a landing time tL and a gravity G, up = (CY + G*tL^2 - ry) / tL. throwing them and
+     hoping bunches them, because a crumb frozen at landing has only travelled dx*tL. */
+  var CRUMB=[], CX=BW/2, CY=BH*0.46;
   (function(){ var r=0.777; function rnd(){ r=(r*9301+49297)%233280; return r/233280; }
-    for(var i=0;i<7;i++){ var mm=rnd()<0.45;
-      CRUMB.push({dx:(rnd()*2-1)*270, up:230+rnd()*250, sz:mm?7+rnd()*4:9+rnd()*7,
-        rot:rnd()*6.283, spin:(rnd()*2-1)*2.4, gv:0.85+rnd()*0.65, mm:mm,
-        col:mm?MM[(rnd()*MM.length)|0]:'#c88a44', floor:0.74+rnd()*0.05,
-        wob:crumbShape(rnd), sx:TEX*(0.12+rnd()*0.46), sy:TEX*(0.12+rnd()*0.46)}); }
+    for(var i=0;i<14;i++){ var mm=rnd()<0.42;
+      var q={sz:mm?6.5+rnd()*3.5:8+rnd()*7, rot:rnd()*6.283, spin:(rnd()*2-1)*2.4,
+        mm:mm, col:mm?MM[(rnd()*MM.length)|0]:'#c88a44',
+        wob:crumbShape(rnd), sx:TEX*(0.12+rnd()*0.46), sy:TEX*(0.12+rnd()*0.46)};
+      q.rx=420+rnd()*420;                 /* the cover's printable width, in stage px */
+      q.ry=280+rnd()*310;                 /* the void between the header and COOKIE */
+      q.tL=0.30+rnd()*0.28;
+      q.G=BH*2.2*(1.1+rnd()*0.7);
+      q.up=(CY+q.G*q.tL*q.tL-q.ry)/q.tL;
+      q.dx=(q.rx-CX)/q.tL;
+      CRUMB.push(q); }
   })();
-  /* crumbs outlive the burst: thrown up, pulled down hard, and settled by 2:15. the floor band
-     (0.74-0.79 of the stage) and the +-270px spread put every one of them on the shut lid, and
-     the canvas sits above the stage, so they land ON it. they are brushed off as it lifts.
-     they only have to prove the cookie was in this room; one still hanging in mid-air at 2:16
-     proves the opposite. */
-  function crumbs(p){ var t=seg(p,0.15,0.56); if(t<=0||t>=1) return;
-    /* they must be gone by 0.355, when the lid has lifted far enough to expose the tray.
-       a crumb that rode up on the lid cannot also still be lying on the disc. */
-    var a=Math.min(seg(p,0.16,0.19),1-seg(p,0.29,0.355))*0.85;
-    if(a<=0) return;
-    var cx=BW/2, cy=BH*0.46;
+
+  /* HAND-OFF. up to 0.30 the crumbs are canvas: they fly, they land, they stop. at 0.30 the
+     identical pixels are swapped for little canvases parked on the cover at the same stage
+     coordinates, and from then on they are part of the lid. so when it swings they go face
+     down with it, and when it shuts at 2:20 they come back. the swap is a hard cut, not a
+     crossfade: the art is the same and the positions are the same, so nothing can show. */
+  var CRUMB_P=0.30, crumbLayer=$('crumbs');
+  (function(){ var PANEL_X=(BW-650)/2, PANEL_Y=(BH-572)/2;   /* the shut case's top-left */
+    for(var i=0;i<CRUMB.length;i++){ var q=CRUMB[i], S=Math.ceil(q.sz*4);
+      var c=document.createElement('canvas');
+      c.width=c.height=S*2; c.style.width=c.style.height=S+'px';
+      var g=c.getContext('2d'); g.scale(2,2);
+      particle(g, S/2, S/2, q.sz, q.rot+(reduce?0:q.tL*q.spin), q.mm, q.col, 1, q);
+      c.style.cssText+=';position:absolute;left:'+(q.rx-PANEL_X).toFixed(1)+'px;top:'
+        +(q.ry-PANEL_Y).toFixed(1)+'px;transform:translate(-50%,-50%)';
+      crumbLayer.appendChild(c); }
+  })();
+
+  function crumbs(p){ if(p>=CRUMB_P) return;
+    var t=seg(p,0.15,0.34); if(t<=0) return;
+    var a=seg(p,0.16,0.19); if(a<=0) return;   /* full opacity: the DOM copy is opaque too */
     for(var i=0;i<CRUMB.length;i++){ var q=CRUMB[i];
-      var x=cx+q.dx*t, y=cy-q.up*t + t*t*BH*2.2*q.gv;
-      var fl=BH*q.floor, land=y>=fl; if(land) y=fl;
-      particle(x,y,q.sz, q.rot+(reduce||land?0:t*q.spin), q.mm, q.col, a, q); } }
+      var tt=Math.min(t,q.tL);
+      var x=CX+q.dx*tt, y=CY-q.up*tt+tt*tt*q.G;
+      particle(ctx,x,y,q.sz, q.rot+(reduce?0:tt*q.spin), q.mm, q.col, a, q); } }
 
   function drawCookie(p){ var W=BW,H=BH; ctx.clearRect(0,0,W,H);
     if(p<0.05||p>0.56) return;
@@ -362,7 +377,7 @@ import '../styles/reel.css';
       var spread=Math.hypot(W,H)*0.72, grav=H*0.12, a=Math.min(seg(b,0,0.05),1-seg(b,0.45,0.88));
       for(var i=0;i<PART.length;i++){ var q=PART[i], d=eOut(b)*spread*q.sp;
         var x=cx+Math.cos(q.an)*d, y=cy+Math.sin(q.an)*d + b*b*grav*q.gv;
-        particle(x,y,q.sz*(1-0.3*b), q.rot+(reduce?0:b*q.spin), q.mm, q.col, a, q); }
+        particle(ctx,x,y,q.sz*(1-0.3*b), q.rot+(reduce?0:b*q.spin), q.mm, q.col, a, q); }
     }
     crumbs(p); }
 
@@ -420,6 +435,7 @@ import '../styles/reel.css';
     /* negative: the free edge lifts toward the camera and arcs over the hinge, rather than
        sinking away from it. the same 180deg, the opposite half of the sphere. */
     E.lid.style.transform='rotateY('+(-180*swing).toFixed(2)+'deg)';
+    crumbLayer.style.opacity=p<CRUMB_P?0:1;   /* the other half of the hand-off */
     /* light drags across the lid twice: once when the cookie uncovers it, once as it shuts.
        between 0.52 and 0.90 the cover faces away, so resetting the band at 0.86 is unseen. */
     E.cover.style.setProperty('--gloss',

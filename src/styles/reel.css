@@ -293,6 +293,11 @@ body{background:#050609;color:#fff;font-family:var(--sans);-webkit-font-smoothin
   transform:skewX(-16deg) translateX(var(--gloss,0px));will-change:transform;
   background:linear-gradient(90deg,transparent,rgba(255,255,255,.32) 42%,rgba(255,255,255,.06) 66%,transparent)}
 
+/* what the burst left on the lid. z above .plastic because they are lying on the clear
+   window, not sealed under it. opacity is a hard 0 or 1: JS cuts from the canvas crumbs. */
+.crumbs{position:absolute;inset:0;z-index:4;pointer-events:none;opacity:0}
+.crumbs canvas{display:block}
+
 /* the hinge gutter, on the hinge side of whichever face is showing. the disc is centred in
    the tray but the booklet is pushed off the hinge, so 29px of disc rim sits under here.
    the moulded hinge is the one part of the lid that is not a clear window: without that,
@@ -322,13 +327,7 @@ body{background:#050609;color:#fff;font-family:var(--sans);-webkit-font-smoothin
 .jk-top{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
 .jk-kr{font-family:var(--display);font-size:28px;letter-spacing:.01em;color:var(--pen)}
 .jk-ser{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;color:#7d735c}
-.jk-art{flex:1;display:flex;align-items:center;justify-content:center;margin:8px 0 4px}
-.jk-art svg{width:258px;display:block;overflow:visible}
-.jk-art .crust{fill:none;stroke:var(--pen);stroke-width:1.2;stroke-linejoin:round}
-.jk-art .chip{fill:var(--pen)}
-/* the one pen mark on this face: somebody ringed the cookie before filing the case away */
-.jk-art .ring{fill:none;stroke:var(--ink-red);stroke-width:0.7;opacity:.85;stroke-linecap:round;
-  stroke-dasharray:60 1.6}
+.jk-void{flex:1}
 .jk-title{font-family:var(--display);font-weight:400;font-size:106px;line-height:.82;
   letter-spacing:-.035em;color:var(--pen)}
 .jk-foot{margin-top:14px;padding-top:11px;border-top:1.4px solid rgba(22,38,94,.24);
