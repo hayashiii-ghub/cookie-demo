@@ -78,15 +78,16 @@ body{background:#050609;color:#fff;font-family:var(--sans);-webkit-font-smoothin
 .a-c3{left:25%;top:50%;transform:translate(-50%,-50%)}
 
 .copy{z-index:6}
-.kick{font-family:var(--mono);font-size:13px;letter-spacing:.34em;text-transform:uppercase;display:flex;align-items:center;gap:14px;margin-bottom:22px}
-.kick::before{content:"";width:34px;height:1px;background:currentColor;opacity:.7}
-/* Y2K broadcast title — chrome type: bright top, a hard reflection horizon at the mid-line,
-   then a lit bottom, extruded with a crisp offset edge + soft cast depth */
-.copy h2{font-family:var(--display);font-weight:900;letter-spacing:-.015em;line-height:1.0;text-wrap:balance;
-  background:linear-gradient(180deg,#eaf2ff 0%,#ffffff 30%,#dcecff 47%,#5f92ee 50%,#a7c9ff 53%,#ffffff 78%,#dbeaff 100%);
+/* Cookie MV–inspired kick: tight mono, short rule, less “portfolio tracking” */
+.kick{font-family:var(--mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;display:flex;align-items:center;gap:12px;margin-bottom:18px}
+.kick::before{content:"";width:28px;height:1px;background:currentColor;opacity:.65}
+/* Y2K broadcast title — chrome type from the Cookie blue-room look:
+   bright top, hard mid reflection, extruded edge + soft cast */
+.copy h2{font-family:var(--display);font-weight:400;letter-spacing:-.03em;line-height:.92;text-wrap:balance;
+  background:linear-gradient(180deg,#ffffff 0%,#f3f8ff 28%,#dcecff 46%,#4f86e8 50%,#9ec4ff 54%,#ffffff 78%,#eaf2ff 100%);
   -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;
-  filter:drop-shadow(0 1px 0 #2b50b2) drop-shadow(0 2px 0 rgba(18,42,116,.5)) drop-shadow(0 9px 16px rgba(6,22,80,.45))}
-.lede{font-size:15.5px;line-height:1.7;font-weight:400}
+  filter:drop-shadow(0 1px 0 #1e4aa8) drop-shadow(0 2px 0 rgba(14,36,100,.55)) drop-shadow(0 10px 18px rgba(6,22,80,.4))}
+.lede{font-size:15px;line-height:1.65;font-weight:400;letter-spacing:-.01em}
 .lede b{font-weight:700}
 
 /* ---- discs (sizes are px in the 1200x900 stage) ---- */
@@ -100,38 +101,38 @@ body{background:#050609;color:#fff;font-family:var(--sans);-webkit-font-smoothin
 .cd1{--dsz:504px}
 .doodle{position:absolute;inset:0;pointer-events:none;font-family:var(--doodle);will-change:transform,opacity}
 .doodle span{position:absolute;font-weight:700;line-height:.9;transform-origin:center;filter:drop-shadow(0 1px 0 rgba(255,255,255,.5))}
-.d-nj,.d-cookie,.d-hype{font-family:var(--marker)}
+/* marker stickers — same Cookie-disc energy, labels are design axes not track titles */
+.d-nj,.d-color,.d-layout{font-family:var(--marker)}
 .d-nj{left:50%;top:15%;transform:translateX(-50%) rotate(-7deg);font-size:38px;color:var(--ink-red);-webkit-text-stroke:1px var(--ink-pink)}
 .d-njk{left:50%;top:9%;transform:translateX(-50%);font-size:15px;color:#2a3a66}
-.d-att{left:11%;top:36%;transform:rotate(-8deg);font-size:19px;color:var(--ink-cyan);text-decoration:underline;text-decoration-color:var(--ink-cyan)}
-.d-hype{right:9%;top:33%;transform:rotate(7deg);font-size:19px;color:#1b3fb0;border:2.5px solid #1b3fb0;border-radius:8px;padding:2px 6px}
-.d-hurt{left:14%;bottom:24%;transform:rotate(-5deg);font-size:21px;color:var(--ink-pink)}
-.d-cookie{left:50%;bottom:12%;transform:translateX(-50%) rotate(-3deg);font-size:21px;color:var(--ink-brown);border:2.5px solid var(--ink-brown);border-radius:4px 4px 8px 8px;padding:3px 8px 4px}
+.d-type{left:12%;top:36%;transform:rotate(-8deg);font-size:22px;letter-spacing:.04em;color:var(--ink-cyan);text-decoration:underline;text-decoration-color:var(--ink-cyan);text-underline-offset:3px}
+.d-color{right:10%;top:34%;transform:rotate(7deg);font-size:20px;color:#1b3fb0;border:2.5px solid #1b3fb0;border-radius:8px;padding:2px 7px}
+.d-layout{left:50%;bottom:13%;transform:translateX(-50%) rotate(-3deg);font-size:20px;color:var(--ink-brown);border:2.5px solid var(--ink-brown);border-radius:4px 4px 8px 8px;padding:3px 9px 4px}
 /* hand-drawn deco doodles — real marker strokes as SVG, not font glyphs */
 .doodle svg{display:block;overflow:visible}
 .doodle svg path{fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
-.d-star{left:33%;top:30%;transform:rotate(-8deg);color:#caa100}
+.d-star{left:34%;top:30%;transform:rotate(-8deg);color:#caa100}
 .d-star svg{width:31px}
 .d-star path{fill:rgba(255,214,64,.9);stroke-width:2}
-.d-smile{right:34%;bottom:25%;transform:rotate(4deg);color:#5a4200}
+.d-smile{right:30%;bottom:28%;transform:rotate(4deg);color:#5a4200}
 .d-smile svg{width:31px}
 .d-smile .face{fill:var(--ink-yellow);stroke:#b8860b;stroke-width:2}
 .d-smile .dot{fill:#5a4200;stroke:none}
 .d-smile .mouth{fill:none;stroke:#5a4200;stroke-width:2.4}
-.d-arrow1{right:28%;top:43%;transform:rotate(6deg);color:#2a3a66}
+.d-arrow1{right:27%;top:44%;transform:rotate(6deg);color:#2a3a66}
 .d-arrow1 svg{width:38px}
-.d-arrow2{left:24%;bottom:35%;transform:rotate(-150deg);color:var(--ink-pink)}
+.d-arrow2{left:22%;bottom:36%;transform:rotate(-150deg);color:var(--ink-pink)}
 .d-arrow2 svg{width:34px}
-.d-flow{right:15%;bottom:18%;color:var(--ink-pink);transform:rotate(-6deg)}
+.d-flow{right:14%;bottom:20%;color:var(--ink-pink);transform:rotate(-6deg)}
 .d-flow svg{width:34px}
 .d-flow ellipse{fill:var(--ink-pink);stroke:#c81f6a;stroke-width:1.2}
 .d-flow .fillc{fill:var(--ink-yellow);stroke:#caa100;stroke-width:1.2}
 
 /* ---- copy 2 / 3 ---- */
-.c2{max-width:min(34ch,384px)}
+.c2{max-width:min(32ch,360px)}
 .c2 .kick{color:#dbe8ff}
-.c2 h2{font-size:72px}
-.c2 .lede{margin-top:24px;color:#d3e1ff}
+.c2 h2{font-size:78px}
+.c2 .lede{margin-top:22px;color:#d3e1ff}
 .c2 .lede b{color:#fff}
 /* c3 is a broadcast "ticket": a perforated stub torn off the bottom, punched notches on the sides */
 .c3{--stub:56px;text-align:center;max-width:min(30ch,470px);position:relative;
@@ -148,14 +149,15 @@ body{background:#050609;color:#fff;font-family:var(--sans);-webkit-font-smoothin
   border-top:1.6px dashed rgba(255,255,255,.5)}
 .tk-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;
   margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,.15)}
-.tk-head .kick{margin-bottom:0;justify-content:flex-start;color:#cfe0ff;font-size:11px;letter-spacing:.2em;white-space:nowrap}
-.tk-serial{font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;color:#9dbbf2;white-space:nowrap}
+.tk-head .kick{margin-bottom:0;justify-content:flex-start;color:#cfe0ff;font-size:11px;letter-spacing:.14em;white-space:nowrap}
+.tk-serial{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;color:#9dbbf2;white-space:nowrap}
 .c3 .kick::before{display:none}
-.c3 h2{font-size:52px}
-.c3 .lede{margin:18px auto 0;color:#dbe6ff;max-width:32ch}
+.c3 h2{font-size:48px;letter-spacing:-.02em}
+.c3 .lede{margin:16px auto 0;color:#dbe6ff;max-width:30ch}
 .c3 .lede b{color:#fff}
-.tracklist{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin-top:20px}
-.tracklist i{font-family:var(--mono);font-style:normal;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#eaf2ff;border:1px solid rgba(255,255,255,.4);border-radius:20px;padding:4px 11px}
+/* three design axes — sticker chips, not soft pills */
+.tracklist{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:18px}
+.tracklist i{font-family:var(--marker);font-style:normal;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:#eaf2ff;border:2px solid rgba(255,255,255,.55);border-radius:6px;padding:3px 10px}
 .tracklist i.on{background:#fff;color:#1a45b0;border-color:#fff;font-weight:700}
 /* the torn-off stub: a printed barcode + the outro timecode */
 .tk-stub{position:absolute;left:0;right:0;bottom:0;height:var(--stub);

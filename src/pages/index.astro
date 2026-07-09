@@ -7,12 +7,12 @@ import '../styles/reel.css';
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>COOKIE — 2:13→2:20 (a seven-second look)</title>
+<title>COOKIE — 2:13→2:20 (inspired look)</title>
 </head>
 <body>
 <!-- everything lives on a fixed 1200x900 (4:3) "broadcast monitor" scaled to fit the viewport -->
-<main role="main" aria-label="COOKIE 2:13에서 2:20까지, 7초의 룩을 스크롤로 넘기는 릴">
-<h1 class="sr-only">COOKIE — 2:13에서 2:20까지, 7초의 룩</h1>
+<main role="main" aria-label="NewJeans Cookie MV 2:13에서 2:20까지에서 영감받은 7초 룩 릴">
+<h1 class="sr-only">COOKIE — inspired by NewJeans Cookie MV 2:13→2:20</h1>
 <div id="frame">
   <div id="box">
     <div class="bg" id="bgDark"></div>
@@ -26,8 +26,8 @@ import '../styles/reel.css';
       <!-- the FIRST CD appears here, then travels right + gets doodled in the burn -->
       <div class="anchor a-cd1"><div class="disc cd1" id="cd1">
         <div class="doodle" id="doodle">
-          <span class="d-njk">뉴진스</span><span class="d-nj">NEWJEANS</span><span class="d-att">ATTENTION</span>
-          <span class="d-hype">HYPE BOY</span><span class="d-hurt">HURT</span><span class="d-cookie">COOKIE</span>
+          <span class="d-njk">뉴진스</span><span class="d-nj">NEWJEANS</span>
+          <span class="d-type">TYPE</span><span class="d-color">COLOR</span><span class="d-layout">LAYOUT</span>
           <span class="d-star"><svg viewBox="0 0 32 32"><path d="M16 3 L19.7 12 L29 12.7 L21.5 18.8 L24.2 28 L16 22.4 L7.8 28 L10.5 18.8 L3 12.7 L12.3 12 Z"/></svg></span>
           <span class="d-smile"><svg viewBox="0 0 40 40"><circle class="face" cx="20" cy="20" r="15.5"/><circle class="dot" cx="14.6" cy="17.2" r="1.9"/><circle class="dot" cx="25.4" cy="17.2" r="1.9"/><path class="mouth" d="M12.5 24 q7.5 8 15 0"/></svg></span>
           <span class="d-arrow1"><svg viewBox="0 0 46 30"><path d="M4 22 q13 -19 36 -13"/><path d="M31 4 l10 4.5 l-7 8"/></svg></span>
@@ -36,23 +36,23 @@ import '../styles/reel.css';
         </div>
       </div></div>
       <div class="anchor a-c2"><div class="copy c2" id="c2">
-        <div class="kick">Shot 02 · palette</div>
+        <div class="kick">Look 02 · 2:16</div>
         <h2>그리고,<br>파랑.</h2>
-        <p class="lede">한 컷으로 팔레트가 뒤집힌다. 전기 블루 필드 위에 방송용 크롬이 뜬다.<br><span style="opacity:.6">One hard cut flips the palette. Electric blue fills the field and the broadcast chrome lights up.</span></p>
+        <p class="lede">Cookie MV 2:13–2:20에서 가져온 컷. 전기 블루 필드 위에 방송용 크롬 타이포가 뜬다.<br><span style="opacity:.6">A cut borrowed from Cookie MV 2:13–2:20. Electric blue field, broadcast chrome type on top.</span></p>
       </div></div>
 
       <!-- burn — the doodled CD settles right; a ticket-style card slides in on the left to balance it -->
       <div class="anchor a-c3"><div class="copy c3 ticket" id="c3">
         <div class="tk-head">
-          <div class="kick">Shot 03 · layout</div>
-          <div class="tk-serial">ADMIT ONE</div>
+          <div class="kick">Look 03 · 2:18</div>
+          <div class="tk-serial">LOOK BOOK</div>
         </div>
-        <h2>전부<br>한 장에<br>담는다</h2>
-        <p class="lede">티켓 카드와 매직 낙서 CD를 한 화면에 얹는다. Y2K 방송 모니터 안의 구도.<br><span style="opacity:.6">A ticket card and a marker-doodled disc share one frame. Composition inside a Y2K broadcast monitor.</span></p>
-        <div class="tracklist"><i>Type</i><i>Color</i><i>Chrome</i><i class="on">Layout</i></div>
+        <h2>타입<br>컬러<br>레이아웃</h2>
+        <p class="lede">매직 낙서 CD와 티켓 카드로, 그 7초의 룩을 한 장에 담는다.<br><span style="opacity:.6">Type, color, layout — that seven-second look, burned onto one doodled disc.</span></p>
+        <div class="tracklist"><i>type</i><i>color</i><i class="on">layout</i></div>
         <div class="tk-stub">
           <div class="barcode" aria-hidden="true"></div>
-          <div class="endtag">2:20:00 — 다음 컷으로 ↓</div>
+          <div class="endtag">2:20:00 — next look ↓</div>
         </div>
       </div></div>
 
@@ -193,9 +193,9 @@ import '../styles/reel.css';
     /* scrubber + hud */
     tcEl.textContent=fmt(p); fill.style.width=(p*100)+'%'; head.style.left=(p*100)+'%';
     if(p<0.055){shotEl.textContent='암전 · black';shotEl.style.color='#9aa0b2';}
-    else if(p<0.22){shotEl.textContent='줌 · zoom & burst';shotEl.style.color='#e8b06a';}
-    else if(p<0.58){shotEl.textContent='팔레트 · into blue';shotEl.style.color='#eaf1ff';}
-    else{shotEl.textContent='구도 · the burn';shotEl.style.color='#eaf1ff';}
+    else if(p<0.22){shotEl.textContent='쿠키 · zoom & burst';shotEl.style.color='#e8b06a';}
+    else if(p<0.58){shotEl.textContent='파랑 · into blue';shotEl.style.color='#eaf1ff';}
+    else{shotEl.textContent='룩 · type · color · layout';shotEl.style.color='#eaf1ff';}
     if(!reduce && lastP<0.15 && p>=0.15){flash.classList.remove('go');void flash.offsetWidth;flash.classList.add('go');}
     lastP=p;
     if(p>0.01) hint.classList.add('hide');
