@@ -316,20 +316,50 @@ import '../styles/reel.css';
   /* the burst throws everything off-screen, but a handful of crumbs stay in frame, arc up,
      and drop onto the shut lid. nothing is printed on the cover where they land: what the
      jacket carries is not a drawing of a cookie, it is what is left of one. */
-  /* these are aimed, not thrown. the resting points are scattered over the cover's empty
-     middle first, then each crumb's launch is solved backwards from where it has to end up:
-     given a landing time tL and a gravity G, up = (CY + G*tL^2 - ry) / tL. throwing them and
-     hoping bunches them, because a crumb frozen at landing has only travelled dx*tL. */
+  /* THE COVER, LAID OUT IN CRUMBS.
+     Where they come to rest is a jacket, so it is composed, not sampled. Random points
+     spread evenly, and evenly is the one thing a broken cookie never is.
+
+     The type on this face is top-left (뉴진스) and bottom-edge-to-edge (COOKIE), so the debris
+     takes the upper right of the void to balance it. It breaks up in four registers:
+
+       the knot   — one hero chunk with pieces close enough to nearly touch it. a cluster
+                    with even gaps is not a cluster, it is a pattern.
+       the throw  — larger pieces flung down-left, deliberately NOT on a line: one sits back
+                    up and left of the piece before it, which is what kills the dotted-line
+                    read that evenly spaced debris always has.
+       the title  — pieces resting ON the letters, so the debris and the type share one plane
+                    instead of stacking as two layers.
+       the strays — two far pieces that break the silhouette so the field is not a blob.
+
+     Sizes carry it: one chunk at 24 does more than six at 8. Candies are the small register,
+     and they sit where the dough would have thrown them, near the breaks.
+
+     rx, ry (stage px) · size · candy colour, -1 for a chunk of cookie · landing time */
+  var LAYOUT=[
+    [706,368,24.0,-1,0.35], [748,401,17.0,-1,0.40], [681,404,13.0,-1,0.33],   /* the knot */
+    [737,347,10.0,-1,0.38], [772,372, 8.5, 2,0.44], [700,412, 7.0, 1,0.32],
+    [757,428, 6.0, 0,0.42], [672,352, 5.5, 5,0.30],
+    [630,447,12.5,-1,0.31], [604,398, 6.5, 3,0.28],                           /* the throw */
+    [566,489, 9.0,-1,0.39], [594,532, 5.0, 2,0.45], [520,455, 7.5,-1,0.43],
+    [812,458, 8.0,-1,0.52], [846,517, 5.5, 4,0.57],
+    [660,592,11.0,-1,0.49], [702,624, 6.0, 0,0.55],                           /* on the title */
+    [788,601, 7.5,-1,0.53], [830,634, 5.0, 1,0.58],
+    [468,318, 6.5,-1,0.46], [848,340, 4.5, 3,0.60]                            /* the strays */
+  ];
+  /* each launch is then solved backwards from where the piece has to end up: given a landing
+     time tL and a gravity G, up = (CY + G*tL^2 - ry) / tL. throwing them forward and freezing
+     them on impact knots them together, because a crumb frozen at tL has only gone dx*tL. */
   var CRUMB=[], CX=BW/2, CY=BH*0.46;
   (function(){ var r=0.777; function rnd(){ r=(r*9301+49297)%233280; return r/233280; }
-    for(var i=0;i<14;i++){ var mm=rnd()<0.42;
-      var q={sz:mm?6.5+rnd()*3.5:8+rnd()*7, rot:rnd()*6.283, spin:(rnd()*2-1)*2.4,
-        mm:mm, col:mm?MM[(rnd()*MM.length)|0]:'#c88a44',
+    /* the sizes above are written as a ratio to each other; this sets the field's weight
+       against a 106px COOKIE. the knot's pieces overlap at this scale, which is the point. */
+    var SCALE=1.35;
+    for(var i=0;i<LAYOUT.length;i++){ var L=LAYOUT[i], mm=L[3]>=0;
+      var q={rx:L[0], ry:L[1], sz:L[2]*SCALE, mm:mm, col:mm?MM[L[3]]:'#c88a44', tL:L[4],
+        rot:rnd()*6.283, spin:(rnd()*2-1)*1.8,
         wob:crumbShape(rnd), sx:TEX*(0.12+rnd()*0.46), sy:TEX*(0.12+rnd()*0.46)};
-      q.rx=420+rnd()*420;                 /* the cover's printable width, in stage px */
-      q.ry=280+rnd()*310;                 /* the void between the header and COOKIE */
-      q.tL=0.30+rnd()*0.28;
-      q.G=BH*2.2*(1.1+rnd()*0.7);
+      q.G=BH*2.2*(1.32+rnd()*0.26);
       q.up=(CY+q.G*q.tL*q.tL-q.ry)/q.tL;
       q.dx=(q.rx-CX)/q.tL;
       CRUMB.push(q); }
