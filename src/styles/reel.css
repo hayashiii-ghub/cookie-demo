@@ -187,11 +187,12 @@ body{background:#050609;color:#fff;font-family:var(--sans);-webkit-font-smoothin
 .d-flow svg{width:26px}
 .d-flow ellipse{fill:none;stroke:currentColor;stroke-width:2.6}
 .d-flow .fillc{fill:var(--hi);stroke:currentColor;stroke-width:2.2}
-.d-heart{--ang:148deg;--rad:0.440;--tilt:-16deg;color:var(--ink-red)}
+.d-heart{--ang:12deg;--rad:0.545;--tilt:-10deg;color:var(--ink-red)}
 .d-heart svg{width:22px}
 .d-heart path{fill:none;stroke:currentColor;stroke-width:3}
-/* the small one is solid — same motif, opposite technique */
-.d-heart2{--ang:84deg;--rad:0.540;--tilt:12deg;color:var(--ink-red)}
+/* the two hearts echo across the disc: big + outline at 3 o'clock, small + solid
+   opposite it. same motif, opposite technique, opposite side. */
+.d-heart2{--ang:152deg;--rad:0.475;--tilt:12deg;color:var(--ink-red)}
 .d-heart2 svg{width:13px}
 .d-heart2 path{fill:currentColor;stroke:none}
 .d-note{--ang:40deg;--rad:0.470;--tilt:-10deg;color:var(--pen)}
