@@ -99,54 +99,73 @@ body{background:#050609;color:#fff;font-family:var(--sans);-webkit-font-smoothin
 .disc::after{content:"";position:absolute;inset:0;border-radius:50%;mix-blend-mode:screen;opacity:.7;
   background:conic-gradient(from 210deg, rgba(255,255,255,.55), transparent 22%, transparent 60%, rgba(255,255,255,.4) 78%, transparent 100%)}
 .cd1{--dsz:504px}
-.doodle{position:absolute;inset:0;pointer-events:none;font-family:var(--doodle);will-change:transform,opacity}
-.doodle span{position:absolute;font-weight:700;line-height:.9;transform-origin:center;filter:drop-shadow(0 1px 0 rgba(255,255,255,.5))}
-/* marker stickers — bigger Y2K marks; NEWJEANS optically centered (Permanent Marker leans right) */
-.d-nj,.d-type,.d-color,.d-layout,.d-bang,.d-yeah{font-family:var(--marker)}
-/* Permanent Marker’s visual weight sits right of the bbox — bias left for optical center */
-.d-nj{left:50%;top:12%;width:82%;text-align:center;transform:translateX(-51.5%) rotate(-6deg);font-size:50px;letter-spacing:-.015em;color:var(--ink-red);-webkit-text-stroke:1.5px var(--ink-pink)}
+/* ink cannot leave the disc: a physical guard, one hair inside the rim */
+.doodle{position:absolute;inset:0;pointer-events:none;font-family:var(--doodle);will-change:transform,opacity;
+  clip-path:circle(49.6% at 50% 50%)}
+/* Doodles are placed in POLAR coordinates, not in the disc's bounding square.
+   --ang is the bearing (0deg = 3 o'clock, clockwise), --rad the distance from the
+   spindle as a fraction of the disc radius. The disc is a circle, so a square's
+   top/left/right/bottom put its corners outside the ink surface and its middle on
+   the spindle; an annulus (hub ~0.26 → rim 1.0) is the only sane coordinate space. */
+/* defaults live in the var() fallbacks: a `--rad:0` declaration here would out-specify
+   the single-class placements below and stack every doodle on the spindle */
+.doodle span{position:absolute;left:50%;top:50%;width:max-content;
+  transform:translate(-50%,-50%)
+    rotate(var(--ang,0deg)) translate(calc(var(--dsz) / 2 * var(--rad,0))) rotate(calc(-1 * var(--ang,0deg)))
+    rotate(var(--tilt,0deg)) translate(var(--ox,0px));
+  font-weight:700;line-height:.9;transform-origin:center;filter:drop-shadow(0 1px 0 rgba(255,255,255,.5))}
+
+/* --- title stack, written across the top of the face like anyone with a marker --- */
+.d-nj,.d-bang,.d-yeah{font-family:var(--marker)}
+/* Permanent Marker's ink sits right of its side bearings — nudge left for optical center */
+.d-nj{--ang:270deg;--rad:.575;--tilt:-6deg;--ox:-3px;font-size:50px;letter-spacing:-.015em;color:var(--ink-red);-webkit-text-stroke:1.5px var(--ink-pink)}
 /* Hangul sits on Nanum Pen (Permanent Marker is latin-only) */
-.d-njk{left:50%;top:5.5%;transform:translateX(-50%);font-family:var(--doodle);font-size:24px;font-weight:700;color:#1b2f66;letter-spacing:.06em;
+.d-njk{--ang:270deg;--rad:.833;--tilt:-2deg;font-size:24px;color:#1b2f66;letter-spacing:.06em;
   -webkit-text-stroke:.8px #1b2f66;paint-order:stroke fill}
-.d-type{left:7%;top:36%;transform:rotate(-10deg);font-size:24px;letter-spacing:.01em;color:var(--ink-cyan);text-decoration:underline;text-decoration-thickness:3px;text-decoration-color:var(--ink-cyan);text-underline-offset:4px;-webkit-text-stroke:.5px rgba(57,198,234,.4)}
-.d-color{right:6%;top:27%;transform:rotate(8deg);font-size:22px;color:#1b3fb0;border:3.5px solid #1b3fb0;border-radius:10px;padding:4px 10px}
-.d-layout{left:50%;bottom:8%;transform:translateX(-50%) rotate(-2deg);font-size:22px;color:var(--ink-brown);border:3.5px solid var(--ink-brown);border-radius:5px 5px 10px 10px;padding:5px 12px 6px}
-/* hand-drawn deco — larger, denser Y2K scribble set */
+
+/* --- the three axes: one boxed set, hung off the rim at a common margin --- */
+.d-type,.d-color,.d-layout{font-family:var(--marker);border:3.4px solid currentColor;
+  border-radius:9px 7px 10px 8px;padding:4px 11px 5px;background:rgba(255,255,255,.22)}
+.d-type{--ang:188deg;--rad:.712;--tilt:-9deg;font-size:24px;color:#1a9ec6}
+.d-color{--ang:352deg;--rad:.659;--tilt:7deg;font-size:22px;color:#1b3fb0}
+.d-layout{--ang:92deg;--rad:.762;--tilt:-2deg;font-size:22px;color:var(--ink-brown)}
+
+/* --- hand-drawn deco: outer ring hugs the rim, inner ring rides just clear of the hub --- */
 .doodle svg{display:block;overflow:visible}
 .doodle svg path{fill:none;stroke:currentColor;stroke-width:3.4;stroke-linecap:round;stroke-linejoin:round}
-.d-star{left:24%;top:28%;transform:rotate(-12deg);color:#caa100}
+.d-star{--ang:200deg;--rad:.468;--tilt:-12deg;color:#caa100}
 .d-star svg{width:38px}
 .d-star path{fill:rgba(255,214,64,.95);stroke:#b8860b;stroke-width:2.8}
-.d-star2{right:24%;top:22%;transform:rotate(18deg);color:var(--ink-yellow)}
+.d-star2{--ang:328deg;--rad:.810;--tilt:18deg;color:var(--ink-yellow)}
 .d-star2 svg{width:26px}
 .d-star2 path{fill:rgba(255,210,62,.95);stroke:#caa100;stroke-width:2.4}
-.d-smile{right:26%;bottom:24%;transform:rotate(6deg);color:#5a4200}
+.d-smile{--ang:62deg;--rad:.762;--tilt:6deg;color:#5a4200}
 .d-smile svg{width:38px}
 .d-smile .face{fill:var(--ink-yellow);stroke:#b8860b;stroke-width:3}
 .d-smile .dot{fill:#5a4200;stroke:none}
 .d-smile .mouth{fill:none;stroke:#5a4200;stroke-width:3.2}
-.d-arrow1{right:17%;top:40%;transform:rotate(16deg);color:#1b3fb0}
+.d-arrow1{--ang:8deg;--rad:.778;--tilt:14deg;color:#1b3fb0}
 .d-arrow1 svg{width:46px}
-.d-arrow2{left:16%;bottom:30%;transform:rotate(-150deg);color:var(--ink-pink)}
+.d-arrow2{--ang:240deg;--rad:.397;--tilt:-150deg;color:var(--ink-pink)}
 .d-arrow2 svg{width:42px}
-.d-flow{right:10%;bottom:15%;color:var(--ink-pink);transform:rotate(-10deg)}
+.d-flow{--ang:126deg;--rad:.746;--tilt:-10deg;color:var(--ink-pink)}
 .d-flow svg{width:40px}
 .d-flow ellipse{fill:var(--ink-pink);stroke:#c81f6a;stroke-width:1.8}
 .d-flow .fillc{fill:var(--ink-yellow);stroke:#caa100;stroke-width:1.8}
-.d-heart{left:33%;bottom:27%;transform:rotate(-14deg);color:var(--ink-pink)}
+.d-heart{--ang:140deg;--rad:.476;--tilt:-14deg;color:var(--ink-pink)}
 .d-heart svg{width:30px}
 .d-heart path{fill:rgba(255,46,136,.92);stroke:#c81f6a;stroke-width:2.6}
-.d-squig{left:11%;top:50%;transform:rotate(-20deg);color:var(--ink-cyan)}
+.d-squig{--ang:158deg;--rad:.778;--tilt:-20deg;color:var(--ink-cyan)}
 .d-squig svg{width:44px}
 .d-squig path{stroke-width:3.6}
-.d-spark{left:62%;top:48%;transform:rotate(12deg);color:var(--ink-yellow)}
+.d-spark{--ang:312deg;--rad:.444;--tilt:12deg;color:var(--ink-yellow)}
 .d-spark svg{width:28px}
 .d-spark path{fill:rgba(255,210,62,.95);stroke:#caa100;stroke-width:2.2}
-.d-dots{left:40%;top:58%;transform:rotate(-6deg);color:#1b3fb0}
+.d-dots{--ang:100deg;--rad:.444;--tilt:-6deg;color:#1b3fb0}
 .d-dots svg{width:40px}
 .d-dots circle{fill:currentColor;stroke:none}
-.d-bang{left:18%;top:24%;transform:rotate(-18deg);font-size:26px;color:var(--ink-pink);-webkit-text-stroke:.8px #c81f6a}
-.d-yeah{right:16%;bottom:36%;transform:rotate(12deg);font-size:18px;color:#1b3fb0;border:3px solid #1b3fb0;border-radius:6px;padding:2px 7px}
+.d-bang{--ang:212deg;--rad:.817;--tilt:-18deg;font-size:26px;color:var(--ink-pink);-webkit-text-stroke:.8px #c81f6a}
+.d-yeah{--ang:36deg;--rad:.746;--tilt:12deg;font-size:20px;letter-spacing:.02em;color:#1b3fb0;-webkit-text-stroke:.6px #1b3fb0}
 
 /* ---- copy 2 / 3 ---- */
 .c2{max-width:min(32ch,360px)}
