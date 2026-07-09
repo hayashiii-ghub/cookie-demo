@@ -533,8 +533,13 @@ import '../styles/reel.css';
     ['d-yeah',  0.822,0.024],
     ['d-cookie',0.826,0.046]
   ];
-  var mEl=MARKS.map(function(m){return [E.doodle.querySelector('.'+m[0]),m[1],m[1]+m[2]];});
-  var layoutEl=E.doodle.querySelector('.d-layout');
+  /* [node, start, end, the last --w written]. --w is read by stroke-dashoffset, fill-opacity
+     and clip-path, so a single write invalidates every shape under that mark. A mark that has
+     not started, or has already finished, holds the same number for most of the reel: 21 marks
+     were being rewritten 60 times a second to say nothing. Write only what changed. */
+  var mEl=MARKS.map(function(m){return [E.doodle.querySelector('.'+m[0]),m[1],m[1]+m[2],''];});
+  var layoutEl=E.doodle.querySelector('.d-layout'), lastHw='';
+  E.doodle.style.opacity=1;   /* once. it was set every frame, and it was never anything but 1. */
 
   function frame(p){
     /* pure dark → giant cookie zooms in → bursts (canvas); a few crumbs ride into the blue */
@@ -566,11 +571,11 @@ import '../styles/reel.css';
     bug.style.transform='scale('+lerp(0.6,1,eOut(seg(p,0.20,0.32)))+') rotate(-1.5deg)';
 
     /* burn — the marker goes to work on the bare disc, one mark at a time */
-    E.doodle.style.opacity=1;
-    for(var i=0;i<mEl.length;i++){ var m=mEl[i];
-      m[0].style.setProperty('--w', seg(p,m[1],m[2]).toFixed(3)); }
+    for(var i=0;i<mEl.length;i++){ var m=mEl[i], w=seg(p,m[1],m[2]).toFixed(3);
+      if(w!==m[3]){ m[3]=w; m[0].style.setProperty('--w', w); } }
     /* the highlighter is pulled through LAYOUT after the box around it is closed */
-    layoutEl.style.setProperty('--hw', seg(p,0.780,0.808).toFixed(3));
+    var hw=seg(p,0.780,0.808).toFixed(3);
+    if(hw!==lastHw){ lastHw=hw; layoutEl.style.setProperty('--hw', hw); }
 
     /* scrubber + hud. the aria pair is only rewritten when the whole percent turns over:
        a screen reader does not want 60 announcements a second, and neither does the DOM. */
