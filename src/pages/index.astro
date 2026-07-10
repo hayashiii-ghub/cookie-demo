@@ -680,7 +680,7 @@ import '../styles/reel.css';
        page: it lands, and the marker pulls the red line out under 파랑 (--uw below)
        before walking right to start on the disc. */
     var A=eOut(seg(p,0.36,0.51));    /* push in: the opening booklet */
-    var B=eOut(seg(p,0.555,0.605));  /* slide right: the disc, met by the first stroke */
+    var B=eOut(seg(p,0.568,0.605));  /* slide right: the disc, met by the first stroke */
     var C=eOut(seg(p,0.93,1.00));    /* step back out to the tripod */
     var fx=lerp(lerp(lerp(-swing*PAN,-PW,A),0,B),-swing*PAN,C);
     /* +0.05 creep across the burn: a locked-off zoom reads as a still, a breathing one as a
@@ -716,11 +716,12 @@ import '../styles/reel.css';
     /* the insert's two events, in reading order and with one hand: the red line goes under
        파랑, then the highlighter is pulled through "3 layout" — the same gesture the burn
        repeats on the disc at 0.780. the camera is 99.8% landed by 0.49 (eOut), so the dwell
-       effectively starts there; the swipe's end overlaps B's start, so the pen hand leads
-       the lens off the page and right, to the disc it is about to work on. */
-    var uw=seg(p,0.495,0.530).toFixed(3);
+       effectively starts there. after the swipe the finished page holds for one beat
+       (0.548-0.568, a breath at play speed) before B leaves for the disc: an insert has to
+       show you what the hand made, not just the making. */
+    var uw=seg(p,0.494,0.526).toFixed(3);
     if(uw!==lastUw){ lastUw=uw; ulEl.style.setProperty('--uw', uw); }
-    var lw=seg(p,0.535,0.558).toFixed(3);
+    var lw=seg(p,0.530,0.548).toFixed(3);
     if(lw!==lastLw){ lastLw=lw; lwEl.style.setProperty('--lw', lw); }
 
     /* scrubber + hud. the aria pair is only rewritten when the whole percent turns over:
@@ -795,7 +796,9 @@ import '../styles/reel.css';
   var playBtn=$('play');
   var ICON_PLAY='<svg viewBox="0 0 24 24"><path d="M7 5 L19 12 L7 19 Z"/></svg>';
   var ICON_PAUSE='<svg viewBox="0 0 24 24"><path d="M7 5h4v14H7z M13 5h4v14h-4z"/></svg>';
-  var PLAY_MS=6000, playing=false, rafId=0, playStart=0, playFromP=0, userTouched=false;
+  /* 7000 is not a taste number: the reel IS seven seconds (2:13 → 2:20), so autoplay runs
+     the timecode at 1:1. it was 6000, quietly playing the film 17% fast. */
+  var PLAY_MS=7000, playing=false, rafId=0, playStart=0, playFromP=0, userTouched=false;
   function setBtn(on){ playBtn.innerHTML=on?ICON_PAUSE:ICON_PLAY; playBtn.setAttribute('aria-label',on?'일시정지':'재생'); playBtn.setAttribute('aria-pressed',on?'true':'false'); }
   function stopPlay(){ if(rafId){cancelAnimationFrame(rafId);rafId=0;} if(playing){playing=false;setBtn(false);} }
   function tickPlay(now){ var p=playFromP+(now-playStart)/PLAY_MS;
