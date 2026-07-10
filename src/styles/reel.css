@@ -390,9 +390,14 @@ body{background:#050609;color:#fff;font-family:var(--sans);-webkit-font-smoothin
 .ib-ser{font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:#8b8069}
 .ib h2{position:relative;margin-top:24px;font-family:var(--display);font-weight:400;
   font-size:75px;line-height:.9;letter-spacing:-.025em;color:var(--pen)}
-/* red marker, dragged under the last line */
-.ib-ul{position:absolute;left:-4px;bottom:-11px;width:218px;overflow:visible}
-.ib-ul path{fill:none;stroke:var(--ink-red);stroke-width:3;stroke-linecap:round}
+/* red marker, dragged under the last line — and not print: the camera lands on this page
+   and the marker pulls it out, on the same dashoffset the disc's 21 marks use. --uw is
+   driven by JS in the insert's dwell; the default keeps it drawn wherever JS never ran. */
+/* the same zero-length-dash dot the doodle's gate exists for (see the burn, above) */
+.ib-ul{position:absolute;left:-4px;bottom:-11px;width:218px;overflow:visible;
+  opacity:clamp(0,var(--uw,1) * 24,1)}
+.ib-ul path{fill:none;stroke:var(--ink-red);stroke-width:3;stroke-linecap:round;
+  stroke-dasharray:1;stroke-dashoffset:calc(1 - var(--uw,1))}
 .ib .lede{margin-top:28px;font-size:14.5px;line-height:1.66;color:#4d5570}
 .tl{margin-top:22px;list-style:none;display:flex;flex-direction:column;gap:4px}
 /* the highlighter has to end where the word ends, so the row cannot be full-bleed */
