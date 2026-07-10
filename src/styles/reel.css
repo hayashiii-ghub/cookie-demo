@@ -373,42 +373,54 @@ body{background:#050609;color:#fff;font-family:var(--sans);-webkit-font-smoothin
   background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='p'><feTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3'/></filter><rect width='100%25' height='100%25' filter='url(%23p)'/></svg>")}
 
 /* --- front cover: what you see through the plastic, shut. also the last frame. --- */
+/* the cover practices what the booklet preaches. look 02 is DEFINED inside as "electric
+   blue field, broadcast chrome type on top" — so the front sheet is that field: a blue
+   film (translucent-plastic look, one white sheen across it), white type floating on it,
+   and the spec drawing turns into a literal blueprint. the inside spread stays cream:
+   one card, two stocks, the way a deluxe single was printed. the blue is deeper than the
+   cyclorama's electric mid-blue so the case keeps its object-ness against bgBlue. */
+.face.cover .bk{
+  background:
+    linear-gradient(118deg,rgba(255,255,255,.20) 0 9%,transparent 24% 78%,rgba(255,255,255,.08) 92% 100%),
+    linear-gradient(158deg,#5c92dd 0%,#3a6cc4 54%,#274f9e 100%);
+  box-shadow:0 2px 10px -2px rgba(3,14,52,.6), inset 0 0 0 1px rgba(255,255,255,.22)}
 .jk-top{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
-.jk-kr{font-family:var(--display);font-size:28px;letter-spacing:.01em;color:var(--pen)}
-.jk-ser{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;color:#7d735c}
+.jk-kr{font-family:var(--display);font-size:28px;letter-spacing:.01em;color:#fff}
+.jk-ser{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;color:rgba(235,244,255,.72)}
 .jk-void{flex:1}
-/* the sheet's working layer. z:-1 inside .bk's stacking context: above the paper's
-   gradient, under everything set in type, under the card-stock grain (::after). the
-   alphas are pre-press quiet: this is what survives on a sheet that went through a
-   shop, not a graphic asking to be seen. */
+/* the sheet's working layer, in white on the blue film: a blueprint. z:-1 inside .bk's
+   stacking context: above the film's gradient, under everything set in type, under the
+   card-stock grain (::after). on cream these lines whispered like pre-press residue; on
+   a blueprint the drawing IS the print, so they speak one step louder. */
 .jk-spec{position:absolute;inset:0;z-index:-1;width:100%;height:100%;fill:none}
-.jk-spec .rg circle,.jk-spec .rg path{stroke:rgba(22,38,94,.20);stroke-width:1}
-.jk-spec .c1{stroke:rgba(22,38,94,.13);stroke-width:1.2;stroke-dasharray:5 7}
-.jk-spec .c2{stroke:rgba(22,38,94,.10);stroke-width:1;stroke-dasharray:3 5}
-.jk-spec .cx{stroke:rgba(22,38,94,.16);stroke-width:1}
-.jk-spec .ld{stroke:rgba(22,38,94,.22);stroke-width:.8}
-.jk-spec .tx{font-family:var(--mono);font-size:9px;letter-spacing:.12em;fill:rgba(22,38,94,.38)}
-.jk-spec .rl{stroke:rgba(22,38,94,.16);stroke-width:1}
+.jk-spec .rg circle,.jk-spec .rg path{stroke:rgba(255,255,255,.34);stroke-width:1}
+.jk-spec .c1{stroke:rgba(255,255,255,.30);stroke-width:1.2;stroke-dasharray:5 7}
+.jk-spec .c2{stroke:rgba(255,255,255,.22);stroke-width:1;stroke-dasharray:3 5}
+.jk-spec .cx{stroke:rgba(255,255,255,.30);stroke-width:1}
+.jk-spec .ld{stroke:rgba(255,255,255,.40);stroke-width:.8}
+.jk-spec .tx{font-family:var(--mono);font-size:9px;letter-spacing:.12em;fill:rgba(255,255,255,.62)}
+.jk-spec .rl{stroke:rgba(255,255,255,.30);stroke-width:1}
 .jk-title{font-family:var(--display);font-weight:400;font-size:106px;line-height:.82;
-  letter-spacing:-.035em;color:var(--pen)}
+  letter-spacing:-.035em;color:#f4f8ff}
 /* the wordmark is stamped in the foil the disc is pressed from: the band samples the
-   disc's conic (see #cd1) and rides the SAME --gloss the plastic's light does, so when
-   the sweep crosses the lid the foil answers under it. at rest the band sits at -501px
-   (off the letters) and the mark reads as plain navy: foil is dark until the light
-   moves. JS never ran -> --gloss stays 0 -> printed, same discipline as --lw. */
+   disc's conic (see #cd1), one step deeper so it registers on white letters, and rides
+   the SAME --gloss the plastic's light does — when the sweep crosses the lid the foil
+   answers under it. at rest the band sits at -501px (off the letters) and the mark reads
+   as plain white: the broadcast chrome type the booklet describes. JS never ran ->
+   --gloss stays 0 -> printed, same discipline as --lw. */
 @supports ((-webkit-background-clip:text) or (background-clip:text)){
   .jk-title{
     background:
-      linear-gradient(104deg,transparent 0 30%,#f7d7ff 38%,#d3f0ff 44%,#fff6cf 50%,
-        #d8ffe6 56%,#ffd9e6 62%,transparent 70% 100%)
+      linear-gradient(104deg,transparent 0 30%,#e9aeff 38%,#a9dcff 44%,#ffe98e 50%,
+        #aef2c9 56%,#ffb9d3 62%,transparent 70% 100%)
         calc(var(--gloss,0px) - 501px) 0/340px 100% no-repeat,
-      linear-gradient(var(--pen),var(--pen));
+      linear-gradient(#f4f8ff,#f4f8ff);
     -webkit-background-clip:text;background-clip:text;color:transparent}
 }
-.jk-foot{margin-top:14px;padding-top:11px;border-top:1.4px solid rgba(22,38,94,.24);
+.jk-foot{margin-top:14px;padding-top:11px;border-top:1.4px solid rgba(255,255,255,.34);
   display:flex;align-items:flex-end;justify-content:space-between;gap:14px;
-  font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:#7d735c}
-.endtag{font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:#6f6650;
+  font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:rgba(233,242,255,.72)}
+.endtag{font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:rgba(222,234,255,.62);
   text-align:right;white-space:nowrap}
 
 /* --- back cover: the left leaf of the open spread --- */
