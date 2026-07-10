@@ -93,7 +93,7 @@ import '../styles/reel.css';
           <div class="spine"><span>TYPE · COLOR · LAYOUT</span></div>
           <div class="bk ib">
             <div class="ib-head"><span class="ib-kick">Look 02 · 2:16</span><span class="ib-ser">B/W 2:20:00</span></div>
-            <h2>그리고,<br>파랑.<svg class="ib-ul" viewBox="0 0 170 12" aria-hidden="true"><path d="M3 8 q24 -8 50 -1 q26 7 54 -2 q28 -8 60 1"/></svg></h2>
+            <h2>그리고,<br>파랑.<svg class="ib-ul" viewBox="0 0 170 12" aria-hidden="true"><path pathLength="1" d="M3 8 q24 -8 50 -1 q26 7 54 -2 q28 -8 60 1"/></svg></h2>
             <p class="lede">Cookie MV 2:13–2:20에서 가져온 컷. 전기 블루 필드, 그 위에 뜨는 방송용 크롬 타이포.<br><span style="opacity:.62">A cut borrowed from Cookie MV 2:13–2:20. Electric blue field, broadcast chrome type on top.</span></p>
             <ol class="tl">
               <li><b>1</b><span>type</span></li>
@@ -558,6 +558,7 @@ import '../styles/reel.css';
      were being rewritten 60 times a second to say nothing. Write only what changed. */
   var mEl=MARKS.map(function(m){return [E.doodle.querySelector('.'+m[0]),m[1],m[1]+m[2],''];});
   var layoutEl=E.doodle.querySelector('.d-layout'), lastHw='';
+  var ulEl=document.querySelector('.ib-ul'), lastUw='';
   E.doodle.style.opacity=1;   /* once. it was set every frame, and it was never anything but 1. */
 
   function frame(p){
@@ -586,14 +587,20 @@ import '../styles/reel.css';
        else on this transport. Push in on the booklet while the lid opens, slide right onto
        the bare disc so the camera lands as the first stroke does (0.580), sit there while
        the marker works, let the lid come down across the lens at 0.90, and only then step
-       back out to the tripod. The longest act finally gets the closest shot. */
-    var A=eOut(seg(p,0.36,0.54));    /* push in: the opening booklet */
-    var B=eOut(seg(p,0.545,0.60));   /* slide right: the disc, met by the first stroke */
+       back out to the tripod. The longest act finally gets the closest shot.
+       The booklet is a true insert, not a half-zoom: 1.85 is 1200/650, the page bleeding to
+       all four frame edges, and its content (measured: y -237..198 in case coords) sits
+       whole inside the 486px-tall window — which is why the focus never needs to leave y=0
+       and the transform stays translateX-only. An insert needs an event, so the camera
+       does not visit a printed page: it lands, and the marker pulls the red line out under
+       파랑 (--uw below) before walking right to start on the disc. */
+    var A=eOut(seg(p,0.36,0.51));    /* push in: the opening booklet, to full bleed */
+    var B=eOut(seg(p,0.555,0.605));  /* slide right: the disc, met by the first stroke */
     var C=eOut(seg(p,0.93,1.00));    /* step back out to the tripod */
-    var fx=lerp(lerp(lerp(-swing*PAN,-PW*0.66,A),0,B),-swing*PAN,C);
+    var fx=lerp(lerp(lerp(-swing*PAN,-PW,A),0,B),-swing*PAN,C);
     /* +0.05 creep across the burn: a locked-off zoom reads as a still, a breathing one as a
        shot that is waiting. C lerps from the crept value, so the pull-out is seamless. */
-    var z=lerp(lerp(lerp(1,1.24,A),1.5,B)+0.05*seg(p,0.62,0.88),1,C);
+    var z=lerp(lerp(lerp(1,1.85,A),1.5,B)+0.05*seg(p,0.62,0.88),1,C);
     var k=z*lerp(0.985,1,eOut(seg(p,0.16,0.30)));
     E.kase.style.transform='translateX('+(-k*fx).toFixed(1)+'px) scale('+k.toFixed(4)+')';
     /* negative: the free edge lifts toward the camera and arcs over the hinge, rather than
@@ -616,6 +623,10 @@ import '../styles/reel.css';
     /* the highlighter is pulled through LAYOUT after the box around it is closed */
     var hw=seg(p,0.780,0.808).toFixed(3);
     if(hw!==lastHw){ lastHw=hw; layoutEl.style.setProperty('--hw', hw); }
+    /* the insert's event: the red line goes under 파랑 while the camera sits on the page.
+       the same marker that will spend 0.58..0.87 on the disc — this is its first stroke. */
+    var uw=seg(p,0.508,0.552).toFixed(3);
+    if(uw!==lastUw){ lastUw=uw; ulEl.style.setProperty('--uw', uw); }
 
     /* scrubber + hud. the aria pair is only rewritten when the whole percent turns over:
        a screen reader does not want 60 announcements a second, and neither does the DOM. */
