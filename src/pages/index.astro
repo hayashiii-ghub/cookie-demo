@@ -200,10 +200,13 @@ import '../styles/reel.css';
     cv.width=Math.round(BW*f*DPR); cv.height=Math.round(BH*f*DPR);
     cv.style.width=BW+'px'; cv.style.height=BH+'px'; ctx.setTransform(f*DPR,0,0,f*DPR,0,0); }
   sizeCookie();   /* the resize listener is installed below, once frame() exists to repaint */
-  var MM=['#3ea04b','#2f7fd6','#e23b2f','#f2c53d','#e77f2a','#7b3fa0'];
-  var TOP=[ {x:-0.48,y:-0.42,r:0.17,c:'#3ea04b',mm:1},{x:0.34,y:-0.5,r:0.18,c:'#5a2d1c',mm:0},
-    {x:-0.56,y:0.48,r:0.16,c:'#2f7fd6',mm:1},{x:0.6,y:0.42,r:0.15,c:'#f2c53d',mm:1},
-    {x:0.42,y:-0.05,r:0.10,c:'#e23b2f',mm:1},{x:0.66,y:-0.34,r:0.07,c:'#7b3fa0',mm:1},
+  /* milk-glass pastels, not primaries. the reel's world is black, dough and timecode orange;
+     a full-saturation candy set read as a logo dropped into it. these keep each hue's name
+     but pull it toward milk, which is where the Y2K frame and the MV's props live. */
+  var MM=['#a3c47e','#88b4e2','#e28275','#eed06a','#f0a984','#ab8fd4'];
+  var TOP=[ {x:-0.48,y:-0.42,r:0.17,c:'#a3c47e',mm:1},{x:0.34,y:-0.5,r:0.18,c:'#5a2d1c',mm:0},
+    {x:-0.56,y:0.48,r:0.16,c:'#88b4e2',mm:1},{x:0.6,y:0.42,r:0.15,c:'#eed06a',mm:1},
+    {x:0.42,y:-0.05,r:0.10,c:'#e28275',mm:1},{x:0.66,y:-0.34,r:0.07,c:'#ab8fd4',mm:1},
     {x:0.04,y:0.12,r:0.11,c:'#4a2c17',mm:0},{x:-0.18,y:-0.08,r:0.08,c:'#4a2c17',mm:0},
     {x:-0.32,y:0.2,r:0.09,c:'#4a2c17',mm:0},{x:0.16,y:0.5,r:0.09,c:'#4a2c17',mm:0},{x:-0.04,y:-0.5,r:0.08,c:'#4a2c17',mm:0} ];
 
@@ -228,10 +231,15 @@ import '../styles/reel.css';
     var cg=g.createLinearGradient(x-r*0.8,y-r*0.8,x+r*0.7,y+r*0.9);
     cg.addColorStop(0,'#6a4527');cg.addColorStop(0.42,'#3a2213');cg.addColorStop(1,'#1b0f08');
     g.fillStyle=cg; g.fill(); g.shadowColor='transparent';
-    poly(0.6,-r*0.17,-r*0.19);
+    /* each break catches the light its own way: the facet and its specular vary per chunk,
+       derived from the jag it already owns (no extra randomness to thread through). the
+       offsets stay negative so the key light never leaves the top-left. an identical white
+       ellipse on three chunks in one macro frame read as a copy-paste, because it was one. */
+    var u=(jag[0]-0.78)/0.34, v=(jag[1]-0.78)/0.34, w=(jag[2]-0.78)/0.34;
+    poly(0.6,-r*(0.11+0.12*u),-r*(0.13+0.12*v));
     g.fillStyle='rgba(150,102,60,.28)'; g.fill();
-    g.beginPath(); g.ellipse(x-r*0.33,y-r*0.37,r*0.19,r*0.1,-0.7,0,6.283);
-    g.fillStyle='rgba(255,238,212,.28)'; g.fill();
+    g.beginPath(); g.ellipse(x-r*(0.24+0.18*v),y-r*(0.26+0.2*u),r*(0.13+0.11*w),r*(0.06+0.07*u),-0.4-0.6*w,0,6.283);
+    g.fillStyle='rgba(255,238,212,'+(0.16+0.16*v).toFixed(2)+')'; g.fill();
     g.restore(); }
 
   /* a candy shell is matte, not chrome. a broad soft light off the top-left, a thin dark rim
@@ -281,17 +289,27 @@ import '../styles/reel.css';
 
     /* craquelure: the pale lip goes down FIRST, then the split is cut into it. the other way
        round and the crack reads as a light thread lying on top of the cookie. both passes have
-       to trace the SAME wobble, so the walk is resolved to points before anything is stroked. */
-    tg.lineCap='round'; tg.lineJoin='round';
-    for(i=0;i<6;i++){ var a3=rnd()*6.283, d3=rnd()*R*0.6, len=R*(0.2+rnd()*0.42),
-        px=C+Math.cos(a3)*d3, py=C+Math.sin(a3)*d3, dir=rnd()*6.283, k;
-      var lw=R*(0.004+rnd()*0.005), pts=[[px,py]];
-      for(k=0;k<6;k++){ dir+=(rnd()-0.5)*1.15; px+=Math.cos(dir)*len/6; py+=Math.sin(dir)*len/6; pts.push([px,py]); }
-      function walk(){ tg.beginPath(); tg.moveTo(pts[0][0],pts[0][1]);
-        for(var j=1;j<pts.length;j++) tg.lineTo(pts[j][0],pts[j][1]); }
-      tg.save(); tg.translate(0,-lw*0.75); walk();
-      tg.lineWidth=lw*0.7; tg.strokeStyle='rgba(255,238,202,.2)'; tg.stroke(); tg.restore();
-      walk(); tg.lineWidth=lw; tg.strokeStyle='rgba(84,44,12,.5)'; tg.stroke(); }
+       to trace the SAME wobble, so the walk is resolved to points before anything is stroked.
+       a bake splits where it dries first: at the rim, short, and open toward the edge. the
+       long uniform wanderers this used to draw read as hairs at macro. each crack starts in
+       the outer band, walks outward, and is FILLED as one wedge polygon: a point at the
+       inner tip, widening toward the rim end. strokes were tried first and their per-segment
+       caps read as bamboo joints at macro; a fill has no joints to show. */
+    for(i=0;i<9;i++){ var a3=rnd()*6.283, d3=R*(0.45+rnd()*0.42), len=R*(0.10+rnd()*0.18),
+        px=C+Math.cos(a3)*d3, py=C+Math.sin(a3)*d3, dir=a3+(rnd()-0.5)*1.0, k;
+      var lw=R*(0.006+rnd()*0.006), pts=[[px,py]];
+      for(k=0;k<7;k++){ dir+=(rnd()-0.5)*0.75; px+=Math.cos(dir)*len/7; py+=Math.sin(dir)*len/7; pts.push([px,py]); }
+      function wedge(w1,dy,col){ var n=pts.length,j,Lft=[],Rgt=[];
+        for(j=0;j<n;j++){ var t0=pts[Math.max(0,j-1)], t1=pts[Math.min(n-1,j+1)],
+            dx=t1[0]-t0[0], dv=t1[1]-t0[1], dl=Math.sqrt(dx*dx+dv*dv)||1,
+            nx=-dv/dl, ny=dx/dl, w=w1*j/(n-1)/2+lw*0.03;
+          Lft.push([pts[j][0]+nx*w,pts[j][1]+ny*w+dy]); Rgt.push([pts[j][0]-nx*w,pts[j][1]-ny*w+dy]); }
+        tg.beginPath(); tg.moveTo(Lft[0][0],Lft[0][1]);
+        for(j=1;j<n;j++) tg.lineTo(Lft[j][0],Lft[j][1]);
+        for(j=n-1;j>=0;j--) tg.lineTo(Rgt[j][0],Rgt[j][1]);
+        tg.closePath(); tg.fillStyle=col; tg.fill(); }
+      wedge(lw*0.7,-lw*0.75,'rgba(255,238,202,.2)');
+      wedge(lw,0,'rgba(84,44,12,.5)'); }
 
     /* the rim caught the heat */
     var eg=tg.createRadialGradient(C,C,R*0.66,C,C,R);
