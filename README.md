@@ -24,6 +24,28 @@ npm run build      # -> dist/
 npm run preview    # serve the production build
 ```
 
+## Verifying a refactor
+
+Almost every change to the reel's two source files is meant to leave the picture
+alone. `scripts/fingerprint.sh` proves it, so that stops being a matter of
+opinion. It hashes what the reel *draws* — the canvas, the 47 baked crumbs, the
+transforms, the doodle's `--w`, and the resolved backgrounds — rather than
+comparing screenshots, whose bytes are not reproducible here (`mix-blend-mode`
+and the `preserve-3d` lid are rasterised on the GPU).
+
+```bash
+npm run dev &                             # the tool reads a live page
+scripts/fingerprint.sh selftest           # capture twice; the tool must agree with itself
+scripts/fingerprint.sh capture before     # on main
+#   ...make the change...
+scripts/fingerprint.sh capture after
+scripts/fingerprint.sh diff before after  # exit 0 = the picture is unchanged
+```
+
+Run `selftest` first. A comparison that cannot fail proves nothing, and this one
+has been fooled three times: by an empty file, by GPU raster noise, and by a
+synthetic mouse event that healed the very bug it was written to expose.
+
 ## Deploy
 
 Static site — Vercel auto-detects Astro and serves `dist/`. Import the repo in

@@ -17,3 +17,6 @@ node_modules/
 .DS_Store
 *.log
 npm-debug.log*
+
+# fingerprint captures (scripts/fingerprint.sh)
+.fingerprints/
