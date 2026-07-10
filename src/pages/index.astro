@@ -323,7 +323,22 @@ import '../styles/reel.css';
 
     crustPath(tg,C,C,R,180); tg.lineWidth=R*0.02; tg.strokeStyle='rgba(104,58,20,.45)'; tg.stroke();
 
+    /* the dough acknowledges what is baked into it. a topping that only casts a shadow is
+       PLACED; one the dough answers is BAKED IN. under each: a dark seam right at the sunk
+       edge, and a pale ridge just outside it where the dough rose. drawn BEFORE the topping,
+       so its cast shadow lands on the ridge the way it would on risen dough. the centre is
+       nudged down-right so the seam sits heavier away from the key light. */
+    function seat(g,x,y,r){ var sx=x+r*0.05, sy=y+r*0.07;
+      var q=g.createRadialGradient(sx,sy,r*0.55,sx,sy,r*1.5);
+      q.addColorStop(0,'rgba(90,50,16,.20)');
+      q.addColorStop(0.40,'rgba(90,50,16,.20)');
+      q.addColorStop(0.52,'rgba(255,236,196,.15)');
+      q.addColorStop(0.72,'rgba(255,236,196,.10)');
+      q.addColorStop(1,'rgba(255,236,196,0)');
+      g.fillStyle=q; g.beginPath(); g.arc(sx,sy,r*1.5,0,6.283); g.fill(); }
+
     for(i=0;i<TOP.length;i++){ var t=TOP[i], tx=C+t.x*R, ty=C+t.y*R, tr=t.r*R;
+      seat(tg,tx,ty,tr);
       if(t.mm) candy(tg,tx,ty,tr,t.c,rnd()*0.7);
       else { var jag=[],n=7,j; for(j=0;j<n;j++) jag.push(0.78+rnd()*0.34);
         chunk(tg,tx,ty,tr,rnd()*6.283,jag); } }
