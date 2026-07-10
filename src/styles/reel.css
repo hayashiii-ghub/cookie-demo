@@ -4,7 +4,7 @@
 /* HUD / timecode — industrial mono (replaces Space Mono's rounded "portfolio tech" look) */
 @font-face{font-family:"IBM Plex Mono";font-weight:400;font-style:normal;font-display:swap;src:url("/fonts/ibm-plex-mono-latin-400.woff2") format("woff2");}
 @font-face{font-family:"IBM Plex Mono";font-weight:700;font-style:normal;font-display:swap;src:url("/fonts/ibm-plex-mono-latin-700.woff2") format("woff2");}
-@font-face{font-family:"IBM Plex Mono";font-weight:400;font-style:italic;font-display:swap;src:url("/fonts/ibm-plex-mono-latin-400-italic.woff2") format("woff2");}
+/* italic exists only at 700: the station ident (.bug .n1) is the one italic on the monitor */
 @font-face{font-family:"IBM Plex Mono";font-weight:700;font-style:italic;font-display:swap;src:url("/fonts/ibm-plex-mono-latin-700-italic.woff2") format("woff2");}
 /* real handwriting — kills the system-font "fake handwriting" tell */
 @font-face{font-family:"Nanum Pen Script";font-weight:400;font-display:swap;src:url("/fonts/nanum-pen-script-korean-400.woff2") format("woff2");unicode-range:U+1100-11FF,U+3130-318F,U+A960-A97F,U+AC00-D7A3,U+D7B0-D7FF;}
@@ -120,7 +120,9 @@ body{background:#050609;color:#fff;font-family:var(--sans);-webkit-font-smoothin
 /* ink cannot leave the disc: a physical guard, one hair inside the rim.
    multiply sinks the ink into the iridescence instead of floating it on top —
    the disc's own colour shows through every stroke, the way marker on polycarbonate does */
-.doodle{position:absolute;inset:0;pointer-events:none;font-family:var(--doodle);will-change:transform,opacity;
+/* no will-change here: nothing on this node ever transforms or fades on its own, and the
+   stale hint pinned a disc-sized compositing layer for the whole reel */
+.doodle{position:absolute;inset:0;pointer-events:none;font-family:var(--doodle);
   clip-path:circle(49.6% at 50% 50%);mix-blend-mode:multiply}
 /* Doodles are placed in POLAR coordinates, not in the disc's bounding square.
    --ang is the bearing (0deg = 3 o'clock, clockwise), --rad the distance from the
