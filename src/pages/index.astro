@@ -633,6 +633,7 @@ import '../styles/reel.css';
   var mEl=MARKS.map(function(m){return [E.doodle.querySelector('.'+m[0]),m[1],m[1]+m[2],''];});
   var layoutEl=E.doodle.querySelector('.d-layout'), lastHw='';
   var ulEl=document.querySelector('.ib-ul'), lastUw='';
+  var lwEl=document.querySelector('.tl li.on'), lastLw='';
 
   /* most of what frame() writes sits still for most of the timeline. the marks learned this
      first (mEl above): write only what changed. L caches the last written value of everything
@@ -712,10 +713,15 @@ import '../styles/reel.css';
     /* the highlighter is pulled through LAYOUT after the box around it is closed */
     var hw=seg(p,0.780,0.808).toFixed(3);
     if(hw!==lastHw){ lastHw=hw; layoutEl.style.setProperty('--hw', hw); }
-    /* the insert's event: the red line goes under 파랑 while the camera sits on the page.
-       the same marker that will spend 0.58..0.87 on the disc — this is its first stroke. */
-    var uw=seg(p,0.508,0.552).toFixed(3);
+    /* the insert's two events, in reading order and with one hand: the red line goes under
+       파랑, then the highlighter is pulled through "3 layout" — the same gesture the burn
+       repeats on the disc at 0.780. the camera is 99.8% landed by 0.49 (eOut), so the dwell
+       effectively starts there; the swipe's end overlaps B's start, so the pen hand leads
+       the lens off the page and right, to the disc it is about to work on. */
+    var uw=seg(p,0.495,0.530).toFixed(3);
     if(uw!==lastUw){ lastUw=uw; ulEl.style.setProperty('--uw', uw); }
+    var lw=seg(p,0.535,0.558).toFixed(3);
+    if(lw!==lastLw){ lastLw=lw; lwEl.style.setProperty('--lw', lw); }
 
     /* scrubber + hud. the aria pair is only rewritten when the whole percent turns over:
        a screen reader does not want 60 announcements a second, and neither does the DOM. */
