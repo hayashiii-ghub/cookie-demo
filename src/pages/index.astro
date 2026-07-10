@@ -77,8 +77,29 @@ import '../styles/reel.css';
         <div class="face cover" id="cover">
           <div class="spine"><span>COOKIE · 뉴진스 · REEL 02 · CJ-0220</span></div>
           <div class="bk">
+            <!-- the print's working layer: what the shop leaves on a sheet, not decoration.
+                 the dashed circle is the disc on the OTHER side of the hinge, specified where
+                 it will shadow this cover (RCX,RCY,RR mirrored into bk coords: 285,233,142),
+                 so the crumbs land ON a drawing of the thing they trace. registration marks,
+                 a dimension callout and a ruler say Y2K the way the era actually said it:
+                 as manufacture, not as ornament. -->
+            <svg class="jk-spec" viewBox="0 0 549 550" aria-hidden="true">
+              <g class="rg">
+                <g transform="translate(16,16)"><circle r="5"/><path d="M-9 0H9M0 -9V9"/></g>
+                <g transform="translate(533,16)"><circle r="5"/><path d="M-9 0H9M0 -9V9"/></g>
+                <g transform="translate(16,534)"><circle r="5"/><path d="M-9 0H9M0 -9V9"/></g>
+                <g transform="translate(533,534)"><circle r="5"/><path d="M-9 0H9M0 -9V9"/></g>
+              </g>
+              <circle class="c1" cx="285" cy="233" r="142"/>
+              <circle class="c2" cx="285" cy="233" r="24"/>
+              <path class="cx" d="M277 233H293M285 225V241"/>
+              <path class="ld" d="M397 146L452 108H470"/>
+              <text class="tx" x="474" y="111">Ø 120</text>
+              <path class="rl" d="M536 120h6M538 144h4M538 168h4M538 192h4M536 216h6M538 240h4M538 264h4M538 288h4M536 312h6M538 336h4M538 360h4M538 384h4M536 408h6"/>
+            </svg>
             <div class="jk-top"><span class="jk-kr">뉴진스</span><span class="jk-ser">LOOK BOOK 02</span></div>
-            <!-- nothing is printed here. the crumbs land in this space and stay. -->
+            <!-- nothing is printed here. the crumbs land in this space and stay:
+                 on the spec drawing of the disc that is about to shadow it. -->
             <div class="jk-void" aria-hidden="true"></div>
             <h3 class="jk-title">COOKIE</h3>
             <div class="jk-foot"><span>2:13 → 2:20 · INSPIRED LOOK</span><span class="endtag">2:20:00 — next look ↓</span></div>
