@@ -36,12 +36,20 @@
 #
 set -e
 ROOT=${0:A:h:h}
-URL=${FP_URL:-http://localhost:4322/}
+# 127.0.0.1, not localhost: on a dual-stack machine localhost resolves per-connection, and a
+# second dev server bound to the same port on ::1 answers instead. The capture then probes a
+# stranger's page and dies -- or worse, doesn't (see below).
+URL=${FP_URL:-http://127.0.0.1:4322/}
 OUT=$ROOT/.fingerprints
 mkdir -p $OUT
 
 capture() {
   local label=$1 log=$OUT/$label.log
+  # a failed capture must not inherit last run's file: the success check below is "the json
+  # exists", and a stale one turns "nothing was written" into a green check. selftest once
+  # compared two captures that had both failed, found last session's pair identical, and
+  # declared the tool sound. the fourth way a green check has lied, and the quietest.
+  rm -f $OUT/$label.json
   print -r -- "capturing '$label' from $URL"
   {
     echo "await openTab('$URL')"; sleep 6

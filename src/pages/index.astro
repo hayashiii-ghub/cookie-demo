@@ -311,9 +311,43 @@ import '../styles/reel.css';
         chunk(tg,tx,ty,tr,rnd()*6.283,jag); } }
   })();
 
-  function bigCookie(cx,cy,R,alpha){ ctx.save(); ctx.globalAlpha=alpha;
-    ctx.shadowColor='rgba(58,26,4,.5)'; ctx.shadowBlur=R*0.09; ctx.shadowOffsetY=R*0.045;
-    ctx.drawImage(ctex, cx-R, cy-R, R*2, R*2); ctx.restore(); }
+  /* ===== the shadow is baked beside the dough =====
+     bigCookie used to run a shadowBlur as wide as the frame on every zoom frame, to put the
+     same shadow in the same place under the same cookie. ctexS is ctex plus its own cast
+     shadow, on a pad wide enough to hold the blur; scaling the draw scales the shadow with
+     it, which is all the per-frame version was doing. A zoom frame is now one drawImage. */
+  var SPAD=110, TEXS=TEX+SPAD*2, HTS=TEXS/2, HT=TEX/2;
+  var ctexS=document.createElement('canvas'); ctexS.width=ctexS.height=TEXS;
+  (function(){ var g=ctexS.getContext('2d'), R=HT*0.98;
+    g.shadowColor='rgba(58,26,4,.5)'; g.shadowBlur=R*0.09; g.shadowOffsetY=R*0.045;
+    g.drawImage(ctex,SPAD,SPAD); })();
+  function bigCookie(cx,cy,R,alpha){ var m=R/HT*HTS;
+    ctx.globalAlpha=alpha; ctx.drawImage(ctexS,cx-m,cy-m,m*2,m*2); ctx.globalAlpha=1; }
+
+  /* ===== the defocus, without ctx.filter =====
+     A blur is a low-pass, and the cheapest low-pass a canvas owns is its own resampler:
+     squeeze the shadowed cookie into a pocket canvas whose width IS the kernel, then smooth
+     back up (in two hops -- one bilinear jump from ~30px to ~2000 shows its grid). filter
+     re-ran a true gaussian over the whole cookie every frame: the most expensive single
+     frame in the reel, spent on four percent of the timeline. A resample is not a gaussian,
+     so the bloom's falloff differs by a hair -- this window is the one place this refactor
+     is checked by eye against main, not by hash. */
+  var blurA=document.createElement('canvas'), gA=blurA.getContext('2d'),
+      blurB=document.createElement('canvas'), gB=blurB.getContext('2d'),
+      blurC=document.createElement('canvas'), gC=blurC.getContext('2d');
+  function bigCookieBlur(cx,cy,R,blur,alpha){ var m=R/HT*HTS;
+    var w=Math.max(4,Math.round(m*2/(blur*1.3)))+2, U=m*2/(w-2);
+    blurA.width=blurA.height=w;             /* the assignment also clears the canvas */
+    gA.imageSmoothingQuality='high';        /* ...and resets this, so set it every time */
+    gA.drawImage(ctexS,1,1,w-2,w-2);        /* 1px clear ring: the upscale feathers the rim */
+    /* climb back up in x4 hops until the last jump to the screen is gentle. the guard is
+       the RATIO, not the pocket's width: one long bilinear jump interpolates the pocket's
+       raw pixels and paints them as a grid of diamonds, however wide the pocket was. */
+    var src=blurA, sw=w, rr=U, hop=[blurB,blurC], gh=[gB,gC], hi=0;
+    while(rr>8){ var nw=sw*4, c=hop[hi], g=gh[hi]; hi=1-hi;
+      c.width=c.height=nw; g.imageSmoothingQuality='high';
+      g.drawImage(src,0,0,nw,nw); src=c; sw=nw; rr/=4; }
+    ctx.globalAlpha=alpha; ctx.drawImage(src,cx-m-U,cy-m-U,w*U,w*U); ctx.globalAlpha=1; }
 
   /* a crumb is a torn piece of the same texture, not a small drawing of a cookie.
      g is passed in because the landed crumbs are re-baked into their own little canvases
@@ -336,6 +370,36 @@ import '../styles/reel.css';
      populations share one deck each, and reordering a draw redeals every piece after it. */
   function torn(rnd,o){ o.wob=crumbShape(rnd);
     o.sx=TEX*(0.12+rnd()*0.46); o.sy=TEX*(0.12+rnd()*0.46); return o; }
+
+  /* ===== the flight is drawn from bakes, not from scratch =====
+     particle() rebuilds each piece's wobble path point by point, and for every candy
+     allocates two gradients and runs a shadow blur -- 87 times a frame across the burst,
+     to draw the same 87 pieces. None of that changes between frames; only position, angle,
+     scale and alpha do. So the constant part is baked once per piece: a torn shape keeps
+     its outline as a unit Path2D (the texture is still sampled at native resolution
+     through it, so nothing softens), and a candy -- smooth gradients, the one thing
+     scaling cannot hurt -- is rendered once, shadow and all, and blitted. particle()
+     itself stays: the DOM crumbs are baked through it, which is why their hash cannot move. */
+  function bakeFlight(q,maxS){
+    if(q.mm){ var R=Math.ceil(maxS*1.6)+2;    /* 1.6: room for the shadow's throw */
+      var c=document.createElement('canvas'); c.width=c.height=R*4;   /* 2x supersample */
+      var g=c.getContext('2d'); g.setTransform(2,0,0,2,0,0);
+      candy(g,R,R,maxS,q.col,0);
+      q.spr=c; q.sk=R/maxS; }
+    else { var P=new Path2D();
+      for(var i=0;i<q.wob.length;i++){ var a=i/q.wob.length*6.283,
+          px=Math.cos(a)*q.wob[i], py=Math.sin(a)*q.wob[i];
+        i?P.lineTo(px,py):P.moveTo(px,py); }
+      P.closePath(); q.upath=P; } }
+  function blit(q,x,y,s,rot,alpha){ if(s<=0.3||alpha<=0)return;
+    ctx.save(); ctx.globalAlpha=alpha; ctx.translate(x,y); ctx.rotate(rot);
+    if(q.spr){ var m=s*q.sk; ctx.drawImage(q.spr,-m,-m,m*2,m*2); }
+    else { ctx.scale(s,s);
+      ctx.save(); ctx.clip(q.upath);
+      ctx.drawImage(ctex,q.sx,q.sy,TEX*0.42,TEX*0.42,-1.2,-1.2,2.4,2.4);
+      ctx.restore();
+      ctx.lineWidth=0.1; ctx.strokeStyle='rgba(92,50,16,.5)'; ctx.stroke(q.upath); }
+    ctx.restore(); }
   var PART=[];
   (function(){ var rnd=lcg(0.1234);
     for(var i=0;i<40;i++){ var mm=rnd()<0.3;
@@ -447,6 +511,11 @@ import '../styles/reel.css';
       q.vy=(q.ry-CY-GS*q.B)/q.A;
       CRUMB.push(q); }
   })();
+  /* both populations, one bake. maxS is the largest size depth ever hands a piece: a leaver
+     grows to sz*KG on its way past the lens, a stayer starts at sz*K0 and shrinks home. */
+  (function(){ var i;
+    for(i=0;i<PART.length;i++) bakeFlight(PART[i], PART[i].sz*KG);
+    for(i=0;i<CRUMB.length;i++) bakeFlight(CRUMB[i], CRUMB[i].sz*K0); })();
   /* where a crumb is, and how big, at flight time tt. u is its progress into the depth of the
      shot: 0 at the cookie's plane, 1 lying on the lid. spin decays on the same S(t) as speed,
      so it coasts to a stop instead of freezing mid-turn. */
@@ -493,10 +562,16 @@ import '../styles/reel.css';
     var a=seg(p,0.15,0.159); if(a<=0) return;   /* full opacity: the DOM copy is opaque too */
     for(var i=0;i<CRUMB.length;i++){ var q=CRUMB[i];
       var f=flight(q,Math.min(t,q.tL),FL);
-      particle(ctx,f.x,f.y,f.s,f.rot,q.mm,q.col,a,q); } }
+      blit(q,f.x,f.y,f.s,f.rot,a); } }
 
-  function drawCookie(p){ var W=BW,H=BH; ctx.clearRect(0,0,W,H);
-    if(p<0.05||p>0.56) return;
+  var cvDirty=true;
+  function drawCookie(p){ var W=BW,H=BH;
+    /* nothing paints outside this window -- the bloom dies at .19, the last burst piece
+       fades by ~.30, the flight crumbs hand off at .30 -- but an empty canvas was still
+       being cleared, full frame, on every scroll tick of the back two thirds of the reel. */
+    var live=p>=0.05&&p<0.34;
+    if(!live){ if(cvDirty){ ctx.clearRect(0,0,W,H); cvDirty=false; } return; }
+    ctx.clearRect(0,0,W,H); cvDirty=true;
     var cx=W/2, cy=H*0.46, minD=Math.min(W,H), maxD=Math.max(W,H), maxR=maxD*0.8;
     if(p<0.15){ bigCookie(cx,cy, lerp(minD*0.05,maxR,eOut(seg(p,0.055,0.15))), 1); return; }
     if(p<=0.34){
@@ -505,17 +580,16 @@ import '../styles/reel.css';
          are metre-wide polygons, and a sharp one reads as a grey mess rather than as speed.
          defocus it as it goes: what stays is a warm bloom, which is what a camera would see. */
       var fa=1-seg(p,0.15,0.19);
-      if(fa>0){ ctx.save(); ctx.filter='blur('+((1-fa)*70+4).toFixed(1)+'px)';
-        bigCookie(cx,cy, maxR*(1+0.25*b), fa*0.9); ctx.restore(); }
+      if(fa>0) bigCookieBlur(cx,cy, maxR*(1+0.25*b), (1-fa)*70+4, fa*0.9);
       /* gone by p=0.30. the canvas now draws over the stage, so a burst piece lingering at
          low alpha does not read as debris in the air, it reads as dirt on the lens. */
       /* the light pieces. same plane, same instant as the crumbs, so q.sz is read at the break
          and only depth moves it afterwards: these are coming AT the lens, so they grow. they
          used to shrink, which said "receding" while they were plainly rushing past you. */
       var spread=Math.hypot(W,H)*0.72, grav=H*0.12, a=Math.min(seg(b,0,0.05),1-seg(b,0.45,0.88));
-      for(var i=0;i<PART.length;i++){ var q=PART[i], e=eOut(b), d=e*spread*q.sp;
+      if(a>0) for(var i=0;i<PART.length;i++){ var q=PART[i], e=eOut(b), d=e*spread*q.sp;
         var x=cx+Math.cos(q.an)*d, y=cy+Math.sin(q.an)*d + b*b*grav*q.gv;
-        particle(ctx,x,y,q.sz/lerp(1,1/KG,e), q.rot+(reduce?0:b*q.spin), q.mm, q.col, a, q); }
+        blit(q, x, y, q.sz/lerp(1,1/KG,e), q.rot+(reduce?0:b*q.spin), a); }
     }
     crumbs(p); }
 
@@ -559,21 +633,29 @@ import '../styles/reel.css';
   var mEl=MARKS.map(function(m){return [E.doodle.querySelector('.'+m[0]),m[1],m[1]+m[2],''];});
   var layoutEl=E.doodle.querySelector('.d-layout'), lastHw='';
   var ulEl=document.querySelector('.ib-ul'), lastUw='';
-  E.doodle.style.opacity=1;   /* once. it was set every frame, and it was never anything but 1. */
+
+  /* most of what frame() writes sits still for most of the timeline. the marks learned this
+     first (mEl above): write only what changed. L caches the last written value of everything
+     else -- each value built exactly as before, numbers and strings alike, so a skipped write
+     is precisely a write that would have said nothing. */
+  var L={bg:-1,ko:-1,kt:'',lt:'',cl:-1,gl:'',sw:'',bt:'',fl:'',sh:-1,hint:false};
+  var SHOTN=['암전 · black','쿠키 · zoom & burst','파랑 · into blue','케이스 · the lid opens','룩 · type · color · layout','닫기 · the lid comes down'];
+  var SHOTC=['#9aa0b2','#e8b06a','#eaf1ff','#eaf1ff','#eaf1ff','#eaf1ff'];
 
   function frame(p){
     /* pure dark → giant cookie zooms in → bursts (canvas); a few crumbs ride into the blue */
     drawCookie(p);
     /* background snaps dark→blue at the burst */
     var cx=seg(p,0.15,0.20);
-    bgDark.style.opacity=1-cx; bgBlue.style.opacity=cx;
+    if(cx!==L.bg){ L.bg=cx; bgDark.style.opacity=1-cx; bgBlue.style.opacity=cx; }
 
     /* the case rises exactly as the giant cookie leaves: its ramp is the mirror of the blurred
        cookie's fade (1 - fa, fa = 1 - seg(p,0.15,0.19)). the bloom is translucent by then, so a
        ramp that finished any earlier would show the printed cover straight through the burst. */
     var open=eOut(seg(p,0.34,0.52)), shut=eOut(seg(p,0.90,1.00));
     var swing=open-shut;                          /* 0 = lid down, 1 = flat open */
-    E.kase.style.opacity=seg(p,0.155,0.205);
+    var ko=seg(p,0.155,0.205);
+    if(ko!==L.ko){ L.ko=ko; E.kase.style.opacity=ko; }
 
     /* ===== the camera =====
        There was never a camera here: a tripod wide shot, with the case sliding itself
@@ -604,20 +686,25 @@ import '../styles/reel.css';
        shot that is waiting. C lerps from the crept value, so the pull-out is seamless. */
     var z=lerp(lerp(lerp(1,1.6,A),1.5,B)+0.05*seg(p,0.62,0.88),1,C);
     var k=z*lerp(0.985,1,eOut(seg(p,0.16,0.30)));
-    E.kase.style.transform='translateX('+(-k*fx).toFixed(1)+'px) scale('+k.toFixed(4)+')';
+    var kt='translateX('+(-k*fx).toFixed(1)+'px) scale('+k.toFixed(4)+')';
+    if(kt!==L.kt){ L.kt=kt; E.kase.style.transform=kt; }
     /* negative: the free edge lifts toward the camera and arcs over the hinge, rather than
        sinking away from it. the same 180deg, the opposite half of the sphere. */
-    E.lid.style.transform='rotateY('+(-180*swing).toFixed(2)+'deg)';
-    crumbLayer.style.opacity=p<CRUMB_P?0:1;   /* the other half of the hand-off */
+    var lt='rotateY('+(-180*swing).toFixed(2)+'deg)';
+    if(lt!==L.lt){ L.lt=lt; E.lid.style.transform=lt; }
+    var cl=p<CRUMB_P?0:1;   /* the other half of the hand-off */
+    if(cl!==L.cl){ L.cl=cl; crumbLayer.style.opacity=cl; }
     /* light drags across the lid twice: once when the cookie uncovers it, once as it shuts.
        between 0.52 and 0.90 the cover faces away, so resetting the band at 0.86 is unseen. */
-    E.cover.style.setProperty('--gloss',
-      ((p<0.86?seg(p,0.20,0.33):seg(p,0.90,1.00))*SPREAD).toFixed(0)+'px');
+    var gl=((p<0.86?seg(p,0.20,0.33):seg(p,0.90,1.00))*SPREAD).toFixed(0)+'px';
+    if(gl!==L.gl){ L.gl=gl; E.cover.style.setProperty('--gloss',gl); }
 
     /* one rake of light across the face — a still disc with a frozen highlight reads as printed */
-    E.cd1.style.setProperty('--sweep', lerp(-62,32,eOut(seg(p,0.46,0.72))).toFixed(1)+'deg');
-    bug.style.opacity=seg(p,0.20,0.30);
-    bug.style.transform='scale('+lerp(0.6,1,eOut(seg(p,0.20,0.32)))+') rotate(-1.5deg)';
+    var sw=lerp(-62,32,eOut(seg(p,0.46,0.72))).toFixed(1)+'deg';
+    if(sw!==L.sw){ L.sw=sw; E.cd1.style.setProperty('--sweep',sw); }
+    /* the ident's opacity clock (.20-.30) closes inside its transform clock (.20-.32) */
+    var bt='scale('+lerp(0.6,1,eOut(seg(p,0.20,0.32)))+') rotate(-1.5deg)';
+    if(bt!==L.bt){ L.bt=bt; bug.style.opacity=seg(p,0.20,0.30); bug.style.transform=bt; }
 
     /* burn — the marker goes to work on the bare disc, one mark at a time */
     for(var i=0;i<mEl.length;i++){ var m=mEl[i], w=seg(p,m[1],m[2]).toFixed(3);
@@ -632,19 +719,17 @@ import '../styles/reel.css';
 
     /* scrubber + hud. the aria pair is only rewritten when the whole percent turns over:
        a screen reader does not want 60 announcements a second, and neither does the DOM. */
-    var tc=fmt(p); tcEl.textContent=tc; fill.style.width=(p*100)+'%'; head.style.left=(p*100)+'%';
+    var tc=fmt(p);
+    if(tc!==lastTc){ lastTc=tc; tcEl.textContent=tc; bar.setAttribute('aria-valuetext',tc); }
+    var fl=(p*100)+'%';
+    if(fl!==L.fl){ L.fl=fl; fill.style.width=fl; head.style.left=fl; }
     var pct=Math.round(p*100);
     if(pct!==lastPct){ lastPct=pct; bar.setAttribute('aria-valuenow',pct); }
-    if(tc!==lastTc){ lastTc=tc; bar.setAttribute('aria-valuetext',tc); }
-    if(p<0.055){shotEl.textContent='암전 · black';shotEl.style.color='#9aa0b2';}
-    else if(p<0.22){shotEl.textContent='쿠키 · zoom & burst';shotEl.style.color='#e8b06a';}
-    else if(p<0.34){shotEl.textContent='파랑 · into blue';shotEl.style.color='#eaf1ff';}
-    else if(p<0.56){shotEl.textContent='케이스 · the lid opens';shotEl.style.color='#eaf1ff';}
-    else if(p<0.90){shotEl.textContent='룩 · type · color · layout';shotEl.style.color='#eaf1ff';}
-    else{shotEl.textContent='닫기 · the lid comes down';shotEl.style.color='#eaf1ff';}
+    var sh=p<0.055?0:p<0.22?1:p<0.34?2:p<0.56?3:p<0.90?4:5;
+    if(sh!==L.sh){ L.sh=sh; shotEl.textContent=SHOTN[sh]; shotEl.style.color=SHOTC[sh]; }
     if(!reduce && lastP<0.15 && p>=0.15){flash.classList.remove('go');void flash.offsetWidth;flash.classList.add('go');}
     lastP=p;
-    if(p>0.01) hint.classList.add('hide');
+    if(p>0.01&&!L.hint){ L.hint=true; hint.classList.add('hide'); }
   }
 
   var ticking=false;
