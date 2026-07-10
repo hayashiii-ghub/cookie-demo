@@ -377,8 +377,34 @@ body{background:#050609;color:#fff;font-family:var(--sans);-webkit-font-smoothin
 .jk-kr{font-family:var(--display);font-size:28px;letter-spacing:.01em;color:var(--pen)}
 .jk-ser{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;color:#7d735c}
 .jk-void{flex:1}
+/* the sheet's working layer. z:-1 inside .bk's stacking context: above the paper's
+   gradient, under everything set in type, under the card-stock grain (::after). the
+   alphas are pre-press quiet: this is what survives on a sheet that went through a
+   shop, not a graphic asking to be seen. */
+.jk-spec{position:absolute;inset:0;z-index:-1;width:100%;height:100%;fill:none}
+.jk-spec .rg circle,.jk-spec .rg path{stroke:rgba(22,38,94,.20);stroke-width:1}
+.jk-spec .c1{stroke:rgba(22,38,94,.13);stroke-width:1.2;stroke-dasharray:5 7}
+.jk-spec .c2{stroke:rgba(22,38,94,.10);stroke-width:1;stroke-dasharray:3 5}
+.jk-spec .cx{stroke:rgba(22,38,94,.16);stroke-width:1}
+.jk-spec .ld{stroke:rgba(22,38,94,.22);stroke-width:.8}
+.jk-spec .tx{font-family:var(--mono);font-size:9px;letter-spacing:.12em;fill:rgba(22,38,94,.38)}
+.jk-spec .rl{stroke:rgba(22,38,94,.16);stroke-width:1}
 .jk-title{font-family:var(--display);font-weight:400;font-size:106px;line-height:.82;
   letter-spacing:-.035em;color:var(--pen)}
+/* the wordmark is stamped in the foil the disc is pressed from: the band samples the
+   disc's conic (see #cd1) and rides the SAME --gloss the plastic's light does, so when
+   the sweep crosses the lid the foil answers under it. at rest the band sits at -501px
+   (off the letters) and the mark reads as plain navy: foil is dark until the light
+   moves. JS never ran -> --gloss stays 0 -> printed, same discipline as --lw. */
+@supports ((-webkit-background-clip:text) or (background-clip:text)){
+  .jk-title{
+    background:
+      linear-gradient(104deg,transparent 0 30%,#f7d7ff 38%,#d3f0ff 44%,#fff6cf 50%,
+        #d8ffe6 56%,#ffd9e6 62%,transparent 70% 100%)
+        calc(var(--gloss,0px) - 501px) 0/340px 100% no-repeat,
+      linear-gradient(var(--pen),var(--pen));
+    -webkit-background-clip:text;background-clip:text;color:transparent}
+}
 .jk-foot{margin-top:14px;padding-top:11px;border-top:1.4px solid rgba(22,38,94,.24);
   display:flex;align-items:flex-end;justify-content:space-between;gap:14px;
   font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:#7d735c}
