@@ -419,21 +419,48 @@ body{background:#050609;color:#fff;font-family:var(--sans);-webkit-font-smoothin
 @keyframes rec{50%{opacity:.2}}
 .topbar .shot{color:#fff;text-align:right;text-transform:uppercase;opacity:.92;transition:color .4s}
 
-/* station ident */
+/* STATION IDENT — moulded clear plastic, not a printed plate.
+   The stage's blue comes THROUGH it, and what you see inside is the moulding itself: the same
+   ribs the jewel case's tray and spine are cut with, which is where this reel's plastic is from.
+   Clear plastic casts a thinner, bluer shadow than a painted sign, because most of the light
+   goes on through it. */
 .bug{position:absolute;right:46px;top:76px;z-index:39;transform-origin:top right;
-  filter:drop-shadow(0 10px 18px rgba(6,26,80,.55));opacity:0;will-change:transform,opacity}
-.bug .lz{position:relative;overflow:hidden;padding:12px 22px 14px;border-radius:14px;
-  border:2.5px solid #0c2a72;
-  background:linear-gradient(180deg,#9fcaff 0%,#5b93f7 44%,#1c50c8 52%,#0f3893 100%);
-  box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.32)}
-.bug .lz::before{content:"";position:absolute;left:5%;right:5%;top:4%;height:40%;border-radius:10px;
-  background:linear-gradient(180deg,rgba(255,255,255,.8),rgba(255,255,255,0))}
+  filter:drop-shadow(0 12px 20px rgba(4,18,60,.40));opacity:0;will-change:transform,opacity}
+/* one backdrop-filter on one element. the lid's 47 compositing layers taught us to count them,
+   and this is the reel's only live blur. */
+.bug .lz{position:relative;overflow:hidden;padding:12px 22px 14px;border-radius:16px;
+  border:1.5px solid rgba(214,234,255,.6);
+  background:linear-gradient(180deg,rgba(214,236,255,.22) 0%,rgba(120,175,240,.12) 46%,rgba(16,52,140,.30) 100%),
+    repeating-linear-gradient(180deg,rgba(210,232,255,.10) 0 3px,transparent 3px 11px);
+  -webkit-backdrop-filter:blur(7px) saturate(1.6);backdrop-filter:blur(7px) saturate(1.6);
+  /* the thick edge of a moulding. light pools along the inside of the top wall; the bottom wall
+     turns away from it and goes dark. the side walls carry a little of each. */
+  box-shadow:inset 0 1.5px 0 rgba(255,255,255,.7),
+    inset 0 -2px 3px rgba(10,30,90,.34),
+    inset 2px 0 4px rgba(255,255,255,.13),
+    inset -2px 0 4px rgba(10,30,90,.18)}
+/* the sheen is ON the surface, so it curves the way the surface does, not the way a box does */
+.bug .lz::before{content:"";position:absolute;left:4%;right:4%;top:3%;height:42%;pointer-events:none;
+  border-radius:12px 12px 60% 60%/12px 12px 26% 26%;
+  background:linear-gradient(180deg,rgba(255,255,255,.7),rgba(255,255,255,.05))}
+/* two dimples on the diagonal, where a shell like this is screwed together */
+.bug .lz::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(circle 3.4px at 12px calc(100% - 12px),rgba(8,26,80,.34) 0 42%,rgba(255,255,255,.34) 56%,transparent 72%),
+    radial-gradient(circle 3.4px at calc(100% - 12px) 12px,rgba(8,26,80,.34) 0 42%,rgba(255,255,255,.34) 56%,transparent 72%)}
+/* "y2k" has a descender and "NEW" did not, so .84 would have dropped the y into the line below.
+   1.0 gives the tail its room without moving the cap line. */
+/* if the shell is the clear part, the lettering has to be the solid one, or it dissolves into
+   whatever is passing behind. It is the cover's navy, pressed into the plastic: a lit lower lip
+   where the light that got through the shell catches the bottom of each stroke. */
 .bug .n1{display:block;position:relative;font-family:var(--mono);font-weight:700;font-style:italic;
-  font-size:42px;line-height:.84;letter-spacing:.01em;color:#eaf2ff;
-  text-shadow:0 1px 0 #0c2a72,0 2px 0 #0c2a72,0 4px 6px rgba(0,0,0,.4)}
-/* tracking leaves a trailing gap after the S, which would widen the plate on the right only */
-.bug .n2{display:block;position:relative;margin-top:3px;margin-right:-.155em;font-family:var(--mono);
-  font-weight:700;font-size:23px;letter-spacing:.155em;color:#f2f7ff;text-shadow:0 1px 0 #0c2a72,0 2px 4px rgba(0,0,0,.35)}
+  font-size:42px;line-height:1;letter-spacing:.01em;color:#0d2a70;
+  text-shadow:0 1px 0 rgba(255,255,255,.62),0 -1px 1px rgba(4,18,60,.35)}
+/* the lower line sets the plate's width: nine characters where there were five. Loosening it to
+   .155em would have stretched the ident half again as wide as the corner it sits in.
+   tracking leaves a trailing gap after the last glyph, which would widen the plate on the right only */
+.bug .n2{display:block;position:relative;margin-top:1px;margin-right:-.1em;font-family:var(--mono);
+  font-weight:700;font-size:19px;letter-spacing:.1em;color:#0f2f7a;
+  text-shadow:0 1px 0 rgba(255,255,255,.5)}
 
 .scrubber{position:absolute;left:0;right:0;bottom:0;height:var(--bar);z-index:45;display:flex;align-items:center;gap:20px;pointer-events:auto;
   padding:0 30px;background:linear-gradient(180deg,rgba(6,6,10,0),rgba(6,6,10,.86) 40%);color:#fff;font-family:var(--mono)}
