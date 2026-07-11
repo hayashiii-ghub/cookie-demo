@@ -143,14 +143,14 @@ body{background:#050609;color:#fff;font-family:var(--sans);-webkit-font-smoothin
    circle and ellipse in the doodle carries pathLength="1" so one unit means "the whole shape".
    Fills arrive only in the last 30% of the stroke: you outline a shape, then you colour it.
    Lettering: a marker lays ink left to right, so wipe the box instead. The inset is negative
-   on three sides because .d-layout's highlighter overhangs its border box and must not be cut. */
+   on three sides because .d-cut's highlighter overhangs its border box and must not be cut. */
 /* stroke-linecap:round means a zero-length stroke still paints a dot. gate the whole mark
    until the pen has actually touched down, or the bare disc is freckled with 16 tiny dots. */
 .doodle svg{opacity:clamp(0,var(--w,1) * 24,1)}
 .doodle svg path,.doodle svg circle,.doodle svg ellipse{
   stroke-dasharray:1;stroke-dashoffset:calc(1 - var(--w,1));
   fill-opacity:clamp(0,(var(--w,1) - .70) * 3.4,1)}
-.d-njk,.d-nj,.d-type,.d-color,.d-layout,.d-bang,.d-yeah{
+.d-njk,.d-nj,.d-song,.d-kuki,.d-cut,.d-bang,.d-yeah{
   clip-path:inset(-45% calc((1 - var(--w,1)) * 128% - 14%) -45% -14%)}
 
 /* --- title stack, written across the top of the face like anyone with a marker --- */
@@ -161,25 +161,28 @@ body{background:#050609;color:#fff;font-family:var(--sans);-webkit-font-smoothin
 .d-njk{--ang:270deg;--rad:.833;--tilt:-2deg;font-size:24px;color:var(--pen);letter-spacing:.06em;
   -webkit-text-stroke:.8px var(--pen);paint-order:stroke fill}
 
-/* --- the three axes: one pen, one box, one common rim margin, so they read as a set.
-   the angles are deliberately off the 120° thirds — a clean trisection reads as a pie
-   chart, and nobody hand-letters a disc that evenly. layout carries the highlighter
-   because layout is the chip lit up on the ticket card. --- */
-.d-type,.d-color,.d-layout{position:relative;font-family:var(--marker);color:var(--pen);
+/* --- the label set: the song, the song in hangul, and the cut that is on the disc.
+   one pen, one box, one common rim margin, so they read as a set. the angles are
+   deliberately off the 120° thirds — a clean trisection reads as a pie chart, and
+   nobody hand-letters a disc that evenly. the cut carries the highlighter: on this
+   surface the seven seconds are the subject. --- */
+.d-song,.d-kuki,.d-cut{position:relative;font-family:var(--marker);color:var(--pen);
   border:3.2px solid currentColor;border-radius:9px 7px 10px 8px;padding:4px 11px 5px}
-.d-type{--ang:200deg;--rad:.700;--tilt:-11deg;font-size:24px}
-.d-color{--ang:344deg;--rad:.672;--tilt:6deg;font-size:22px}
-.d-layout{--ang:114deg;--rad:0.742;--tilt:-3deg;font-size:22px}
+.d-song{--ang:200deg;--rad:.655;--tilt:-11deg;font-size:21px}
+/* hangul falls through Permanent Marker to Nanum Pen — same inking as 뉴진스 above */
+.d-kuki{--ang:344deg;--rad:.672;--tilt:6deg;font-size:26px;letter-spacing:.06em;
+  -webkit-text-stroke:.8px var(--pen);paint-order:stroke fill;padding:2px 11px 3px}
+.d-cut{--ang:114deg;--rad:0.742;--tilt:-3deg;font-size:19px;letter-spacing:.01em}
 /* a highlighter stroke never lands square on the word it marks, and it is pulled through
    AFTER the box is closed — --hw runs on its own clock, a beat behind --w */
-.d-layout::before{content:"";position:absolute;inset:1px -5px 2px -7px;z-index:-1;
+.d-cut::before{content:"";position:absolute;inset:1px -5px 2px -7px;z-index:-1;
   background:var(--hi);border-radius:3px 6px 4px 5px;transform-origin:left center;
   transform:rotate(-1.4deg) skewX(-7deg) scaleX(var(--hw,1))}
 
 /* --- deco: pen strokes, not stickers.
    Three rules keep this from turning back into confetti:
    1. the marks that can point, point at something. The red arrow aims at NEWJEANS, the
-      navy one at COLOR. An arrow aimed at nothing is filler and reads as filler.
+      navy one at 쿠키. An arrow aimed at nothing is filler and reads as filler.
    2. the field is uneven on purpose. The top of the face is where you write, so it stays
       open either side of the title; the doodling piles up around the lower rim.
    3. every mark sits on one of two rings — an outer one hugging the rim (--rad ~.75-.83)
@@ -433,15 +436,19 @@ body{background:#050609;color:#fff;font-family:var(--sans);-webkit-font-smoothin
 .jk-foot{margin-top:14px;padding-top:11px;border-top:1.4px solid rgba(255,255,255,.34);
   display:flex;align-items:flex-end;justify-content:space-between;gap:14px;
   font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:rgba(233,242,255,.72)}
+/* the one live element on the print: the reel's exit to the source tape. #frame is
+   pointer-events:none, so the link buys its own back, exactly as .scrubber does. */
 .endtag{font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:rgba(222,234,255,.62);
-  text-align:right;white-space:nowrap}
+  text-align:right;white-space:nowrap;pointer-events:auto;text-decoration:none;cursor:pointer}
+.endtag:hover{color:#fff;text-decoration:underline;text-underline-offset:3px}
+.endtag:focus-visible{outline:1.5px solid rgba(255,255,255,.8);outline-offset:3px;color:#fff}
 
 /* --- back cover: the left leaf of the open spread --- */
 .ib-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;
   padding-bottom:11px;border-bottom:1.4px solid rgba(22,38,94,.26)}
 .ib-kick{font-family:var(--mono);font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:#6f6650}
 .ib-ser{font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:#8b8069}
-.ib h2{position:relative;margin-top:24px;font-family:var(--display);font-weight:400;
+.ib h2{position:relative;margin-top:20px;font-family:var(--display);font-weight:400;
   font-size:75px;line-height:.9;letter-spacing:-.025em;color:var(--pen)}
 /* red marker, dragged under the last line — and not print: the camera lands on this page
    and the marker pulls it out, on the same dashoffset the disc's 21 marks use. --uw is
@@ -451,24 +458,52 @@ body{background:#050609;color:#fff;font-family:var(--sans);-webkit-font-smoothin
   opacity:clamp(0,var(--uw,1) * 24,1)}
 .ib-ul path{fill:none;stroke:var(--ink-red);stroke-width:3;stroke-linecap:round;
   stroke-dasharray:1;stroke-dashoffset:calc(1 - var(--uw,1))}
-.ib .lede{margin-top:28px;font-size:14.5px;line-height:1.66;color:#4d5570}
-.tl{margin-top:22px;list-style:none;display:flex;flex-direction:column;gap:4px}
-/* the highlighter has to end where the word ends, so the row cannot be full-bleed */
-.tl li{position:relative;width:max-content;display:flex;align-items:baseline;gap:12px;padding:3px 8px;
+.ib .lede{margin-top:22px;font-size:14.5px;line-height:1.66;color:#4d5570}
+/* the pen's list and the file's frontmatter share a row, ends aligned: the page's
+   bottom zone. stacked they overran the page (.bk clips), and the frontmatter would
+   miss the camera at the insert's dwell. */
+.ib-row{margin-top:14px;display:flex;align-items:flex-end;justify-content:space-between;gap:18px}
+.tl{list-style:none;display:flex;flex-direction:column;gap:4px}
+/* the highlighter has to end where the WORD ends. it is painted on .k, the key line's
+   own max-content box — on the li it would span the widest line instead (and max-content
+   on a wrapping box is the un-wrapped width, wider than either line). */
+.tl li{position:relative;width:max-content;
   font-family:var(--marker);font-size:17.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--pen)}
+.tl .k{position:relative;width:max-content;display:flex;align-items:baseline;gap:12px;
+  padding:3px 8px;font-style:normal}
 .tl b{font-family:var(--mono);font-weight:400;font-size:11.5px;color:#8b8069}
 .tl b,.tl span{position:relative;z-index:1}
+/* the value line: the hand names the dimension, the file records the measurement.
+   mono and lowercase — a hex code is not a thing anyone writes in marker. indented
+   to the word's left edge, clear of the number gutter. */
+.tl i{display:flex;align-items:center;gap:6px;margin-left:31px;font-family:var(--mono);
+  font-style:normal;font-size:9.4px;letter-spacing:.06em;text-transform:none;color:#8b8069}
+/* the taped-on chip a real look book carries: the film's own mid stop */
+.tl .sw{flex:0 0 auto;width:9px;height:9px;border-radius:2px;background:#3a6cc4;
+  box-shadow:inset 0 0 0 1px rgba(22,38,94,.28)}
 /* the same highlighter that ran through LAYOUT on the disc, run through it again here —
    and pulled the same way, scaleX from the left edge (--lw, set by JS in the insert's
    dwell). it is the marker's last act on the page; the finished page then holds one beat
    before the camera leaves for the disc. default 1 keeps it printed wherever JS never
    ran. a box at scaleX(0) draws nothing, so no zero-length gate is needed here. */
-.tl li.on::before{content:"";position:absolute;z-index:0;left:-4px;right:-11px;top:2px;bottom:2px;
+/* on .k, not the li: the stroke marks the word line and leaves the value under it clean —
+   a highlighter goes through the heading, not through the measurement. --lw is still set
+   on the li by JS and inherits down. */
+.tl li.on .k::before{content:"";position:absolute;z-index:0;left:-4px;right:-11px;top:2px;bottom:2px;
   background:var(--hi);border-radius:3px 6px 4px 5px;transform-origin:left center;
   transform:rotate(-.8deg) skewX(-6deg) scaleX(var(--lw,1))}
-.ib-fine{margin-top:24px;font-family:var(--mono);font-size:9.2px;line-height:1.85;
-  letter-spacing:.055em;text-transform:uppercase;color:#948972}
-.ib-foot{margin-top:auto;padding-top:16px;display:flex;align-items:flex-end;justify-content:space-between;gap:12px}
+/* the back cover's small print, set as the file's frontmatter. lowercase: it is a
+   file, not a label. keys press a little harder than values, the --- rules barely
+   register — the way a pen writes a form it has written before. */
+.ib-fine{max-width:262px;font-family:var(--mono);font-size:9.2px;line-height:1.62;
+  letter-spacing:.055em;color:#948972;display:flex;flex-direction:column;text-align:left}
+.ib-fine b{font-weight:400;color:#6f6650}
+.ib-fine .fm-r{color:#b3a98f;letter-spacing:.2em}
+.ib-fine a{color:inherit;pointer-events:auto;text-decoration:underline;
+  text-decoration-color:rgba(148,137,114,.5);text-underline-offset:2.5px}
+.ib-fine a:hover{color:#5c5340;text-decoration-color:currentColor}
+.ib-fine a:focus-visible{outline:1.5px solid #6f6650;outline-offset:2px}
+.ib-foot{margin-top:auto;padding-top:12px;display:flex;align-items:flex-end;justify-content:space-between;gap:12px}
 .barcode{flex:0 0 auto;width:112px;height:35px;opacity:.82;
   background:repeating-linear-gradient(90deg,var(--pen) 0 1.5px,transparent 1.5px 3px,var(--pen) 3px 5px,transparent 5px 6.5px,var(--pen) 6.5px 9px,transparent 9px 11px)}
 .ib-cat{font-family:var(--mono);font-size:9.6px;letter-spacing:.16em;color:#8b8069;text-align:right;white-space:nowrap}
