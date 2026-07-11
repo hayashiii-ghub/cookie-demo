@@ -7,12 +7,12 @@ import '../styles/reel.css';
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>COOKIE — 2:13→2:20 (inspired look)</title>
+<title>y2k design.md · LOOK 02 — COOKIE (NewJeans MV 2:13→2:20)</title>
 </head>
 <body>
 <!-- everything lives on a fixed 1200x900 (4:3) "broadcast monitor" scaled to fit the viewport -->
 <main role="main" aria-label="NewJeans Cookie MV 2:13에서 2:20까지에서 영감받은 7초 룩 릴">
-<h1 class="sr-only">COOKIE — inspired by NewJeans Cookie MV 2:13→2:20</h1>
+<h1 class="sr-only">y2k design.md — LOOK 02 · COOKIE, inspired by NewJeans Cookie MV 2:13→2:20</h1>
 <div id="frame">
   <div id="box">
     <div class="bg" id="bgDark"></div>
@@ -107,12 +107,15 @@ import '../styles/reel.css';
               </g>
               <path class="rl" d="M536 120h6M538 144h4M538 168h4M538 192h4M536 216h6M538 240h4M538 264h4M538 288h4M536 312h6M538 336h4M538 360h4M538 384h4M536 408h6"/>
             </svg>
-            <div class="jk-top"><span class="jk-kr">뉴진스</span><span class="jk-ser">LOOK BOOK 02</span></div>
+            <div class="jk-top"><span class="jk-kr">뉴진스</span><span class="jk-ser">Y2K DESIGN.MD · 02</span></div>
             <!-- nothing is printed here. the crumbs land in this space and stay:
                  on the glow of the disc showing through the film. -->
             <div class="jk-void" aria-hidden="true"></div>
             <h3 class="jk-title">COOKIE</h3>
-            <div class="jk-foot"><span>2:13 → 2:20 · INSPIRED LOOK</span><span class="endtag">2:20:00 — next look ↓</span></div>
+            <!-- the foot names the source plainly; the end tag is the reel's one exit — the
+                 timecode runs out and hands you the tape it was cut from. the link restores
+                 its own pointer-events (#frame is inert, same discipline as .scrubber). -->
+            <div class="jk-foot"><span>SRC 뉴진스 ‘COOKIE’ M/V · 2:13 → 2:20</span><a class="endtag" href="https://www.youtube.com/watch?v=VOmIplFAGeg&t=133s" target="_blank" rel="noopener">2:20:00 — SOURCE ▶</a></div>
           </div>
           <div class="plastic" aria-hidden="true"></div>
           <!-- on the WRAP, not the print: the era's hype sticker lived on the shrink film.
@@ -135,14 +138,30 @@ import '../styles/reel.css';
             <div class="ib-head"><span class="ib-kick">Look 02 · 2:16</span><span class="ib-ser">B/W 2:20:00</span></div>
             <h2>그리고,<br>파랑.<svg class="ib-ul" viewBox="0 0 170 12" aria-hidden="true"><path pathLength="1" d="M3 8 q24 -8 50 -1 q26 7 54 -2 q28 -8 60 1"/></svg></h2>
             <p class="lede">Cookie MV 2:13–2:20에서 가져온 컷. 전기 블루 필드, 그 위에 뜨는 방송용 크롬 타이포.<br><span style="opacity:.62">A cut borrowed from Cookie MV 2:13–2:20. Electric blue field, broadcast chrome type on top.</span></p>
-            <ol class="tl">
-              <li><b>1</b><span>type</span></li>
-              <li><b>2</b><span>color</span></li>
-              <li class="on"><b>3</b><span>layout</span></li>
-            </ol>
-            <!-- the small print a real back cover carries. it is also the honest place to say
-                 what this is: a look study, not a release. -->
-            <p class="ib-fine">Inspired by the Cookie MV, 2:13–2:20.<br>A look study. Not affiliated with ADOR or NewJeans.<br>Authored on a 1200×900 stage · scroll-scrubbed</p>
+            <!-- two columns: the pen's list, and beside it the small print a real back
+                 cover carries — printed as the file's own frontmatter. this artifact is
+                 y2k/design.md, a harness you hand an agent, pressed as a CD single; the
+                 legal line becomes a note: field and the src: line is the second door to
+                 the tape. lowercase on purpose: it is a file, not a label. BESIDE the list,
+                 not under it: stacked, it pushed the foot past the page's clipped bottom
+                 (the barcode had already been living below the fold), and the row also
+                 puts the frontmatter on camera during the insert's dwell. -->
+            <div class="ib-row">
+              <ol class="tl">
+                <li><b>1</b><span>type</span></li>
+                <li><b>2</b><span>color</span></li>
+                <li class="on"><b>3</b><span>layout</span></li>
+              </ol>
+              <div class="ib-fine" role="note">
+                <span class="fm-r">---</span>
+                <span><b>file:</b> y2k/design.md</span>
+                <span><b>look:</b> 02 · type / color / layout</span>
+                <span><b>src:</b> <a href="https://www.youtube.com/watch?v=VOmIplFAGeg&t=133s" target="_blank" rel="noopener">NewJeans “Cookie” M/V, 2:13–2:20</a></span>
+                <span><b>stage:</b> 1200×900 · scroll-scrubbed</span>
+                <span><b>note:</b> fan study. not affiliated with ADOR / NewJeans.</span>
+                <span class="fm-r">---</span>
+              </div>
+            </div>
             <div class="ib-foot">
               <div class="barcode" aria-hidden="true"></div>
               <div class="ib-cat">CJ-0220 · REEL 02</div>
