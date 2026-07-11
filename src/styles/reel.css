@@ -388,17 +388,16 @@ body{background:#050609;color:#fff;font-family:var(--sans);-webkit-font-smoothin
 .jk-kr{font-family:var(--display);font-size:28px;letter-spacing:.01em;color:#fff}
 .jk-ser{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;color:rgba(235,244,255,.72)}
 .jk-void{flex:1}
-/* the sheet's working layer, in white on the blue film: a blueprint. z:-1 inside .bk's
-   stacking context: above the film's gradient, under everything set in type, under the
-   card-stock grain (::after). on cream these lines whispered like pre-press residue; on
-   a blueprint the drawing IS the print, so they speak one step louder. */
+/* the film's under-layer. z:-1 inside .bk's stacking context: above the film's gradient,
+   under everything set in type, under the card-stock grain (::after). the ghost (.gh) is
+   not a printed line, it is light — the disc under the lid arriving through the material —
+   so its edge is a glow, not a stroke; the hub rings are the only drawn circles, faint as
+   something seen through frosted plastic. reg marks and ruler stay printed: the film still
+   went through a shop. */
 .jk-spec{position:absolute;inset:0;z-index:-1;width:100%;height:100%;fill:none}
 .jk-spec .rg circle,.jk-spec .rg path{stroke:rgba(255,255,255,.34);stroke-width:1}
-.jk-spec .c1{stroke:rgba(255,255,255,.30);stroke-width:1.2;stroke-dasharray:5 7}
-.jk-spec .c2{stroke:rgba(255,255,255,.22);stroke-width:1;stroke-dasharray:3 5}
-.jk-spec .cx{stroke:rgba(255,255,255,.30);stroke-width:1}
-.jk-spec .ld{stroke:rgba(255,255,255,.40);stroke-width:.8}
-.jk-spec .tx{font-family:var(--mono);font-size:9px;letter-spacing:.12em;fill:rgba(255,255,255,.62)}
+.jk-spec .gh-hub{stroke:rgba(255,255,255,.16);stroke-width:1}
+.jk-spec .gh-hole{stroke:rgba(255,255,255,.24);stroke-width:1.2;fill:rgba(255,255,255,.05)}
 .jk-spec .rl{stroke:rgba(255,255,255,.30);stroke-width:1}
 .jk-title{font-family:var(--display);font-weight:400;font-size:106px;line-height:.82;
   letter-spacing:-.035em;color:#f4f8ff}
