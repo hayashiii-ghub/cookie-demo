@@ -338,6 +338,20 @@ body{background:#050609;color:#fff;font-family:var(--sans);-webkit-font-smoothin
   transform:skewX(-16deg) translateX(var(--gloss,0px));will-change:transform;
   background:linear-gradient(90deg,transparent,rgba(255,255,255,.32) 42%,rgba(255,255,255,.06) 66%,transparent)}
 
+/* the hype sticker, on the shrink film. milky die-cut white (no backdrop-filter: a static
+   blur layer is idle GPU cost this reel already paid down once), a printed red ring — the
+   third pen finally gets a line on this face — and the reel's own numbers for copy. it
+   half-covers LOOK BOOK 02 below it: a sticker ignores the layout it lands on. */
+.hype{position:absolute;z-index:3;top:14px;right:20px;width:98px;height:98px;border-radius:50%;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;
+  pointer-events:none;transform:rotate(7deg);
+  background:linear-gradient(128deg,rgba(255,255,255,.93) 0%,rgba(244,248,255,.78) 55%,rgba(228,238,252,.85) 100%);
+  box-shadow:0 1.5px 5px rgba(8,18,50,.38), inset 0 0 0 2.5px rgba(255,255,255,.95),
+    inset 0 0 0 4.5px rgba(232,56,44,.78)}
+.hype .h-k{font-family:var(--mono);font-size:7.5px;letter-spacing:.22em;color:var(--pen);opacity:.72}
+.hype b{font-family:var(--display);font-weight:400;font-size:21px;line-height:1;color:var(--ink-red);letter-spacing:.01em}
+.hype .h-s{font-family:var(--mono);font-size:8.5px;letter-spacing:.1em;color:var(--pen)}
+
 /* what the burst left on the lid. z above .plastic because they are lying on the clear
    window, not sealed under it. opacity is a hard 0 or 1: JS cuts from the canvas crumbs. */
 .crumbs{position:absolute;inset:0;z-index:4;pointer-events:none;opacity:0}
