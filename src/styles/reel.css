@@ -24,7 +24,7 @@
   --pen:#16265e; --pen-light:#2f4796;
   --ink-red:#e8382c; --ink-pink:#ff2e88;
   --sky:#4aa6e8; --ink-orange:#d96a1e; --ink-purple:#8b74d2;
-  --ink-rose:#ee6ba6; --silver:#8a97a8; --gold:#dfae2c;
+  --ink-rose:#ee6ba6; --silver:#8a97a8; --gold:#dfae2c; --ink-green:#3fa04a;
   --hi:#ffd84d;
   --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
   --sans:"Pretendard",system-ui,-apple-system,"Helvetica Neue",sans-serif;
@@ -110,9 +110,15 @@ body{background:#050609;color:#fff;font-family:var(--sans);-webkit-font-smoothin
 .disc{border-radius:50%;--dsz:450px;width:var(--dsz);height:var(--dsz);
   /* the MV disc's centre: the hole reads as the cyc's own blue, and the matte label ring
      around it is WIDE — nearly a third of the radius, not the thin collar of a real CD.
-     8.5→18 (of the corner distance) is that ring; the grey step is the stamping ring. */
+     8.5→18 (of the corner distance) is that ring; the grey step is the stamping ring.
+     under it: the pressing's own grooves (hairline conic spokes — a burned disc is read
+     radially, and the close-up shows it), and two loose washes of pink and cyan where
+     the close-up's iridescence pools, low-left and high-right. */
   background:
     radial-gradient(circle at 50% 50%, #4f86dd 0 8.5%, #f5f9ff 8.5% 18%, #b9c6d8 18% 20.5%, transparent 20.5% 100%),
+    repeating-conic-gradient(from 3deg, rgba(255,255,255,.05) 0deg .35deg, rgba(130,150,180,.05) .35deg .7deg, transparent .7deg 1.4deg),
+    radial-gradient(58% 58% at 32% 78%, rgba(255,148,208,.24) 0%, rgba(255,148,208,0) 62%),
+    radial-gradient(52% 52% at 72% 28%, rgba(148,218,255,.20) 0%, rgba(148,218,255,0) 60%),
     conic-gradient(from 0deg,#cfd8e6,#f7d7ff,#d3f0ff,#fff6cf,#d8ffe6,#ffd9e6,#d7e2ff,#cfd8e6);
   box-shadow:0 30px 60px -18px rgba(5,20,70,.7), inset 0 0 0 2px rgba(255,255,255,.35);position:relative}
 /* JS rakes --sweep across the settle, so the highlight moves over the face once. a specular
@@ -149,7 +155,11 @@ body{background:#050609;color:#fff;font-family:var(--sans);-webkit-font-smoothin
   transform:translate(-50%,-50%)
     rotate(var(--ang,0deg)) translate(calc(var(--dsz) / 2 * var(--rad,0))) rotate(calc(-1 * var(--ang,0deg)))
     rotate(var(--tilt,0deg)) translate(var(--ox,0px));
-  font-weight:700;line-height:.9;transform-origin:center}
+  font-weight:700;line-height:.9;transform-origin:center;
+  /* every mark through the same displacement noise (#wob, defined beside the doodle):
+     fonts and SVG geometry are vector-crisp, and the MV's marks are anything but. the
+     filter runs before clip-path, so the wipe edge stays a wipe and only the ink shakes */
+  filter:url(#wob)}
 
 /* ---- the burn: every mark is DRAWN, never faded in ----
    --w (0→1) is the progress of one stroke, set per mark by JS.
@@ -167,10 +177,14 @@ body{background:#050609;color:#fff;font-family:var(--sans);-webkit-font-smoothin
 .d-njk,.d-nj,.d-att,.d-hype,.d-song,.d-cut{
   clip-path:inset(-45% calc((1 - var(--w,1)) * 128% - 14%) -45% -14%)}
 
-/* --- title stack, written across the top of the face like anyone with a marker --- */
-.d-nj{font-family:var(--marker)}
-/* Permanent Marker's ink sits right of its side bearings — nudge left for optical center */
-.d-nj{--ang:270deg;--rad:.575;--tilt:-6deg;--ox:-3px;font-size:50px;letter-spacing:-.015em;color:var(--ink-red);-webkit-text-stroke:1.5px var(--ink-pink)}
+/* --- title stack, written across the top of the face like anyone with a marker.
+   NEWJEANS rides an SVG arc now, because that is what the MV's does: the word follows
+   the disc's own top curve. the textPath carries the lettering; the arc path itself is
+   inline-styled stroke:none so the generic .doodle path rule cannot ink it. --- */
+.d-nj{--ang:270deg;--rad:.575;--tilt:-4deg;--ox:-3px}
+.d-nj svg{width:350px}
+.d-nj text{font-family:var(--marker);font-size:50px;letter-spacing:-.015em;
+  fill:var(--ink-red);stroke:var(--ink-pink);stroke-width:3;paint-order:stroke fill}
 /* Hangul sits on Nanum Pen (Permanent Marker is latin-only). Sky, not navy: on the MV
    disc the artist's hangul and the artist's latin are two different pens. */
 .d-njk{--ang:270deg;--rad:.833;--tilt:-2deg;font-size:24px;color:var(--sky);letter-spacing:.06em;
@@ -188,15 +202,28 @@ body{background:#050609;color:#fff;font-family:var(--sans);-webkit-font-smoothin
 .d-att{--ang:199deg;--rad:.615;--tilt:-9deg;font-size:20px;letter-spacing:.04em;color:var(--sky)}
 /* the underline is laid down by the same wipe that letters the word — one gesture.
    -3.4deg chases Permanent Marker's own upward drift so the swipe runs with the word,
-   not away from it */
+   not away from it. the MV's hand strikes twice, so there are two: the second shorter,
+   lower, and off at its own angle, the way a repeat stroke never lands on the first */
 .d-att::after{content:"";position:absolute;left:-2px;right:-5px;bottom:-9px;height:3.5px;
   background:currentColor;border-radius:2px;transform:rotate(-3.4deg)}
+.d-att::before{content:"";position:absolute;left:14px;right:-10px;bottom:-15px;height:3px;
+  background:currentColor;border-radius:2px;transform:rotate(-4.2deg)}
+/* the MV's HYPE BOY letters wander off blue toward green — one marker running out, or
+   two markers trading. a gradient clipped to the glyphs, with the box's own pen kept
+   for the outline, gets the drift without hand-colouring letters */
 .d-hype{--ang:341deg;--rad:.645;--tilt:5deg;font-size:23px;line-height:.95;text-align:center;
-  color:var(--sky);-webkit-text-stroke:1.1px var(--pen-light);paint-order:stroke fill;
+  background:linear-gradient(115deg,var(--sky) 0%,#3ab6c0 48%,#7bc24e 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  -webkit-text-stroke:1.1px var(--pen-light);
   border-color:var(--pen-light);padding:5px 10px 6px}
 /* the crown rides above the box, so the group clip needs the taller hat allowance */
 .d-song{--ang:58deg;--rad:.67;--tilt:4deg;font-size:20px;color:var(--ink-orange);
   clip-path:inset(-115% calc((1 - var(--w,1)) * 128% - 14%) -45% -14%)}
+/* the MV's box is gone over twice — a second border a hair off the first, fainter,
+   because the second pass of a marker always is */
+.d-song::before{content:"";position:absolute;inset:-3px -4px -4px -3px;
+  border:2.6px solid currentColor;border-radius:11px 8px 12px 9px;
+  transform:rotate(-1.3deg);opacity:.55}
 .d-song .crown{position:absolute;left:12%;top:-16px;width:30px;transform:rotate(-9deg)}
 .d-song .crown path{stroke-width:3}
 .d-cut{--ang:114deg;--rad:0.742;--tilt:-3deg;font-size:19px;letter-spacing:.01em;color:var(--pen)}
@@ -223,14 +250,18 @@ body{background:#050609;color:#fff;font-family:var(--sans);-webkit-font-smoothin
    per-mark `.d-x path` rule below, silently flattening their fill and stroke-width */
 .doodle path{fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
 /* HURT, written across the big rose star the way the MV disc carries it. The star is the
-   largest mark on the face and it is drawn first: the path spends the front .60 of --w,
-   then the lettering wipes through on the remainder — outline the shape, then letter it. */
+   largest mark on the face and it is drawn first: both outlines spend the front .60 of
+   --w, then the lettering wipes through on the remainder — outline the shape, then
+   letter it. The inner line is the MV's second pass, lighter and looser than the first;
+   the letters are OUTLINE letters, pale fill under a purple stroke, like the close-up. */
 .d-hurt{--ang:152deg;--rad:0.520;--tilt:-8deg;color:var(--ink-rose)}
 .d-hurt svg{width:104px}
 .d-hurt path{fill:#ffd9ea;stroke-width:2.2;
   stroke-dashoffset:calc(1 - clamp(0, var(--w,1) * 1.66, 1))}
+.d-hurt .inner{fill:none;stroke:#ff9fc7;stroke-width:1.6}
 .d-hurt i{position:absolute;left:50%;top:53%;transform:translate(-50%,-50%) rotate(-12deg);
-  font-family:var(--marker);font-style:normal;font-size:21px;letter-spacing:.02em;color:var(--ink-purple);
+  font-family:var(--marker);font-style:normal;font-size:22px;letter-spacing:.03em;
+  color:#efe9fb;-webkit-text-stroke:1.3px var(--ink-purple);
   clip-path:inset(-20% calc((1 - clamp(0, (var(--w,1) - .58) * 2.4, 1)) * 120% - 10%) -20% -10%)}
 /* the gem from the MV's top-left: gold outline, red scribble inside — two pens, one mark */
 .d-gem{--ang:212deg;--rad:0.840;--tilt:-10deg;color:var(--gold)}
@@ -246,28 +277,32 @@ body{background:#050609;color:#fff;font-family:var(--sans);-webkit-font-smoothin
 .d-spark{--ang:294deg;--rad:0.850;--tilt:18deg;color:var(--pen)}
 .d-spark svg{width:12px}
 .d-spark path{stroke-width:2.6}
-.d-smile{--ang:88deg;--rad:0.570;--tilt:5deg;color:var(--pen)}
+/* orange pen, like the close-up: the smiley is drawn with CÖOKIE's marker, not the navy */
+.d-smile{--ang:88deg;--rad:0.570;--tilt:5deg;color:#c96f1f}
 .d-smile svg{width:34px}
 .d-smile .face{fill:var(--hi);stroke:currentColor;stroke-width:2.6}
 .d-smile .dot{fill:currentColor;stroke:none}
 .d-smile .mouth{fill:none;stroke:currentColor;stroke-width:2.8}
-/* the block arrow points straight down as drawn; the curly one reads up-and-right at
-   about -25deg (and mirrored, up-and-left). the tilts aim each from where it sits at
+/* all three arrows are BLOCK arrows now, outlines around a body, because that is how
+   every arrow on the MV disc is built — nobody there draws a line with a head on it.
+   the blue one points straight down as drawn; the grey and rose ones are authored
+   pointing right and left with a bowed shaft. the tilts aim each from where it sits at
    what it annotates, so they only make sense alongside --ang / --rad */
 .d-arrow1{--ang:30deg;--rad:0.720;--tilt:-26deg;color:var(--pen-light)}   /* ↓ CÖOKIE */
 .d-arrow1 svg{width:28px}
 .d-arrow1 path{stroke-width:2.6}
-.d-arrow2{--ang:312deg;--rad:0.415;--tilt:28deg;color:var(--silver)}  /* → HYPE BOY */
-.d-arrow2 svg{width:44px}
-.d-arrow2 path{stroke-width:4.4}
+.d-arrow2{--ang:312deg;--rad:0.415;--tilt:20deg;color:var(--silver)}  /* → HYPE BOY */
+.d-arrow2 svg{width:46px}
+.d-arrow2 path{stroke-width:2.6;fill:#ccd5df}
 /* the big rose flourish under the star, flying out toward the rim like the MV's */
-.d-arrow3{--ang:140deg;--rad:0.840;--tilt:14deg;color:var(--ink-rose)}
-.d-arrow3 svg{width:52px;transform:scaleX(-1)}
-.d-arrow3 path{stroke-width:3.6}
+.d-arrow3{--ang:140deg;--rad:0.840;--tilt:6deg;color:var(--ink-rose)}
+.d-arrow3 svg{width:54px}
+.d-arrow3 path{stroke-width:2.8;fill:#ffd3e4}
 .d-flow{--ang:186deg;--rad:0.800;--tilt:-12deg;color:var(--ink-rose)}
 .d-flow svg{width:26px}
 .d-flow ellipse{fill:none;stroke:currentColor;stroke-width:2.6}
 .d-flow .fillc{fill:var(--hi);stroke:currentColor;stroke-width:2.2}
+.d-flow .leaf{fill:var(--ink-green);stroke:var(--ink-green);stroke-width:1.8}
 .d-heart{--ang:12deg;--rad:0.545;--tilt:-10deg;color:var(--ink-red)}
 .d-heart svg{width:22px}
 .d-heart path{fill:none;stroke:currentColor;stroke-width:3}
@@ -559,32 +594,31 @@ body{background:#050609;color:#fff;font-family:var(--sans);-webkit-font-smoothin
 @keyframes rec{50%{opacity:.2}}
 .topbar .shot{color:#fff;text-align:right;text-transform:uppercase;opacity:.92;transition:color .4s}
 
-/* STATION IDENT — set the way the MV sets its own: NEW/JEANS is two solid navy print
-   bars, top line light and italic with a small roundel hanging off it, bottom line heavy
-   and letter-spaced, the type knocked out in the cyclorama's blue. No glass, no blur, and
-   no shadow worth the name: the MV's logo is ink ON the video, not an object in the room,
-   and that flatness is the whole look. The moulded-plastic shell this replaces was the
-   reel's only live backdrop-filter; the compositor gets it back. */
+/* STATION IDENT — the MV's lockup, re-set letter for letter: ONE block behind one thin
+   keyline, a lit blue panel on top carrying big OUTLINE italic type with the little
+   ellipse hanging at its right edge (theirs says ADR; ours says which reel is on air),
+   and a near-black bar below with the heavy line set solid in cyclorama blue. Flat:
+   the MV's logo is ink ON the video, not an object in the room. The moulded-plastic
+   shell this replaces was the reel's only live backdrop-filter; the compositor gets
+   it back. */
 .bug{position:absolute;right:46px;top:76px;z-index:39;transform-origin:top right;
   opacity:0;will-change:transform,opacity}
-/* two bars, ragged right like the MV's: the stack aligns on its right edge under the
-   corner it broadcasts from */
-.bug .lz{display:flex;flex-direction:column;align-items:flex-end;gap:4px}
-.bug .n1,.bug .n2{display:flex;align-items:center;background:#152459;color:#9ccdf2;
-  border-radius:3px;box-shadow:inset 0 0 0 1px rgba(156,205,242,.22)}
-/* "y2k" is the NEW of the pair: the one italic on the monitor, one weight lighter in
-   feel because the mono's italic carries less ink at this size than the caps line below */
-.bug .n1{gap:9px;padding:5px 12px 7px;font-family:var(--mono);font-weight:700;font-style:italic;
-  font-size:34px;line-height:1;letter-spacing:.01em}
-/* the roundel where the MV hangs its ADR: ours says which reel is on air */
-.bug .n1::after{content:"02";width:19px;height:19px;flex:0 0 auto;display:grid;place-items:center;
-  border:1.5px solid currentColor;border-radius:50%;
-  font-style:normal;font-size:9.5px;font-weight:700;letter-spacing:0}
-.bug .n2{padding:7px 11px 8px;font-family:var(--mono);font-weight:700;font-size:19px;line-height:1;
-  letter-spacing:.13em;text-transform:uppercase;margin-right:0;
-  /* tracking leaves a trailing gap after the last glyph; pull the pad back so the ragged
-     right edge is the glyph's, not the tracking's */
-  padding-right:calc(11px - .13em)}
+.bug .lz{display:block;min-width:178px;border:1.5px solid rgba(158,205,246,.8);border-radius:3px;
+  overflow:hidden;box-shadow:0 3px 14px rgba(4,16,52,.32)}
+/* the NEW of the pair: outline caps on the lit panel. the stroke is the letter; the fill
+   is the panel's own blue one shade darker, like glass set into the print */
+.bug .n1{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:3px 9px 5px;
+  background:linear-gradient(180deg,#719fd8 0%,#4c7cbe 52%,#3a659f 100%);
+  font-family:var(--mono);font-weight:700;font-style:italic;font-size:37px;line-height:1;
+  letter-spacing:.02em;color:rgba(16,38,84,.34);-webkit-text-stroke:1.8px #cfe6fb}
+.bug .n1::after{content:"02";flex:0 0 auto;width:31px;height:17px;display:grid;place-items:center;
+  border:1.5px solid #cfe6fb;border-radius:50%;-webkit-text-stroke:0;color:#cfe6fb;
+  font-size:9px;font-weight:700;letter-spacing:.08em}
+/* the JEANS: solid, heavy, edge to edge on the dark bar. text-indent gives back what the
+   last glyph's tracking takes, so the centring is optical and not just arithmetic */
+.bug .n2{display:block;padding:6px 9px 7px;background:#0c142e;color:#a9cdf0;text-align:center;
+  font-family:var(--mono);font-weight:700;font-size:19px;line-height:1;
+  letter-spacing:.12em;text-transform:uppercase;text-indent:.12em}
 
 .scrubber{position:absolute;left:0;right:0;bottom:0;height:var(--bar);z-index:45;display:flex;align-items:center;gap:20px;pointer-events:auto;
   padding:0 30px;background:linear-gradient(180deg,rgba(6,6,10,0),rgba(6,6,10,.86) 40%);color:#fff;font-family:var(--mono)}
