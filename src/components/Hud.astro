@@ -1,0 +1,23 @@
+---
+// the monitor chrome: topbar, scroll hint, and the transport (play button, timecode,
+// slider). ids are the contract with util.js's $() lookups — rename in both places.
+---
+    <div class="topbar">
+      <div class="reel"><span class="dot"></span> COOKIE · 뉴진스 &nbsp;— &nbsp;REEL 02</div>
+      <div class="shot" id="shot">암전 · black</div>
+    </div>
+
+    <div class="hint" id="hint" aria-hidden="true">아래로 스크롤 · scroll to play <span class="arw">↓</span></div>
+
+    <div class="scrubber" role="region" aria-label="타임코드 스크러버 · 재생, 클릭이나 드래그로 이동">
+      <button class="playbtn" id="play" type="button" aria-label="재생" aria-pressed="false"><svg viewBox="0 0 24 24"><path d="M7 5 L19 12 L7 19 Z"/></svg></button>
+      <div class="tc"><span id="tc">2:13:00</span><small>2:13 → 2:20</small></div>
+      <!-- it looks like a slider and it drags like a slider, so it says it is one. valuenow is
+           a percentage of the reel; valuetext is the timecode, which is what a reader wants. -->
+      <div class="track-bar" id="bar" tabindex="0" role="slider"
+           aria-label="타임코드 · timecode" aria-orientation="horizontal"
+           aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-valuetext="2:13:00">
+        <div class="rail"></div><div class="fill" id="fill"></div>
+        <div class="cut" style="left:16%"></div><div class="marks" id="marks"></div><div class="head" id="head"></div>
+      </div>
+    </div>

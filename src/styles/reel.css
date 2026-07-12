@@ -1,4 +1,5 @@
-/* ---- fonts (self-hosted, no CDN) ---- */
+/* ---- fonts (self-hosted, no CDN; Pretendard and the korean files are subset to the
+        glyphs the page uses — see public/fonts/FONTS.md before adding new copy) ---- */
 @font-face{font-family:"Pretendard";font-weight:400;font-display:swap;src:url("/fonts/Pretendard-Regular.woff2") format("woff2");}
 @font-face{font-family:"Pretendard";font-weight:700;font-display:swap;src:url("/fonts/Pretendard-Bold.woff2") format("woff2");}
 /* HUD / timecode — industrial mono (replaces Space Mono's rounded "portfolio tech" look) */
