@@ -268,10 +268,12 @@ body{background:#050609;color:#fff;font-family:var(--sans);-webkit-font-smoothin
 .d-gem svg{width:66px}
 .d-gem .gem{stroke:var(--gold);stroke-width:3}
 .d-gem .scr{stroke:var(--ink-red);stroke-width:2.6}
-/* the small sparkle on the right edge is PINK in the close-up, and a four-point, not a five */
+/* the sparkle on the right edge is PINK in the close-up, and a four-point, not a five.
+   nothing on this face is small any more: every survivor lives in the same size world
+   as the track names, or it reads as a stray next to them */
 .d-star3{--ang:8deg;--rad:0.840;--tilt:14deg;color:var(--ink-rose)}
-.d-star3 svg{width:34px}
-.d-star3 path{stroke-width:2.6}
+.d-star3 svg{width:50px}
+.d-star3 path{stroke-width:2.4}
 /* orange pen, like the close-up: the smiley is drawn with CÖOKIE's marker, not the navy.
    it sits right over the box's crown, where the MV parks it */
 .d-smile{--ang:32deg;--rad:0.520;--tilt:5deg;color:#c96f1f}
@@ -296,22 +298,14 @@ body{background:#050609;color:#fff;font-family:var(--sans);-webkit-font-smoothin
 .d-arrow3 svg{width:108px}
 .d-arrow3 path{stroke-width:3;fill:#ffd3e4}
 .d-flow{--ang:186deg;--rad:0.800;--tilt:-12deg;color:var(--ink-rose)}
-.d-flow svg{width:44px}
+.d-flow svg{width:52px}
 .d-flow ellipse{fill:none;stroke:currentColor;stroke-width:2.6}
 .d-flow .fillc{fill:var(--hi);stroke:currentColor;stroke-width:2.2}
 .d-flow .leaf{fill:var(--ink-green);stroke:var(--ink-green);stroke-width:1.8}
 /* the heart scribble on the HURT star's shoulder — outline now, like the close-up's */
 .d-heart2{--ang:126deg;--rad:0.440;--tilt:14deg;color:var(--ink-pink)}
-.d-heart2 svg{width:30px}
-.d-heart2 path{fill:#ffd7e8;stroke:currentColor;stroke-width:2.4}
-/* the reel opens on a cookie and ends on this disc — the same object, twice.
-   worth the second highlighter fill; nothing else on the face earns one.
-   the two crumbs live inside this svg, not as their own mark: they have to sit
-   right against the cookie, which no separate span is allowed to do. */
-.d-cookie{--ang:232deg;--rad:0.460;--tilt:-8deg;color:var(--pen)}
-.d-cookie svg{width:64px}
-.d-cookie .crust{fill:var(--hi);stroke:currentColor;stroke-width:2.2}
-.d-cookie .chip,.d-cookie .crumb{fill:currentColor;stroke:none}
+.d-heart2 svg{width:44px}
+.d-heart2 path{fill:#ffd7e8;stroke:currentColor;stroke-width:2.2}
 
 /* ================================================================
    THE JEWEL CASE — 142 x 125 x 10mm, hinged on the left.

@@ -17,9 +17,8 @@ var lastP=0,lastPct=-1,lastTc='';
    letting out a dashoffset, lettering is wiped left→right the way a marker lays ink down.
    The order is the order you would work in — name who it is, then the track list the
    MV's own disc carries (ATTENTION, HYPE BOY, CÖOKIE, HURT, each arrow laid down just
-   before the word it points at), box the cut that is on it, then fill the gaps with
-   decoration. The cookie is drawn last, because it is the thing the reel opened on, and
-   closing the loop is the last thing you do. */
+   before the word it points at), box the cut that is on it, then the flourishes. The
+   last mark is the pink sparkle: the hand signs off with a flick, not a statement. */
 var MARKS=[
   ['d-njk',   0.580,0.050],  /* 뉴진스 — the first stroke, landing as the disc reaches its seat */
   ['d-nj',    0.608,0.068],  /* NEWJEANS, big, in red */
@@ -31,16 +30,15 @@ var MARKS=[
   ['d-song',  0.742,0.040],  /* CÖOKIE, crowned */
   ['d-cut',   0.758,0.034],  /* 2:13-2:20, the seven seconds */
   ['d-hurt',  0.772,0.046],  /* the big star, then HURT through it */
-  ['d-flow',  0.806,0.024],
-  ['d-heart2',0.816,0.016],  /* the scribble heart on the star's shoulder */
-  ['d-arrow3',0.822,0.026],  /* the rose flourish under the star */
-  ['d-smile', 0.830,0.024],
-  ['d-star3', 0.838,0.014],
-  ['d-cookie',0.844,0.042]
+  ['d-flow',  0.810,0.024],
+  ['d-heart2',0.822,0.018],  /* the scribble heart on the star's shoulder */
+  ['d-arrow3',0.830,0.026],  /* the rose flourish under the star */
+  ['d-smile', 0.842,0.024],
+  ['d-star3', 0.858,0.016]
 ];
 /* [node, start, end, the last --w written]. --w is read by stroke-dashoffset, fill-opacity
    and clip-path, so a single write invalidates every shape under that mark. A mark that has
-   not started, or has already finished, holds the same number for most of the reel: 16 marks
+   not started, or has already finished, holds the same number for most of the reel: 15 marks
    were being rewritten 60 times a second to say nothing. Write only what changed. */
 var mEl=MARKS.map(function(m){return [E.doodle.querySelector('.'+m[0]),m[1],m[1]+m[2],''];});
 var cutEl=E.doodle.querySelector('.d-cut'), lastHw='';
