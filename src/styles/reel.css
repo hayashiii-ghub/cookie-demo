@@ -199,34 +199,36 @@ body{background:#050609;color:#fff;font-family:var(--sans);-webkit-font-smoothin
    are the subject. --- */
 .d-att,.d-hype,.d-song,.d-cut{position:relative;font-family:var(--marker)}
 .d-hype,.d-song,.d-cut{border:3.2px solid currentColor;border-radius:9px 7px 10px 8px;padding:4px 11px 5px}
-.d-att{--ang:199deg;--rad:.615;--tilt:-9deg;font-size:20px;letter-spacing:.04em;color:var(--sky)}
+.d-att{--ang:199deg;--rad:.630;--tilt:-9deg;font-size:26px;letter-spacing:.01em;color:var(--sky)}
 /* the underline is laid down by the same wipe that letters the word — one gesture.
    -3.4deg chases Permanent Marker's own upward drift so the swipe runs with the word,
    not away from it. the MV's hand strikes twice, so there are two: the second shorter,
    lower, and off at its own angle, the way a repeat stroke never lands on the first */
-.d-att::after{content:"";position:absolute;left:-2px;right:-5px;bottom:-9px;height:3.5px;
+.d-att::after{content:"";position:absolute;left:-2px;right:-6px;bottom:-11px;height:4.5px;
   background:currentColor;border-radius:2px;transform:rotate(-3.4deg)}
-.d-att::before{content:"";position:absolute;left:14px;right:-10px;bottom:-15px;height:3px;
+.d-att::before{content:"";position:absolute;left:18px;right:-12px;bottom:-19px;height:4px;
   background:currentColor;border-radius:2px;transform:rotate(-4.2deg)}
 /* the MV's HYPE BOY letters wander off blue toward green — one marker running out, or
    two markers trading. a gradient clipped to the glyphs, with the box's own pen kept
    for the outline, gets the drift without hand-colouring letters */
-.d-hype{--ang:341deg;--rad:.645;--tilt:5deg;font-size:23px;line-height:.95;text-align:center;
+.d-hype{--ang:341deg;--rad:.645;--tilt:5deg;font-size:30px;line-height:.95;text-align:center;
   background:linear-gradient(115deg,var(--sky) 0%,#3ab6c0 48%,#7bc24e 100%);
   -webkit-background-clip:text;background-clip:text;color:transparent;
-  -webkit-text-stroke:1.1px var(--pen-light);
-  border-color:var(--pen-light);padding:5px 10px 6px}
+  -webkit-text-stroke:1.3px var(--pen-light);
+  border-color:var(--pen-light);padding:6px 12px 7px}
 /* the crown rides above the box, so the group clip needs the taller hat allowance */
-.d-song{--ang:58deg;--rad:.67;--tilt:4deg;font-size:20px;color:var(--ink-orange);
-  clip-path:inset(-115% calc((1 - var(--w,1)) * 128% - 14%) -45% -14%)}
+.d-song{--ang:60deg;--rad:.70;--tilt:4deg;font-size:25px;color:var(--ink-orange);
+  clip-path:inset(-115% calc((1 - var(--w,1)) * 128% - 14%) -45% -14%);padding:5px 12px 6px}
 /* the MV's box is gone over twice — a second border a hair off the first, fainter,
    because the second pass of a marker always is */
 .d-song::before{content:"";position:absolute;inset:-3px -4px -4px -3px;
   border:2.6px solid currentColor;border-radius:11px 8px 12px 9px;
   transform:rotate(-1.3deg);opacity:.55}
-.d-song .crown{position:absolute;left:12%;top:-16px;width:30px;transform:rotate(-9deg)}
+.d-song .crown{position:absolute;left:10%;top:-21px;width:40px;transform:rotate(-9deg)}
 .d-song .crown path{stroke-width:3}
-.d-cut{--ang:114deg;--rad:0.742;--tilt:-3deg;font-size:19px;letter-spacing:.01em;color:var(--pen)}
+/* a size DOWN from the track names on purpose: the archivist's note is precise, not loud.
+   bottom dead centre, the one stretch of rim the MV's hand left clear */
+.d-cut{--ang:92deg;--rad:0.800;--tilt:-3deg;font-size:20px;letter-spacing:.01em;color:var(--pen)}
 /* a highlighter stroke never lands square on the word it marks, and it is pulled through
    AFTER the box is closed — --hw runs on its own clock, a beat behind --w */
 .d-cut::before{content:"";position:absolute;inset:1px -5px 2px -7px;z-index:-1;
@@ -234,17 +236,14 @@ body{background:#050609;color:#fff;font-family:var(--sans);-webkit-font-smoothin
   transform:rotate(-1.4deg) skewX(-7deg) scaleX(var(--hw,1))}
 
 /* --- deco: pen strokes, not stickers.
-   Three rules keep this from turning back into confetti:
-   1. the marks that can point, point at something. The grey arrow hands you to HYPE BOY,
-      the blue one drops onto CÖOKIE, the rose flourish underlines the HURT star. An
-      arrow aimed at nothing is filler and reads as filler.
-   2. the field is uneven on purpose. The top of the face is where you write, so it stays
-      open either side of the title; the doodling piles up around the lower rim.
-   3. every mark sits on one of two rings — an outer one hugging the rim (--rad ~.75-.85)
-      and an inner one riding just clear of the label (~.40-.57). Both rings run the whole
-      way round. Filling only one side of the inner ring is what makes a disc look lopsided.
-   Scale carries the hierarchy, and it has to actually span: 12px cross → 104px star.
-   Marks repeat across that span (star/star3, heart/heart2) rather than all landing at 30px. --- */
+   The sizes are MEASURED off the MV close-up, as fractions of the disc's diameter, and
+   they are much bigger than instinct wants: the star is 29% of the disc, the pink arrow
+   24%, the gem 13%, the flower and the smiley near 10%. The MV face works because it is
+   FEW and BIG — fourteen marks that shoulder each other — not many and neat. So the
+   filler this file used to carry (asterisk, cross, spare heart, note, loop, squiggle)
+   is gone, and what remains is allowed to touch: the gem leans into NEWJEANS, the grey
+   arrow's tip reaches HYPE BOY's box, the smiley sits right on CÖOKIE's crown, exactly
+   the collisions the MV's own hand made. The marks that point still point at something. --- */
 .doodle svg{display:block;overflow:visible}
 /* `.doodle path`, not `.doodle svg path`: the extra type selector would out-specify every
    per-mark `.d-x path` rule below, silently flattening their fill and stroke-width */
@@ -255,78 +254,62 @@ body{background:#050609;color:#fff;font-family:var(--sans);-webkit-font-smoothin
    letter it. The inner line is the MV's second pass, lighter and looser than the first;
    the letters are OUTLINE letters, pale fill under a purple stroke, like the close-up. */
 .d-hurt{--ang:152deg;--rad:0.520;--tilt:-8deg;color:var(--ink-rose)}
-.d-hurt svg{width:104px}
+.d-hurt svg{width:146px}
 .d-hurt path{fill:#ffd9ea;stroke-width:2.2;
   stroke-dashoffset:calc(1 - clamp(0, var(--w,1) * 1.66, 1))}
 .d-hurt .inner{fill:none;stroke:#ff9fc7;stroke-width:1.6}
 .d-hurt i{position:absolute;left:50%;top:53%;transform:translate(-50%,-50%) rotate(-12deg);
-  font-family:var(--marker);font-style:normal;font-size:22px;letter-spacing:.03em;
-  color:#efe9fb;-webkit-text-stroke:1.3px var(--ink-purple);
+  font-family:var(--marker);font-style:normal;font-size:30px;letter-spacing:.03em;
+  color:#efe9fb;-webkit-text-stroke:1.6px var(--ink-purple);
   clip-path:inset(-20% calc((1 - clamp(0, (var(--w,1) - .58) * 2.4, 1)) * 120% - 10%) -20% -10%)}
-/* the gem from the MV's top-left: gold outline, red scribble inside — two pens, one mark */
-.d-gem{--ang:212deg;--rad:0.840;--tilt:-10deg;color:var(--gold)}
-.d-gem svg{width:40px}
-.d-gem .gem{stroke:var(--gold);stroke-width:2.8}
-.d-gem .scr{stroke:var(--ink-red);stroke-width:2.4}
-.d-star3{--ang:4deg;--rad:0.800;--tilt:14deg;color:var(--pen-light)}
-.d-star3 svg{width:15px}
-.d-star3 path{stroke-width:3.4}
-.d-star2{--ang:322deg;--rad:0.820;--tilt:12deg;color:var(--pen)}
-.d-star2 svg{width:30px}
-.d-star2 path{stroke-width:2.8}
-.d-spark{--ang:294deg;--rad:0.850;--tilt:18deg;color:var(--pen)}
-.d-spark svg{width:12px}
-.d-spark path{stroke-width:2.6}
-/* orange pen, like the close-up: the smiley is drawn with CÖOKIE's marker, not the navy */
-.d-smile{--ang:88deg;--rad:0.570;--tilt:5deg;color:#c96f1f}
-.d-smile svg{width:34px}
-.d-smile .face{fill:var(--hi);stroke:currentColor;stroke-width:2.6}
+/* the gem from the MV's top-left: gold outline, red scribble inside — two pens, one mark.
+   it leans into NEWJEANS's first letter, which is where the MV's hand tucked it */
+.d-gem{--ang:212deg;--rad:0.800;--tilt:-10deg;color:var(--gold)}
+.d-gem svg{width:66px}
+.d-gem .gem{stroke:var(--gold);stroke-width:3}
+.d-gem .scr{stroke:var(--ink-red);stroke-width:2.6}
+/* the small sparkle on the right edge is PINK in the close-up, and a four-point, not a five */
+.d-star3{--ang:8deg;--rad:0.840;--tilt:14deg;color:var(--ink-rose)}
+.d-star3 svg{width:34px}
+.d-star3 path{stroke-width:2.6}
+/* orange pen, like the close-up: the smiley is drawn with CÖOKIE's marker, not the navy.
+   it sits right over the box's crown, where the MV parks it */
+.d-smile{--ang:32deg;--rad:0.520;--tilt:5deg;color:#c96f1f}
+.d-smile svg{width:48px}
+.d-smile .face{fill:var(--hi);stroke:currentColor;stroke-width:2.8}
 .d-smile .dot{fill:currentColor;stroke:none}
-.d-smile .mouth{fill:none;stroke:currentColor;stroke-width:2.8}
+.d-smile .mouth{fill:none;stroke:currentColor;stroke-width:3}
 /* all three arrows are BLOCK arrows now, outlines around a body, because that is how
    every arrow on the MV disc is built — nobody there draws a line with a head on it.
    the blue one points straight down as drawn; the grey and rose ones are authored
    pointing right and left with a bowed shaft. the tilts aim each from where it sits at
    what it annotates, so they only make sense alongside --ang / --rad */
-.d-arrow1{--ang:30deg;--rad:0.720;--tilt:-26deg;color:var(--pen-light)}   /* ↓ CÖOKIE */
-.d-arrow1 svg{width:28px}
-.d-arrow1 path{stroke-width:2.6}
+.d-arrow1{--ang:34deg;--rad:0.740;--tilt:-26deg;color:var(--pen-light)}   /* ↓ CÖOKIE */
+.d-arrow1 svg{width:52px}
+.d-arrow1 path{stroke-width:2.8}
 .d-arrow2{--ang:312deg;--rad:0.415;--tilt:20deg;color:var(--silver)}  /* → HYPE BOY */
-.d-arrow2 svg{width:46px}
-.d-arrow2 path{stroke-width:2.6;fill:#ccd5df}
-/* the big rose flourish under the star, flying out toward the rim like the MV's */
-.d-arrow3{--ang:140deg;--rad:0.840;--tilt:6deg;color:var(--ink-rose)}
-.d-arrow3 svg{width:54px}
-.d-arrow3 path{stroke-width:2.8;fill:#ffd3e4}
+.d-arrow2 svg{width:72px}
+.d-arrow2 path{stroke-width:3;fill:#ccd5df}
+/* the big rose flourish rides right under the star, tip aimed at its bottom point —
+   the MV's 7 o'clock move, between HURT and the cut box */
+.d-arrow3{--ang:104deg;--rad:0.620;--tilt:10deg;color:var(--ink-rose)}
+.d-arrow3 svg{width:108px}
+.d-arrow3 path{stroke-width:3;fill:#ffd3e4}
 .d-flow{--ang:186deg;--rad:0.800;--tilt:-12deg;color:var(--ink-rose)}
-.d-flow svg{width:26px}
+.d-flow svg{width:44px}
 .d-flow ellipse{fill:none;stroke:currentColor;stroke-width:2.6}
 .d-flow .fillc{fill:var(--hi);stroke:currentColor;stroke-width:2.2}
 .d-flow .leaf{fill:var(--ink-green);stroke:var(--ink-green);stroke-width:1.8}
-.d-heart{--ang:12deg;--rad:0.545;--tilt:-10deg;color:var(--ink-red)}
-.d-heart svg{width:22px}
-.d-heart path{fill:none;stroke:currentColor;stroke-width:3}
-/* the two hearts echo across the disc: big + outline at 3 o'clock, small + solid
-   riding the HURT star's shoulder. same motif, opposite technique, opposite side. */
-.d-heart2{--ang:170deg;--rad:0.400;--tilt:12deg;color:var(--ink-pink)}
-.d-heart2 svg{width:13px}
-.d-heart2 path{fill:currentColor;stroke:none}
-.d-note{--ang:40deg;--rad:0.470;--tilt:-10deg;color:var(--pen)}
-.d-note svg{width:26px}
-.d-note path{stroke-width:2.4}
-.d-note .head{fill:currentColor;stroke:none}
-.d-loop{--ang:130deg;--rad:0.470;--tilt:-8deg;color:var(--pen-light)}
-.d-loop svg{width:24px}
-.d-loop path{stroke-width:2.6}
-.d-squig{--ang:168deg;--rad:0.800;--tilt:-22deg;color:var(--pen-light)}
-.d-squig svg{width:40px}
-.d-squig path{stroke-width:3.8}
+/* the heart scribble on the HURT star's shoulder — outline now, like the close-up's */
+.d-heart2{--ang:126deg;--rad:0.440;--tilt:14deg;color:var(--ink-pink)}
+.d-heart2 svg{width:30px}
+.d-heart2 path{fill:#ffd7e8;stroke:currentColor;stroke-width:2.4}
 /* the reel opens on a cookie and ends on this disc — the same object, twice.
    worth the second highlighter fill; nothing else on the face earns one.
    the two crumbs live inside this svg, not as their own mark: they have to sit
    right against the cookie, which no separate span is allowed to do. */
 .d-cookie{--ang:232deg;--rad:0.460;--tilt:-8deg;color:var(--pen)}
-.d-cookie svg{width:54px}
+.d-cookie svg{width:64px}
 .d-cookie .crust{fill:var(--hi);stroke:currentColor;stroke-width:2.2}
 .d-cookie .chip,.d-cookie .crumb{fill:currentColor;stroke:none}
 
