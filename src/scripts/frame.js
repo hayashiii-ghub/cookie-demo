@@ -15,36 +15,38 @@ var lastP=0,lastPct=-1,lastTc='';
 /* ===== the burn, in the order a hand would do it =====
    [class, start, duration] in timeline p. Nothing here fades in: SVG marks are drawn by
    letting out a dashoffset, lettering is wiped left→right the way a marker lays ink down.
-   The order is the order you would work in — name who it is, name the song (twice: the
-   disc is bilingual), box the cut that is on it, then fill the gaps with decoration. The
-   cookie is drawn last, because it is the thing the reel opened on, and closing the loop
-   is the last thing you do. */
+   The order is the order you would work in — name who it is, then the track list the
+   MV's own disc carries (ATTENTION, HYPE BOY, CÖOKIE, HURT, each arrow laid down just
+   before the word it points at), box the cut that is on it, then fill the gaps with
+   decoration. The cookie is drawn last, because it is the thing the reel opened on, and
+   closing the loop is the last thing you do. */
 var MARKS=[
   ['d-njk',   0.580,0.050],  /* 뉴진스 — the first stroke, landing as the disc reaches its seat */
   ['d-nj',    0.608,0.068],  /* NEWJEANS, big, in red */
-  ['d-bang',  0.662,0.022],
-  ['d-song',  0.672,0.036],  /* COOKIE */
-  ['d-arrow2',0.700,0.028],  /* → NEWJEANS */
-  ['d-kuki',  0.706,0.036],  /* 쿠키 */
-  ['d-arrow1',0.732,0.028],  /* → 쿠키 */
-  ['d-cut',   0.740,0.038],  /* 2:13-2:20, the seven seconds */
-  ['d-star',  0.762,0.034],
-  ['d-star2', 0.774,0.024],
-  ['d-heart', 0.778,0.024],
-  ['d-smile', 0.784,0.030],
-  ['d-star3', 0.786,0.016],
-  ['d-spark', 0.792,0.014],
-  ['d-heart2',0.796,0.016],
-  ['d-note',  0.800,0.024],
-  ['d-flow',  0.806,0.028],
-  ['d-squig', 0.812,0.020],
-  ['d-loop',  0.818,0.018],
-  ['d-yeah',  0.822,0.024],
-  ['d-cookie',0.826,0.046]
+  ['d-gem',   0.660,0.026],  /* the gold gem by the artist's name */
+  ['d-att',   0.672,0.034],  /* ATTENTION, underlined */
+  ['d-arrow2',0.700,0.022],  /* the grey hand-off → */
+  ['d-hype',  0.706,0.036],  /* HYPE BOY, boxed */
+  ['d-arrow1',0.728,0.022],  /* ↓ onto the song */
+  ['d-song',  0.734,0.038],  /* CÖOKIE, crowned */
+  ['d-cut',   0.748,0.034],  /* 2:13-2:20, the seven seconds */
+  ['d-hurt',  0.762,0.042],  /* the big star, then HURT through it */
+  ['d-flow',  0.796,0.020],
+  ['d-arrow3',0.800,0.024],  /* the rose flourish under the star */
+  ['d-star2', 0.804,0.016],
+  ['d-heart', 0.808,0.018],
+  ['d-smile', 0.812,0.024],
+  ['d-star3', 0.818,0.014],
+  ['d-spark', 0.822,0.012],
+  ['d-heart2',0.826,0.014],
+  ['d-note',  0.830,0.018],
+  ['d-squig', 0.834,0.016],
+  ['d-loop',  0.838,0.014],
+  ['d-cookie',0.842,0.044]
 ];
 /* [node, start, end, the last --w written]. --w is read by stroke-dashoffset, fill-opacity
    and clip-path, so a single write invalidates every shape under that mark. A mark that has
-   not started, or has already finished, holds the same number for most of the reel: 21 marks
+   not started, or has already finished, holds the same number for most of the reel: 22 marks
    were being rewritten 60 times a second to say nothing. Write only what changed. */
 var mEl=MARKS.map(function(m){return [E.doodle.querySelector('.'+m[0]),m[1],m[1]+m[2],''];});
 var cutEl=E.doodle.querySelector('.d-cut'), lastHw='';
@@ -128,11 +130,11 @@ export function frame(p){
     if(w!==m[3]){ m[3]=w; m[0].style.setProperty('--w', w); } }
   /* the highlighter is pulled through the cut after the box around it is closed:
      on this surface the seven seconds are the subject */
-  var hw=seg(p,0.780,0.808).toFixed(3);
+  var hw=seg(p,0.786,0.812).toFixed(3);
   if(hw!==lastHw){ lastHw=hw; cutEl.style.setProperty('--hw', hw); }
   /* the insert's two events, in reading order and with one hand: the red line goes under
      파랑, then the highlighter is pulled through "3 layout" — the same gesture the burn
-     repeats on the disc at 0.780, there through the timecode: the pen marks each
+     repeats on the disc at 0.786, there through the timecode: the pen marks each
      surface's subject. the camera is 99.8% landed by 0.49 (eOut), so the dwell
      effectively starts there. after the swipe the finished page holds for one beat
      (0.548-0.568, a breath at play speed) before B leaves for the disc: an insert has to

@@ -12,7 +12,7 @@
 #   canvas    an FNV-1a hash of every pixel of #cookie, at 14 points on the timeline
 #   crumbs    the 47 crumb canvases: their bakes, their sizes, and where they sit on the lid
 #   geometry  the transforms, opacities and rects of the case, lid, cover, disc and doodle
-#   marks     the --w each of the 21 doodle marks is holding, the disc highlighter's --hw,
+#   marks     the --w each of the 22 doodle marks is holding, the disc highlighter's --hw,
 #             and the booklet's live strokes (--uw underline, --lw highlighter)
 #   css       the RESOLVED backgroundImage of the four moulded surfaces
 #
@@ -69,7 +69,7 @@ capture() {
     # (no backslash-n anywhere below: zsh's echo would turn it into a real newline and split the JS.)
     echo "const bg = await page.evaluate(() => { const g=(sel,ps)=>{const e=document.querySelector(sel); return e? getComputedStyle(e, ps||null).backgroundImage : 'MISSING '+sel;}; const c=getComputedStyle(document.getElementById('case')); return { 'tray::before':g('.tray','::before'), 'r-hinge':g('.r-hinge'), 'spine.cover':g('.face.cover .spine'), 'spine.inside':g('.face.inside .spine'), 'case.size':c.width+' x '+c.height }; }); console.log('CSS ' + Object.keys(bg).length + ' surfaces')"; sleep 3
 
-    echo "const MARKS='d-njk d-nj d-bang d-song d-arrow2 d-kuki d-arrow1 d-cut d-star d-star2 d-heart d-smile d-star3 d-spark d-heart2 d-note d-flow d-squig d-loop d-yeah d-cookie'.split(' ')"; sleep 1
+    echo "const MARKS='d-njk d-nj d-gem d-att d-arrow2 d-hype d-arrow1 d-song d-cut d-hurt d-flow d-arrow3 d-star2 d-heart d-smile d-star3 d-spark d-heart2 d-note d-squig d-loop d-cookie'.split(' ')"; sleep 1
     echo "const probe = async (p) => page.evaluate(({p,MARKS}) => { const max=document.documentElement.scrollHeight-innerHeight; window.dispatchEvent(new WheelEvent('wheel')); scrollTo(0, Math.round(p*max)); return new Promise(res => requestAnimationFrame(() => requestAnimationFrame(() => { const cs=e=>getComputedStyle(e); const rect=e=>{const r=e.getBoundingClientRect(); return [r.x,r.y,r.width,r.height].map(v=>v.toFixed(2)).join(',');}; res({ p:p.toFixed(2), tc:document.getElementById('tc').textContent, canvas:window.__cv(document.getElementById('cookie')), caseT:document.getElementById('case').style.transform, caseO:document.getElementById('case').style.opacity, lidT:document.getElementById('lid').style.transform, gloss:cs(document.getElementById('cover')).getPropertyValue('--gloss').trim(), crumbsO:cs(document.getElementById('crumbs')).opacity, sweep:cs(document.getElementById('cd1')).getPropertyValue('--sweep').trim(), bgD:cs(document.getElementById('bgDark')).opacity, bgB:cs(document.getElementById('bgBlue')).opacity, rects:['case','lid','cover','cd1','doodle'].map(id=>id+'='+rect(document.getElementById(id))).join(' '), w:MARKS.map(m=>{const e=document.querySelector('.'+m); return m+':'+cs(e).getPropertyValue('--w').trim();}).join(' '), hw:cs(document.querySelector('.d-cut')).getPropertyValue('--hw').trim(), uw:cs(document.querySelector('.ib-ul')).getPropertyValue('--uw').trim(), lw:cs(document.querySelector('.tl li.on')).getPropertyValue('--lw').trim() }); }))); }, {p,MARKS})"; sleep 2
 
     # 0.2999 and 0.30 straddle the canvas -> DOM hand-off. the pair is the point.

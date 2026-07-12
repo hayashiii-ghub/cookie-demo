@@ -17,10 +17,14 @@
 
 :root{
   --tungsten:#e8a24a; --ember:#c9742b;
-  /* three pens on the desk, no more: a red marker, a navy marker, a yellow highlighter.
-     Every mark on the disc is drawn with one of them. */
+  /* the pen cup is the MV's own (2:13, the prop disc): a navy marker, a red one edged in
+     pink, a sky-blue for the hangul and ATTENTION, orange for CÖOKIE, purple for HURT,
+     rose for the star and the flourishes, a grey for the one utility arrow, gold and a
+     yellow highlighter. Every mark on the disc is drawn with one of these and no others. */
   --pen:#16265e; --pen-light:#2f4796;
   --ink-red:#e8382c; --ink-pink:#ff2e88;
+  --sky:#4aa6e8; --ink-orange:#d96a1e; --ink-purple:#8b74d2;
+  --ink-rose:#ee6ba6; --silver:#8a97a8; --gold:#dfae2c;
   --hi:#ffd84d;
   --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
   --sans:"Pretendard",system-ui,-apple-system,"Helvetica Neue",sans-serif;
@@ -59,13 +63,17 @@ body{background:#050609;color:#fff;font-family:var(--sans);-webkit-font-smoothin
 /* ---- backgrounds (cross-fade at the cut) ---- */
 .bg{position:absolute;inset:0;z-index:1;pointer-events:none;will-change:opacity}
 #bgDark{background:radial-gradient(120% 100% at 50% 50%, #0b0b0f 0%, #060608 58%, #030304 100%);}
-/* sampled from the real MV cyclorama: dark navy top corners, soft top-center light,
-   electric-blue mid, strong low-center floor spill, lighter floor — graduated 濃淡 */
+/* resampled against the MV frame itself (2:13, the dance hall): the cyc is a good deal
+   lighter and more saturated than the first pass had it — cornflower, not navy. The wall
+   meets the floor as a soft step around 84%, and the floor band keeps brightening right
+   down to the frame line, which is where the dancers' light is coming from. The corner
+   fall-off is there in the MV but shallow: it shades the frame, it does not box it in. */
 #bgBlue{opacity:0;background:
-  radial-gradient(78% 52% at 50% 97%, rgba(122,184,251,.95) 0%, rgba(96,156,238,.40) 40%, rgba(58,126,222,0) 70%),
-  radial-gradient(60% 42% at 50% 0%, rgba(84,150,240,.70) 0%, rgba(58,126,222,0) 60%),
-  radial-gradient(125% 98% at 50% 38%, rgba(44,97,171,0) 48%, rgba(30,72,140,.62) 100%),
-  linear-gradient(180deg, #2f68bd 0%, #3a7ede 46%, #4a86d6 100%);}
+  linear-gradient(180deg, rgba(163,203,255,0) 76%, rgba(163,203,255,.30) 85%, rgba(205,228,255,.55) 100%),
+  radial-gradient(84% 56% at 50% 100%, rgba(150,197,252,.90) 0%, rgba(104,163,240,.36) 44%, rgba(58,126,222,0) 72%),
+  radial-gradient(64% 44% at 50% 0%, rgba(104,164,244,.62) 0%, rgba(58,126,222,0) 60%),
+  radial-gradient(128% 100% at 50% 40%, rgba(38,88,164,0) 58%, rgba(24,60,124,.40) 100%),
+  linear-gradient(180deg, #3a70c8 0%, #4c85de 44%, #619ae8 100%);}
 
 /* above the stage, not below it: the giant cookie has to cover the closed case, and the
    crumbs have to land ON its lid. the canvas is cleared outside 0.05<p<0.56 either way. */
@@ -78,8 +86,10 @@ body{background:#050609;color:#fff;font-family:var(--sans);-webkit-font-smoothin
   background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
   will-change:transform;animation:grain .9s steps(5) infinite;}
 @keyframes grain{0%{transform:translate(0,0)}20%{transform:translate(-13px,8px)}40%{transform:translate(9px,-14px)}60%{transform:translate(-8px,-6px)}80%{transform:translate(12px,10px)}100%{transform:translate(0,0)}}
+/* .38, not .52: the brighter MV cyc reads through a lighter vignette, and the heavier one
+   was most of why the blue looked navy */
 .vig{position:absolute;inset:0;pointer-events:none;z-index:59;
-  background:radial-gradient(125% 92% at 50% 42%,transparent 55%,rgba(4,10,40,.52) 100%);}
+  background:radial-gradient(125% 92% at 50% 42%,transparent 55%,rgba(4,10,40,.38) 100%);}
 
 /* ---- scroll length spacer (invisible; the visible stage is the fixed #box) ---- */
 .track{height:440vh}
@@ -98,8 +108,11 @@ body{background:#050609;color:#fff;font-family:var(--sans);-webkit-font-smoothin
 
 /* ---- discs (sizes are px in the 1200x900 stage) ---- */
 .disc{border-radius:50%;--dsz:450px;width:var(--dsz);height:var(--dsz);
+  /* the MV disc's centre: the hole reads as the cyc's own blue, and the matte label ring
+     around it is WIDE — nearly a third of the radius, not the thin collar of a real CD.
+     8.5→18 (of the corner distance) is that ring; the grey step is the stamping ring. */
   background:
-    radial-gradient(circle at 50% 50%, #6fa8ff 0 8.5%, #ffffff 8.5% 15%, #a9bfd8 15% 18%, transparent 18% 100%),
+    radial-gradient(circle at 50% 50%, #4f86dd 0 8.5%, #f5f9ff 8.5% 18%, #b9c6d8 18% 20.5%, transparent 20.5% 100%),
     conic-gradient(from 0deg,#cfd8e6,#f7d7ff,#d3f0ff,#fff6cf,#d8ffe6,#ffd9e6,#d7e2ff,#cfd8e6);
   box-shadow:0 30px 60px -18px rgba(5,20,70,.7), inset 0 0 0 2px rgba(255,255,255,.35);position:relative}
 /* JS rakes --sweep across the settle, so the highlight moves over the face once. a specular
@@ -151,29 +164,42 @@ body{background:#050609;color:#fff;font-family:var(--sans);-webkit-font-smoothin
 .doodle svg path,.doodle svg circle,.doodle svg ellipse{
   stroke-dasharray:1;stroke-dashoffset:calc(1 - var(--w,1));
   fill-opacity:clamp(0,(var(--w,1) - .70) * 3.4,1)}
-.d-njk,.d-nj,.d-song,.d-kuki,.d-cut,.d-bang,.d-yeah{
+.d-njk,.d-nj,.d-att,.d-hype,.d-song,.d-cut{
   clip-path:inset(-45% calc((1 - var(--w,1)) * 128% - 14%) -45% -14%)}
 
 /* --- title stack, written across the top of the face like anyone with a marker --- */
-.d-nj,.d-bang,.d-yeah{font-family:var(--marker)}
+.d-nj{font-family:var(--marker)}
 /* Permanent Marker's ink sits right of its side bearings — nudge left for optical center */
 .d-nj{--ang:270deg;--rad:.575;--tilt:-6deg;--ox:-3px;font-size:50px;letter-spacing:-.015em;color:var(--ink-red);-webkit-text-stroke:1.5px var(--ink-pink)}
-/* Hangul sits on Nanum Pen (Permanent Marker is latin-only) */
-.d-njk{--ang:270deg;--rad:.833;--tilt:-2deg;font-size:24px;color:var(--pen);letter-spacing:.06em;
-  -webkit-text-stroke:.8px var(--pen);paint-order:stroke fill}
+/* Hangul sits on Nanum Pen (Permanent Marker is latin-only). Sky, not navy: on the MV
+   disc the artist's hangul and the artist's latin are two different pens. */
+.d-njk{--ang:270deg;--rad:.833;--tilt:-2deg;font-size:24px;color:var(--sky);letter-spacing:.06em;
+  -webkit-text-stroke:.8px var(--sky);paint-order:stroke fill}
 
-/* --- the label set: the song, the song in hangul, and the cut that is on the disc.
-   one pen, one box, one common rim margin, so they read as a set. the angles are
-   deliberately off the 120° thirds — a clean trisection reads as a pie chart, and
-   nobody hand-letters a disc that evenly. the cut carries the highlighter: on this
-   surface the seven seconds are the subject. --- */
-.d-song,.d-kuki,.d-cut{position:relative;font-family:var(--marker);color:var(--pen);
-  border:3.2px solid currentColor;border-radius:9px 7px 10px 8px;padding:4px 11px 5px}
-.d-song{--ang:200deg;--rad:.655;--tilt:-11deg;font-size:21px}
-/* hangul falls through Permanent Marker to Nanum Pen — same inking as 뉴진스 above */
-.d-kuki{--ang:344deg;--rad:.672;--tilt:6deg;font-size:26px;letter-spacing:.06em;
-  -webkit-text-stroke:.8px var(--pen);paint-order:stroke fill;padding:2px 11px 3px}
-.d-cut{--ang:114deg;--rad:0.742;--tilt:-3deg;font-size:19px;letter-spacing:.01em}
+/* --- the track list, the way the MV's own disc carries it: four singles, four pens.
+   ATTENTION unboxed with the underline; HYPE BOY boxed in blue; CÖOKIE boxed in orange
+   under its crown; HURT written across the big star (down in the deco block, where the
+   star lives). the angles are deliberately off the clean fractions — nobody hand-letters
+   a disc that evenly. the cut box is ours, not the MV's: the one annotation the archivist
+   adds, and it still carries the highlighter, because on this surface the seven seconds
+   are the subject. --- */
+.d-att,.d-hype,.d-song,.d-cut{position:relative;font-family:var(--marker)}
+.d-hype,.d-song,.d-cut{border:3.2px solid currentColor;border-radius:9px 7px 10px 8px;padding:4px 11px 5px}
+.d-att{--ang:199deg;--rad:.615;--tilt:-9deg;font-size:20px;letter-spacing:.04em;color:var(--sky)}
+/* the underline is laid down by the same wipe that letters the word — one gesture.
+   -3.4deg chases Permanent Marker's own upward drift so the swipe runs with the word,
+   not away from it */
+.d-att::after{content:"";position:absolute;left:-2px;right:-5px;bottom:-9px;height:3.5px;
+  background:currentColor;border-radius:2px;transform:rotate(-3.4deg)}
+.d-hype{--ang:341deg;--rad:.645;--tilt:5deg;font-size:23px;line-height:.95;text-align:center;
+  color:var(--sky);-webkit-text-stroke:1.1px var(--pen-light);paint-order:stroke fill;
+  border-color:var(--pen-light);padding:5px 10px 6px}
+/* the crown rides above the box, so the group clip needs the taller hat allowance */
+.d-song{--ang:58deg;--rad:.67;--tilt:4deg;font-size:20px;color:var(--ink-orange);
+  clip-path:inset(-115% calc((1 - var(--w,1)) * 128% - 14%) -45% -14%)}
+.d-song .crown{position:absolute;left:12%;top:-16px;width:30px;transform:rotate(-9deg)}
+.d-song .crown path{stroke-width:3}
+.d-cut{--ang:114deg;--rad:0.742;--tilt:-3deg;font-size:19px;letter-spacing:.01em;color:var(--pen)}
 /* a highlighter stroke never lands square on the word it marks, and it is pulled through
    AFTER the box is closed — --hw runs on its own clock, a beat behind --w */
 .d-cut::before{content:"";position:absolute;inset:1px -5px 2px -7px;z-index:-1;
@@ -182,24 +208,36 @@ body{background:#050609;color:#fff;font-family:var(--sans);-webkit-font-smoothin
 
 /* --- deco: pen strokes, not stickers.
    Three rules keep this from turning back into confetti:
-   1. the marks that can point, point at something. The red arrow aims at NEWJEANS, the
-      navy one at 쿠키. An arrow aimed at nothing is filler and reads as filler.
+   1. the marks that can point, point at something. The grey arrow hands you to HYPE BOY,
+      the blue one drops onto CÖOKIE, the rose flourish underlines the HURT star. An
+      arrow aimed at nothing is filler and reads as filler.
    2. the field is uneven on purpose. The top of the face is where you write, so it stays
       open either side of the title; the doodling piles up around the lower rim.
-   3. every mark sits on one of two rings — an outer one hugging the rim (--rad ~.75-.83)
-      and an inner one riding just clear of the hub (~.42-.53). Both rings run the whole
+   3. every mark sits on one of two rings — an outer one hugging the rim (--rad ~.75-.85)
+      and an inner one riding just clear of the label (~.40-.57). Both rings run the whole
       way round. Filling only one side of the inner ring is what makes a disc look lopsided.
-   Scale carries the hierarchy, and it has to actually span: 12px cross → 48px star.
+   Scale carries the hierarchy, and it has to actually span: 12px cross → 104px star.
    Marks repeat across that span (star/star3, heart/heart2) rather than all landing at 30px. --- */
 .doodle svg{display:block;overflow:visible}
 /* `.doodle path`, not `.doodle svg path`: the extra type selector would out-specify every
    per-mark `.d-x path` rule below, silently flattening their fill and stroke-width */
 .doodle path{fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
-/* the one filled sticker on the disc — it can afford to be, nothing else competes */
-.d-star{--ang:178deg;--rad:0.500;--tilt:-14deg;color:var(--pen)}
-.d-star svg{width:48px}
-.d-star path{fill:var(--hi);stroke-width:2.4}
-.d-star3{--ang:314deg;--rad:0.520;--tilt:14deg;color:var(--pen)}
+/* HURT, written across the big rose star the way the MV disc carries it. The star is the
+   largest mark on the face and it is drawn first: the path spends the front .60 of --w,
+   then the lettering wipes through on the remainder — outline the shape, then letter it. */
+.d-hurt{--ang:152deg;--rad:0.520;--tilt:-8deg;color:var(--ink-rose)}
+.d-hurt svg{width:104px}
+.d-hurt path{fill:#ffd9ea;stroke-width:2.2;
+  stroke-dashoffset:calc(1 - clamp(0, var(--w,1) * 1.66, 1))}
+.d-hurt i{position:absolute;left:50%;top:53%;transform:translate(-50%,-50%) rotate(-12deg);
+  font-family:var(--marker);font-style:normal;font-size:21px;letter-spacing:.02em;color:var(--ink-purple);
+  clip-path:inset(-20% calc((1 - clamp(0, (var(--w,1) - .58) * 2.4, 1)) * 120% - 10%) -20% -10%)}
+/* the gem from the MV's top-left: gold outline, red scribble inside — two pens, one mark */
+.d-gem{--ang:212deg;--rad:0.840;--tilt:-10deg;color:var(--gold)}
+.d-gem svg{width:40px}
+.d-gem .gem{stroke:var(--gold);stroke-width:2.8}
+.d-gem .scr{stroke:var(--ink-red);stroke-width:2.4}
+.d-star3{--ang:4deg;--rad:0.800;--tilt:14deg;color:var(--pen-light)}
 .d-star3 svg{width:15px}
 .d-star3 path{stroke-width:3.4}
 .d-star2{--ang:322deg;--rad:0.820;--tilt:12deg;color:var(--pen)}
@@ -208,20 +246,25 @@ body{background:#050609;color:#fff;font-family:var(--sans);-webkit-font-smoothin
 .d-spark{--ang:294deg;--rad:0.850;--tilt:18deg;color:var(--pen)}
 .d-spark svg{width:12px}
 .d-spark path{stroke-width:2.6}
-.d-smile{--ang:84deg;--rad:0.775;--tilt:5deg;color:var(--pen)}
+.d-smile{--ang:88deg;--rad:0.570;--tilt:5deg;color:var(--pen)}
 .d-smile svg{width:34px}
 .d-smile .face{fill:var(--hi);stroke:currentColor;stroke-width:2.6}
 .d-smile .dot{fill:currentColor;stroke:none}
 .d-smile .mouth{fill:none;stroke:currentColor;stroke-width:2.8}
-/* the svg arrow reads up-and-right at about -25deg; the tilts below aim it from where it
-   sits at what it annotates, so they only make sense alongside --ang / --rad */
-.d-arrow1{--ang:16deg;--rad:0.750;--tilt:-76deg;color:var(--pen)}   /* → COLOR */
-.d-arrow1 svg{width:34px}
-.d-arrow1 path{stroke-width:3}
-.d-arrow2{--ang:232deg;--rad:0.425;--tilt:-18deg;color:var(--ink-red)}  /* → NEWJEANS */
-.d-arrow2 svg{width:30px}
-.d-arrow2 path{stroke-width:3.2}
-.d-flow{--ang:140deg;--rad:0.780;--tilt:-12deg;color:var(--pen)}
+/* the block arrow points straight down as drawn; the curly one reads up-and-right at
+   about -25deg (and mirrored, up-and-left). the tilts aim each from where it sits at
+   what it annotates, so they only make sense alongside --ang / --rad */
+.d-arrow1{--ang:30deg;--rad:0.720;--tilt:-26deg;color:var(--pen-light)}   /* ↓ CÖOKIE */
+.d-arrow1 svg{width:28px}
+.d-arrow1 path{stroke-width:2.6}
+.d-arrow2{--ang:312deg;--rad:0.415;--tilt:28deg;color:var(--silver)}  /* → HYPE BOY */
+.d-arrow2 svg{width:44px}
+.d-arrow2 path{stroke-width:4.4}
+/* the big rose flourish under the star, flying out toward the rim like the MV's */
+.d-arrow3{--ang:140deg;--rad:0.840;--tilt:14deg;color:var(--ink-rose)}
+.d-arrow3 svg{width:52px;transform:scaleX(-1)}
+.d-arrow3 path{stroke-width:3.6}
+.d-flow{--ang:186deg;--rad:0.800;--tilt:-12deg;color:var(--ink-rose)}
 .d-flow svg{width:26px}
 .d-flow ellipse{fill:none;stroke:currentColor;stroke-width:2.6}
 .d-flow .fillc{fill:var(--hi);stroke:currentColor;stroke-width:2.2}
@@ -229,8 +272,8 @@ body{background:#050609;color:#fff;font-family:var(--sans);-webkit-font-smoothin
 .d-heart svg{width:22px}
 .d-heart path{fill:none;stroke:currentColor;stroke-width:3}
 /* the two hearts echo across the disc: big + outline at 3 o'clock, small + solid
-   opposite it. same motif, opposite technique, opposite side. */
-.d-heart2{--ang:152deg;--rad:0.475;--tilt:12deg;color:var(--ink-red)}
+   riding the HURT star's shoulder. same motif, opposite technique, opposite side. */
+.d-heart2{--ang:170deg;--rad:0.400;--tilt:12deg;color:var(--ink-pink)}
 .d-heart2 svg{width:13px}
 .d-heart2 path{fill:currentColor;stroke:none}
 .d-note{--ang:40deg;--rad:0.470;--tilt:-10deg;color:var(--pen)}
@@ -247,12 +290,10 @@ body{background:#050609;color:#fff;font-family:var(--sans);-webkit-font-smoothin
    worth the second highlighter fill; nothing else on the face earns one.
    the two crumbs live inside this svg, not as their own mark: they have to sit
    right against the cookie, which no separate span is allowed to do. */
-.d-cookie{--ang:40deg;--rad:0.760;--tilt:-8deg;color:var(--pen)}
+.d-cookie{--ang:232deg;--rad:0.460;--tilt:-8deg;color:var(--pen)}
 .d-cookie svg{width:54px}
 .d-cookie .crust{fill:var(--hi);stroke:currentColor;stroke-width:2.2}
 .d-cookie .chip,.d-cookie .crumb{fill:currentColor;stroke:none}
-.d-bang{--ang:222deg;--rad:0.825;--tilt:-20deg;font-size:30px;color:var(--ink-red)}
-.d-yeah{--ang:62deg;--rad:0.640;--tilt:10deg;font-size:17px;letter-spacing:.02em;color:var(--pen)}
 
 /* ================================================================
    THE JEWEL CASE — 142 x 125 x 10mm, hinged on the left.
@@ -518,48 +559,32 @@ body{background:#050609;color:#fff;font-family:var(--sans);-webkit-font-smoothin
 @keyframes rec{50%{opacity:.2}}
 .topbar .shot{color:#fff;text-align:right;text-transform:uppercase;opacity:.92;transition:color .4s}
 
-/* STATION IDENT — moulded clear plastic, not a printed plate.
-   The stage's blue comes THROUGH it, and what you see inside is the moulding itself: the same
-   ribs the jewel case's tray and spine are cut with, which is where this reel's plastic is from.
-   Clear plastic casts a thinner, bluer shadow than a painted sign, because most of the light
-   goes on through it. */
+/* STATION IDENT — set the way the MV sets its own: NEW/JEANS is two solid navy print
+   bars, top line light and italic with a small roundel hanging off it, bottom line heavy
+   and letter-spaced, the type knocked out in the cyclorama's blue. No glass, no blur, and
+   no shadow worth the name: the MV's logo is ink ON the video, not an object in the room,
+   and that flatness is the whole look. The moulded-plastic shell this replaces was the
+   reel's only live backdrop-filter; the compositor gets it back. */
 .bug{position:absolute;right:46px;top:76px;z-index:39;transform-origin:top right;
-  filter:drop-shadow(0 12px 20px rgba(4,18,60,.40));opacity:0;will-change:transform,opacity}
-/* one backdrop-filter on one element. the lid's 47 compositing layers taught us to count them,
-   and this is the reel's only live blur. */
-.bug .lz{position:relative;overflow:hidden;padding:12px 22px 14px;border-radius:16px;
-  border:1.5px solid rgba(214,234,255,.6);
-  background:linear-gradient(180deg,rgba(214,236,255,.22) 0%,rgba(120,175,240,.12) 46%,rgba(16,52,140,.30) 100%),
-    repeating-linear-gradient(180deg,rgba(210,232,255,.10) 0 3px,transparent 3px 11px);
-  -webkit-backdrop-filter:blur(7px) saturate(1.6);backdrop-filter:blur(7px) saturate(1.6);
-  /* the thick edge of a moulding. light pools along the inside of the top wall; the bottom wall
-     turns away from it and goes dark. the side walls carry a little of each. */
-  box-shadow:inset 0 1.5px 0 rgba(255,255,255,.7),
-    inset 0 -2px 3px rgba(10,30,90,.34),
-    inset 2px 0 4px rgba(255,255,255,.13),
-    inset -2px 0 4px rgba(10,30,90,.18)}
-/* the sheen is ON the surface, so it curves the way the surface does, not the way a box does */
-.bug .lz::before{content:"";position:absolute;left:4%;right:4%;top:3%;height:42%;pointer-events:none;
-  border-radius:12px 12px 60% 60%/12px 12px 26% 26%;
-  background:linear-gradient(180deg,rgba(255,255,255,.7),rgba(255,255,255,.05))}
-/* two dimples on the diagonal, where a shell like this is screwed together */
-.bug .lz::after{content:"";position:absolute;inset:0;pointer-events:none;
-  background:radial-gradient(circle 3.4px at 12px calc(100% - 12px),rgba(8,26,80,.34) 0 42%,rgba(255,255,255,.34) 56%,transparent 72%),
-    radial-gradient(circle 3.4px at calc(100% - 12px) 12px,rgba(8,26,80,.34) 0 42%,rgba(255,255,255,.34) 56%,transparent 72%)}
-/* "y2k" has a descender and "NEW" did not, so .84 would have dropped the y into the line below.
-   1.0 gives the tail its room without moving the cap line. */
-/* if the shell is the clear part, the lettering has to be the solid one, or it dissolves into
-   whatever is passing behind. It is the cover's navy, pressed into the plastic: a lit lower lip
-   where the light that got through the shell catches the bottom of each stroke. */
-.bug .n1{display:block;position:relative;font-family:var(--mono);font-weight:700;font-style:italic;
-  font-size:42px;line-height:1;letter-spacing:.01em;color:#0d2a70;
-  text-shadow:0 1px 0 rgba(255,255,255,.62),0 -1px 1px rgba(4,18,60,.35)}
-/* the lower line sets the plate's width: nine characters where there were five. Loosening it to
-   .155em would have stretched the ident half again as wide as the corner it sits in.
-   tracking leaves a trailing gap after the last glyph, which would widen the plate on the right only */
-.bug .n2{display:block;position:relative;margin-top:1px;margin-right:-.1em;font-family:var(--mono);
-  font-weight:700;font-size:19px;letter-spacing:.1em;color:#0f2f7a;
-  text-shadow:0 1px 0 rgba(255,255,255,.5)}
+  opacity:0;will-change:transform,opacity}
+/* two bars, ragged right like the MV's: the stack aligns on its right edge under the
+   corner it broadcasts from */
+.bug .lz{display:flex;flex-direction:column;align-items:flex-end;gap:4px}
+.bug .n1,.bug .n2{display:flex;align-items:center;background:#152459;color:#9ccdf2;
+  border-radius:3px;box-shadow:inset 0 0 0 1px rgba(156,205,242,.22)}
+/* "y2k" is the NEW of the pair: the one italic on the monitor, one weight lighter in
+   feel because the mono's italic carries less ink at this size than the caps line below */
+.bug .n1{gap:9px;padding:5px 12px 7px;font-family:var(--mono);font-weight:700;font-style:italic;
+  font-size:34px;line-height:1;letter-spacing:.01em}
+/* the roundel where the MV hangs its ADR: ours says which reel is on air */
+.bug .n1::after{content:"02";width:19px;height:19px;flex:0 0 auto;display:grid;place-items:center;
+  border:1.5px solid currentColor;border-radius:50%;
+  font-style:normal;font-size:9.5px;font-weight:700;letter-spacing:0}
+.bug .n2{padding:7px 11px 8px;font-family:var(--mono);font-weight:700;font-size:19px;line-height:1;
+  letter-spacing:.13em;text-transform:uppercase;margin-right:0;
+  /* tracking leaves a trailing gap after the last glyph; pull the pad back so the ragged
+     right edge is the glyph's, not the tracking's */
+  padding-right:calc(11px - .13em)}
 
 .scrubber{position:absolute;left:0;right:0;bottom:0;height:var(--bar);z-index:45;display:flex;align-items:center;gap:20px;pointer-events:auto;
   padding:0 30px;background:linear-gradient(180deg,rgba(6,6,10,0),rgba(6,6,10,.86) 40%);color:#fff;font-family:var(--mono)}
