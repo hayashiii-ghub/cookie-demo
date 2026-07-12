@@ -174,7 +174,7 @@ body{background:#050609;color:#fff;font-family:var(--sans);-webkit-font-smoothin
 .doodle svg path,.doodle svg circle,.doodle svg ellipse{
   stroke-dasharray:1;stroke-dashoffset:calc(1 - var(--w,1));
   fill-opacity:clamp(0,(var(--w,1) - .70) * 3.4,1)}
-.d-njk,.d-nj,.d-att,.d-hype,.d-song,.d-cut{
+.d-njk,.d-nj,.d-att,.d-type,.d-color,.d-cut{
   clip-path:inset(-45% calc((1 - var(--w,1)) * 128% - 14%) -45% -14%)}
 
 /* --- title stack, written across the top of the face like anyone with a marker.
@@ -190,15 +190,15 @@ body{background:#050609;color:#fff;font-family:var(--sans);-webkit-font-smoothin
 .d-njk{--ang:270deg;--rad:.833;--tilt:-2deg;font-size:24px;color:var(--sky);letter-spacing:.06em;
   -webkit-text-stroke:.8px var(--sky);paint-order:stroke fill}
 
-/* --- the track list, the way the MV's own disc carries it: four singles, four pens.
-   ATTENTION unboxed with the underline; HYPE BOY boxed in blue; CÖOKIE boxed in orange
-   under its crown; HURT written across the big star (down in the deco block, where the
-   star lives). the angles are deliberately off the clean fractions — nobody hand-letters
-   a disc that evenly. the cut box is ours, not the MV's: the one annotation the archivist
-   adds, and it still carries the highlighter, because on this surface the seven seconds
-   are the subject. --- */
-.d-att,.d-hype,.d-song,.d-cut{position:relative;font-family:var(--marker)}
-.d-hype,.d-song,.d-cut{border:3.2px solid currentColor;border-radius:9px 7px 10px 8px;padding:4px 11px 5px}
+/* --- the reel's own vocabulary, written in the MV's hands. The disc borrows the marks
+   the MV drew for its track list, but what they say is what the booklet says: TYPE in
+   HYPE BOY's blue box, COLOR in CÖOKIE's crowned orange box, LAYOUT across the big
+   star where HURT was. ATTENTION keeps its name — it is an instruction as much as a
+   title. the angles are deliberately off the clean fractions — nobody hand-letters a
+   disc that evenly. the cut box is the archivist's one annotation, and it still
+   carries the highlighter, because on this surface the seven seconds are the subject. --- */
+.d-att,.d-type,.d-color,.d-cut{position:relative;font-family:var(--marker)}
+.d-type,.d-color,.d-cut{border:3.2px solid currentColor;border-radius:9px 7px 10px 8px;padding:4px 11px 5px}
 .d-att{--ang:199deg;--rad:.630;--tilt:-9deg;font-size:26px;letter-spacing:.01em;color:var(--sky)}
 /* the underline is laid down by the same wipe that letters the word — one gesture.
    -3.4deg chases Permanent Marker's own upward drift so the swipe runs with the word,
@@ -210,22 +210,23 @@ body{background:#050609;color:#fff;font-family:var(--sans);-webkit-font-smoothin
   background:currentColor;border-radius:2px;transform:rotate(-4.2deg)}
 /* the MV's HYPE BOY letters wander off blue toward green — one marker running out, or
    two markers trading. a gradient clipped to the glyphs, with the box's own pen kept
-   for the outline, gets the drift without hand-colouring letters */
-.d-hype{--ang:341deg;--rad:.645;--tilt:5deg;font-size:30px;line-height:.95;text-align:center;
+   for the outline, gets the drift without hand-colouring letters. the box now says
+   TYPE: the booklet's first heading, in the MV's lettering */
+.d-type{--ang:341deg;--rad:.645;--tilt:5deg;font-size:30px;line-height:.95;text-align:center;
   background:linear-gradient(115deg,var(--sky) 0%,#3ab6c0 48%,#7bc24e 100%);
   -webkit-background-clip:text;background-clip:text;color:transparent;
   -webkit-text-stroke:1.3px var(--pen-light);
   border-color:var(--pen-light);padding:6px 12px 7px}
 /* the crown rides above the box, so the group clip needs the taller hat allowance */
-.d-song{--ang:60deg;--rad:.70;--tilt:4deg;font-size:25px;color:var(--ink-orange);
+.d-color{--ang:60deg;--rad:.70;--tilt:4deg;font-size:25px;color:var(--ink-orange);
   clip-path:inset(-115% calc((1 - var(--w,1)) * 128% - 14%) -45% -14%);padding:5px 12px 6px}
 /* the MV's box is gone over twice — a second border a hair off the first, fainter,
    because the second pass of a marker always is */
-.d-song::before{content:"";position:absolute;inset:-3px -4px -4px -3px;
+.d-color::before{content:"";position:absolute;inset:-3px -4px -4px -3px;
   border:2.6px solid currentColor;border-radius:11px 8px 12px 9px;
   transform:rotate(-1.3deg);opacity:.55}
-.d-song .crown{position:absolute;left:10%;top:-21px;width:40px;transform:rotate(-9deg)}
-.d-song .crown path{stroke-width:3}
+.d-color .crown{position:absolute;left:10%;top:-21px;width:40px;transform:rotate(-9deg)}
+.d-color .crown path{stroke-width:3}
 /* a size DOWN from the track names on purpose: the archivist's note is precise, not loud.
    bottom dead centre, the one stretch of rim the MV's hand left clear */
 .d-cut{--ang:92deg;--rad:0.800;--tilt:-3deg;font-size:20px;letter-spacing:.01em;color:var(--pen)}
@@ -239,28 +240,28 @@ body{background:#050609;color:#fff;font-family:var(--sans);-webkit-font-smoothin
    The sizes are MEASURED off the MV close-up, as fractions of the disc's diameter, and
    they are much bigger than instinct wants: the star is 29% of the disc, the pink arrow
    24%, the gem 13%, the flower and the smiley near 10%. The MV face works because it is
-   FEW and BIG — fourteen marks that shoulder each other — not many and neat. So the
-   filler this file used to carry (asterisk, cross, spare heart, note, loop, squiggle)
-   is gone, and what remains is allowed to touch: the gem leans into NEWJEANS, the grey
-   arrow's tip reaches HYPE BOY's box, the smiley sits right on CÖOKIE's crown, exactly
-   the collisions the MV's own hand made. The marks that point still point at something. --- */
+   FEW and BIG — big marks that shoulder each other — not many and neat. So the filler
+   this file used to carry is gone, and what remains stands CLOSE BUT CLEAR: tips reach
+   toward boxes, the heart sits in the star's notch, and nothing crosses another mark's
+   ink. Ink over ink read as clutter here, not as energy; the MV gets its density from
+   proximity, and proximity is what these positions buy. --- */
 .doodle svg{display:block;overflow:visible}
 /* `.doodle path`, not `.doodle svg path`: the extra type selector would out-specify every
    per-mark `.d-x path` rule below, silently flattening their fill and stroke-width */
 .doodle path{fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
-/* HURT, written across the big rose star the way the MV disc carries it. The star is the
-   largest mark on the face and it is drawn first: both outlines spend the front .60 of
-   --w, then the lettering wipes through on the remainder — outline the shape, then
+/* LAYOUT, written across the big rose star the way the MV wrote HURT there. The star is
+   the largest mark on the face and it is drawn first: both outlines spend the front .60
+   of --w, then the lettering wipes through on the remainder — outline the shape, then
    letter it. The inner line is the MV's second pass, lighter and looser than the first;
    the letters are OUTLINE letters, pale fill under a purple stroke, like the close-up. */
-.d-hurt{--ang:152deg;--rad:0.520;--tilt:-8deg;color:var(--ink-rose)}
-.d-hurt svg{width:146px}
-.d-hurt path{fill:#ffd9ea;stroke-width:2.2;
+.d-layout{--ang:152deg;--rad:0.520;--tilt:-8deg;color:var(--ink-rose)}
+.d-layout svg{width:146px}
+.d-layout path{fill:#ffd9ea;stroke-width:2.2;
   stroke-dashoffset:calc(1 - clamp(0, var(--w,1) * 1.66, 1))}
-.d-hurt .inner{fill:none;stroke:#ff9fc7;stroke-width:1.6}
-.d-hurt i{position:absolute;left:50%;top:53%;transform:translate(-50%,-50%) rotate(-12deg);
-  font-family:var(--marker);font-style:normal;font-size:30px;letter-spacing:.03em;
-  color:#efe9fb;-webkit-text-stroke:1.6px var(--ink-purple);
+.d-layout .inner{fill:none;stroke:#ff9fc7;stroke-width:1.6}
+.d-layout i{position:absolute;left:50%;top:53%;transform:translate(-50%,-50%) rotate(-12deg);
+  font-family:var(--marker);font-style:normal;font-size:24px;letter-spacing:.01em;
+  color:#efe9fb;-webkit-text-stroke:1.5px var(--ink-purple);
   clip-path:inset(-20% calc((1 - clamp(0, (var(--w,1) - .58) * 2.4, 1)) * 120% - 10%) -20% -10%)}
 /* the gem from the MV's top-left: gold outline, red scribble inside — two pens, one mark.
    it leans into NEWJEANS's first letter, which is where the MV's hand tucked it */
@@ -286,10 +287,10 @@ body{background:#050609;color:#fff;font-family:var(--sans);-webkit-font-smoothin
    the blue one points straight down as drawn; the grey and rose ones are authored
    pointing right and left with a bowed shaft. the tilts aim each from where it sits at
    what it annotates, so they only make sense alongside --ang / --rad */
-.d-arrow1{--ang:34deg;--rad:0.740;--tilt:-26deg;color:var(--pen-light)}   /* ↓ CÖOKIE */
+.d-arrow1{--ang:34deg;--rad:0.740;--tilt:-26deg;color:var(--pen-light)}   /* ↓ COLOR */
 .d-arrow1 svg{width:52px}
 .d-arrow1 path{stroke-width:2.8}
-.d-arrow2{--ang:312deg;--rad:0.415;--tilt:20deg;color:var(--silver)}  /* → HYPE BOY */
+.d-arrow2{--ang:312deg;--rad:0.415;--tilt:20deg;color:var(--silver)}  /* → TYPE */
 .d-arrow2 svg{width:72px}
 .d-arrow2 path{stroke-width:3;fill:#ccd5df}
 /* the big rose flourish rides right under the star, tip aimed at its bottom point —
@@ -297,13 +298,15 @@ body{background:#050609;color:#fff;font-family:var(--sans);-webkit-font-smoothin
 .d-arrow3{--ang:104deg;--rad:0.620;--tilt:10deg;color:var(--ink-rose)}
 .d-arrow3 svg{width:108px}
 .d-arrow3 path{stroke-width:3;fill:#ffd3e4}
-.d-flow{--ang:186deg;--rad:0.800;--tilt:-12deg;color:var(--ink-rose)}
+/* below ATTENTION's underline and clear of the star's left point: close, not crossing */
+.d-flow{--ang:172deg;--rad:0.840;--tilt:-12deg;color:var(--ink-rose)}
 .d-flow svg{width:52px}
 .d-flow ellipse{fill:none;stroke:currentColor;stroke-width:2.6}
 .d-flow .fillc{fill:var(--hi);stroke:currentColor;stroke-width:2.2}
 .d-flow .leaf{fill:var(--ink-green);stroke:var(--ink-green);stroke-width:1.8}
-/* the heart scribble on the HURT star's shoulder — outline now, like the close-up's */
-.d-heart2{--ang:126deg;--rad:0.440;--tilt:14deg;color:var(--ink-pink)}
+/* the heart scribble in the pocket between the star's right arm, the label ring and
+   the rose arrow — touching distance to all three, crossing none */
+.d-heart2{--ang:104deg;--rad:0.390;--tilt:10deg;color:var(--ink-pink)}
 .d-heart2 svg{width:44px}
 .d-heart2 path{fill:#ffd7e8;stroke:currentColor;stroke-width:2.2}
 
@@ -591,11 +594,13 @@ body{background:#050609;color:#fff;font-family:var(--sans);-webkit-font-smoothin
 .bug .n1::after{content:"02";flex:0 0 auto;width:31px;height:17px;display:grid;place-items:center;
   border:1.5px solid #cfe6fb;border-radius:50%;-webkit-text-stroke:0;color:#cfe6fb;
   font-size:9px;font-weight:700;letter-spacing:.08em}
-/* the JEANS: solid, heavy, edge to edge on the dark bar. text-indent gives back what the
+/* the JEANS: solid, heavy, edge to edge on the dark bar — and nearly the SIZE of the
+   line above it, which is the lockup's actual ratio (NEW:JEANS is about 1.1:1, not the
+   headline-and-caption split the first pass guessed). text-indent gives back what the
    last glyph's tracking takes, so the centring is optical and not just arithmetic */
-.bug .n2{display:block;padding:6px 9px 7px;background:#0c142e;color:#a9cdf0;text-align:center;
-  font-family:var(--mono);font-weight:700;font-size:19px;line-height:1;
-  letter-spacing:.12em;text-transform:uppercase;text-indent:.12em}
+.bug .n2{display:block;padding:5px 9px 7px;background:#0c142e;color:#a9cdf0;text-align:center;
+  font-family:var(--mono);font-weight:700;font-size:30px;line-height:1;
+  letter-spacing:.06em;text-transform:uppercase;text-indent:.06em}
 
 .scrubber{position:absolute;left:0;right:0;bottom:0;height:var(--bar);z-index:45;display:flex;align-items:center;gap:20px;pointer-events:auto;
   padding:0 30px;background:linear-gradient(180deg,rgba(6,6,10,0),rgba(6,6,10,.86) 40%);color:#fff;font-family:var(--mono)}

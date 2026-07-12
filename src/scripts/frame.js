@@ -15,23 +15,23 @@ var lastP=0,lastPct=-1,lastTc='';
 /* ===== the burn, in the order a hand would do it =====
    [class, start, duration] in timeline p. Nothing here fades in: SVG marks are drawn by
    letting out a dashoffset, lettering is wiped left→right the way a marker lays ink down.
-   The order is the order you would work in — name who it is, then the track list the
-   MV's own disc carries (ATTENTION, HYPE BOY, CÖOKIE, HURT, each arrow laid down just
-   before the word it points at), box the cut that is on it, then the flourishes. The
-   last mark is the pink sparkle: the hand signs off with a flick, not a statement. */
+   The order is the order you would work in — name who it is, then the booklet's own
+   vocabulary written in the MV's marks (ATTENTION, TYPE, COLOR, LAYOUT, each arrow
+   laid down just before the word it points at), box the cut that is on it, then the
+   flourishes. The last mark is the pink sparkle: the hand signs off with a flick. */
 var MARKS=[
   ['d-njk',   0.580,0.050],  /* 뉴진스 — the first stroke, landing as the disc reaches its seat */
   ['d-nj',    0.608,0.068],  /* NEWJEANS, big, in red */
-  ['d-gem',   0.660,0.028],  /* the gold gem leaning into the N */
+  ['d-gem',   0.660,0.028],  /* the gold gem by the N */
   ['d-att',   0.676,0.036],  /* ATTENTION, underlined twice */
   ['d-arrow2',0.706,0.022],  /* the grey hand-off → */
-  ['d-hype',  0.712,0.038],  /* HYPE BOY, boxed */
-  ['d-arrow1',0.736,0.022],  /* ↓ onto the song */
-  ['d-song',  0.742,0.040],  /* CÖOKIE, crowned */
+  ['d-type',  0.712,0.038],  /* TYPE, in HYPE BOY's blue box */
+  ['d-arrow1',0.736,0.022],  /* ↓ onto the next heading */
+  ['d-color', 0.742,0.040],  /* COLOR, crowned in orange */
   ['d-cut',   0.758,0.034],  /* 2:13-2:20, the seven seconds */
-  ['d-hurt',  0.772,0.046],  /* the big star, then HURT through it */
+  ['d-layout',0.772,0.046],  /* the big star, then LAYOUT through it */
   ['d-flow',  0.810,0.024],
-  ['d-heart2',0.822,0.018],  /* the scribble heart on the star's shoulder */
+  ['d-heart2',0.822,0.018],  /* the scribble heart in the star's notch */
   ['d-arrow3',0.830,0.026],  /* the rose flourish under the star */
   ['d-smile', 0.842,0.024],
   ['d-star3', 0.858,0.016]
