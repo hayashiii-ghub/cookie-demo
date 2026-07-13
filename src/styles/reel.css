@@ -281,9 +281,10 @@ body{background:#050609;color:#fff;font-family:var(--sans);-webkit-font-smoothin
 .d-star3{--ang:2deg;--rad:0.734;--tilt:14deg;color:var(--ink-rose)}
 .d-star3 svg{width:50px}
 .d-star3 path{stroke-width:2.4}
-/* orange pen, like the close-up: the smiley is drawn with COLOR's marker, not the navy,
-   and it sits ON COLOR's right shoulder — same pen, same box, one group */
-.d-smile{--ang:36deg;--rad:0.844;--tilt:5deg;color:#c96f1f}
+/* orange pen, like the close-up: the smiley is drawn with COLOR's marker, not the navy.
+   it holds the middle step of the east rim's cascade — TYPE, sparkle, smiley, COLOR
+   stepping down the right edge at an even beat */
+.d-smile{--ang:19deg;--rad:0.816;--tilt:5deg;color:#c96f1f}
 .d-smile svg{width:48px}
 .d-smile .face{fill:var(--hi);stroke:currentColor;stroke-width:2.8}
 .d-smile .dot{fill:currentColor;stroke:none}
@@ -322,10 +323,11 @@ body{background:#050609;color:#fff;font-family:var(--sans);-webkit-font-smoothin
 .d-flow ellipse{fill:none;stroke:currentColor;stroke-width:2.6}
 .d-flow .fillc{fill:var(--hi);stroke:currentColor;stroke-width:2.2}
 .d-flow .leaf{fill:var(--ink-green);stroke:var(--ink-green);stroke-width:1.8}
-/* the heart moved out of the star's corner (four marks in one quadrant was noise, not
-   density) and onto the cut box's shoulder, in RED now — the archivist's pen loving
-   the seven seconds it archived. red beside the yellow highlighter, not a fourth pink */
-.d-heart2{--ang:65deg;--rad:0.838;--tilt:12deg;color:var(--ink-red)}
+/* the heart, in RED — the archivist's pen loving the seven seconds it archived — on
+   the cut box's LEFT shoulder. on the right it wedged under COLOR and touched the box's
+   bottom rule; the left side is open paper, and the move shifts one mark's weight out
+   of the crowded south-east into the empty south */
+.d-heart2{--ang:114deg;--rad:0.856;--tilt:-10deg;color:var(--ink-red)}
 .d-heart2 svg{width:44px}
 .d-heart2 path{fill:#ffd9d4;stroke:currentColor;stroke-width:2.2}
 
