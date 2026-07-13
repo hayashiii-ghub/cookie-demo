@@ -241,10 +241,12 @@ body{background:#050609;color:#fff;font-family:var(--sans);-webkit-font-smoothin
    they are much bigger than instinct wants: the star is 29% of the disc, the pink arrow
    24%, the gem 13%, the flower and the smiley near 10%. The MV face works because it is
    FEW and BIG — big marks that shoulder each other — not many and neat. So the filler
-   this file used to carry is gone, and what remains stands CLOSE BUT CLEAR: tips reach
-   toward boxes, the heart sits in the star's notch, and nothing crosses another mark's
-   ink. Ink over ink read as clutter here, not as energy; the MV gets its density from
-   proximity, and proximity is what these positions buy. --- */
+   this file used to carry is gone, and what remains stands CLOSE BUT CLEAR: nothing
+   crosses another mark's ink. Ink over ink read as clutter here, not as energy; the MV
+   gets its density from proximity, and proximity is what these positions buy.
+   And the marks that can point, DO: the three arrows are not scatter, they are the
+   page's reading order made visible — name → TYPE ↓ COLOR → LAYOUT — so the face
+   diagrams itself the way a hand annotating a spec would. --- */
 .doodle svg{display:block;overflow:visible}
 /* `.doodle path`, not `.doodle svg path`: the extra type selector would out-specify every
    per-mark `.d-x path` rule below, silently flattening their fill and stroke-width */
@@ -275,27 +277,32 @@ body{background:#050609;color:#fff;font-family:var(--sans);-webkit-font-smoothin
 .d-star3{--ang:8deg;--rad:0.840;--tilt:14deg;color:var(--ink-rose)}
 .d-star3 svg{width:50px}
 .d-star3 path{stroke-width:2.4}
-/* orange pen, like the close-up: the smiley is drawn with CÖOKIE's marker, not the navy.
-   it sits right over the box's crown, where the MV parks it */
-.d-smile{--ang:32deg;--rad:0.520;--tilt:5deg;color:#c96f1f}
+/* orange pen, like the close-up: the smiley is drawn with COLOR's marker, not the navy.
+   it moved rimward to hand its old seat to the blue arrow — the spot above COLOR now
+   belongs to the mark that MEANS something there, and the smiley grins from beside it */
+.d-smile{--ang:28deg;--rad:0.790;--tilt:5deg;color:#c96f1f}
 .d-smile svg{width:48px}
 .d-smile .face{fill:var(--hi);stroke:currentColor;stroke-width:2.8}
 .d-smile .dot{fill:currentColor;stroke:none}
 .d-smile .mouth{fill:none;stroke:currentColor;stroke-width:3}
-/* all three arrows are BLOCK arrows now, outlines around a body, because that is how
-   every arrow on the MV disc is built — nobody there draws a line with a head on it.
-   the blue one points straight down as drawn; the grey and rose ones are authored
-   pointing right and left with a bowed shaft. the tilts aim each from where it sits at
-   what it annotates, so they only make sense alongside --ang / --rad */
-.d-arrow1{--ang:34deg;--rad:0.740;--tilt:-26deg;color:var(--pen-light)}   /* ↓ COLOR */
+/* all three arrows are BLOCK arrows, outlines around a body, because that is how every
+   arrow on the MV disc is built — nobody there draws a line with a head on it. But an
+   arrow is not texture: it is the one mark whose whole job is to POINT, and these three
+   point out the reading order of the page — the name hands off to TYPE, TYPE drops onto
+   COLOR, COLOR sweeps into LAYOUT. The same order as the booklet's headings and as the
+   burn (each arrow is laid down just before the word it lands on). Every tip stops a
+   marker's-width short of its target: aimed at, never touching. The positions below are
+   tip-first — pick where the tip must land, subtract the rotated tip offset, and that
+   is the centre — so a resize or retilt means redoing that arithmetic, not nudging. */
+.d-arrow1{--ang:44deg;--rad:0.575;--tilt:8deg;color:var(--pen-light)}   /* ↓ onto COLOR's top edge, clear of the crown */
 .d-arrow1 svg{width:52px}
 .d-arrow1 path{stroke-width:2.8}
-.d-arrow2{--ang:312deg;--rad:0.415;--tilt:20deg;color:var(--silver)}  /* → TYPE */
+.d-arrow2{--ang:310deg;--rad:0.360;--tilt:12deg;color:var(--silver)}  /* out from under the name's arc → TYPE's left edge */
 .d-arrow2 svg{width:72px}
 .d-arrow2 path{stroke-width:3;fill:#ccd5df}
-/* the big rose flourish rides right under the star, tip aimed at its bottom point —
-   the MV's 7 o'clock move, between HURT and the cut box */
-.d-arrow3{--ang:104deg;--rad:0.620;--tilt:10deg;color:var(--ink-rose)}
+/* the big rose swoosh: tail under COLOR's side of the face, head landing at the star's
+   lower-right point — it carries the eye from the middle of the list to LAYOUT */
+.d-arrow3{--ang:99deg;--rad:0.524;--tilt:10deg;color:var(--ink-rose)}
 .d-arrow3 svg{width:108px}
 .d-arrow3 path{stroke-width:3;fill:#ffd3e4}
 /* below ATTENTION's underline and clear of the star's left point: close, not crossing */
@@ -304,9 +311,10 @@ body{background:#050609;color:#fff;font-family:var(--sans);-webkit-font-smoothin
 .d-flow ellipse{fill:none;stroke:currentColor;stroke-width:2.6}
 .d-flow .fillc{fill:var(--hi);stroke:currentColor;stroke-width:2.2}
 .d-flow .leaf{fill:var(--ink-green);stroke:var(--ink-green);stroke-width:1.8}
-/* the heart scribble in the pocket between the star's right arm, the label ring and
-   the rose arrow — touching distance to all three, crossing none */
-.d-heart2{--ang:104deg;--rad:0.390;--tilt:10deg;color:var(--ink-pink)}
+/* the heart scribble tucked under the rose arrow's head, between the star's bottom
+   points and the cut box — touching distance to all three, crossing none. it left the
+   face's centre so the TYPE→COLOR corridor holds nothing but the arrow that links them */
+.d-heart2{--ang:124deg;--rad:0.700;--tilt:-8deg;color:var(--ink-pink)}
 .d-heart2 svg{width:44px}
 .d-heart2 path{fill:#ffd7e8;stroke:currentColor;stroke-width:2.2}
 

@@ -24,15 +24,15 @@ var MARKS=[
   ['d-nj',    0.608,0.068],  /* NEWJEANS, big, in red */
   ['d-gem',   0.660,0.028],  /* the gold gem by the N */
   ['d-att',   0.676,0.036],  /* ATTENTION, underlined twice */
-  ['d-arrow2',0.706,0.022],  /* the grey hand-off → */
+  ['d-arrow2',0.706,0.022],  /* → out from under the name, at TYPE */
   ['d-type',  0.712,0.038],  /* TYPE, in HYPE BOY's blue box */
-  ['d-arrow1',0.736,0.022],  /* ↓ onto the next heading */
+  ['d-arrow1',0.736,0.022],  /* ↓ from TYPE onto COLOR */
   ['d-color', 0.742,0.040],  /* COLOR, crowned in orange */
   ['d-cut',   0.758,0.034],  /* 2:13-2:20, the seven seconds */
+  ['d-arrow3',0.762,0.022],  /* the rose swoosh, at the star */
   ['d-layout',0.772,0.046],  /* the big star, then LAYOUT through it */
   ['d-flow',  0.810,0.024],
-  ['d-heart2',0.822,0.018],  /* the scribble heart in the star's notch */
-  ['d-arrow3',0.830,0.026],  /* the rose flourish under the star */
+  ['d-heart2',0.822,0.018],  /* the heart under the swoosh's head */
   ['d-smile', 0.842,0.024],
   ['d-star3', 0.858,0.016]
 ];
