@@ -167,14 +167,14 @@ body{background:#050609;color:#fff;font-family:var(--sans);-webkit-font-smoothin
    circle and ellipse in the doodle carries pathLength="1" so one unit means "the whole shape".
    Fills arrive only in the last 30% of the stroke: you outline a shape, then you colour it.
    Lettering: a marker lays ink left to right, so wipe the box instead. The inset is negative
-   on three sides because .d-cut's highlighter overhangs its border box and must not be cut. */
+   on three sides because ATTENTION's underlines overhang its border box and must not be cut. */
 /* stroke-linecap:round means a zero-length stroke still paints a dot. gate the whole mark
-   until the pen has actually touched down, or the bare disc is freckled with 16 tiny dots. */
+   until the pen has actually touched down, or the bare disc is freckled with 13 tiny dots. */
 .doodle svg{opacity:clamp(0,var(--w,1) * 24,1)}
 .doodle svg path,.doodle svg circle,.doodle svg ellipse{
   stroke-dasharray:1;stroke-dashoffset:calc(1 - var(--w,1));
   fill-opacity:clamp(0,(var(--w,1) - .70) * 3.4,1)}
-.d-njk,.d-nj,.d-att,.d-type,.d-color,.d-cut{
+.d-njk,.d-nj,.d-att,.d-type,.d-color{
   clip-path:inset(-45% calc((1 - var(--w,1)) * 128% - 14%) -45% -14%)}
 
 /* --- title stack, written across the top of the face like anyone with a marker.
@@ -190,15 +190,16 @@ body{background:#050609;color:#fff;font-family:var(--sans);-webkit-font-smoothin
 .d-njk{--ang:270deg;--rad:.833;--tilt:-2deg;font-size:24px;color:var(--sky);letter-spacing:.06em;
   -webkit-text-stroke:.8px var(--sky);paint-order:stroke fill}
 
-/* --- the reel's own vocabulary, written in the MV's hands. The disc borrows the marks
-   the MV drew for its track list, but what they say is what the booklet says: TYPE in
-   HYPE BOY's blue box, COLOR in CÖOKIE's crowned orange box, LAYOUT across the big
-   star where HURT was. ATTENTION keeps its name — it is an instruction as much as a
-   title. the angles are deliberately off the clean fractions — nobody hand-letters a
-   disc that evenly. the cut box is the archivist's one annotation, and it still
-   carries the highlighter, because on this surface the seven seconds are the subject. --- */
-.d-att,.d-type,.d-color,.d-cut{position:relative;font-family:var(--marker)}
-.d-type,.d-color,.d-cut{border:3.2px solid currentColor;border-radius:9px 7px 10px 8px;padding:4px 11px 5px}
+/* --- the reel's own vocabulary, written in the MV's hands, and read in the MV's ORDER:
+   ATTENTION → TYPE → COLOR → LAYOUT, clockwise around the face, each arrow departing
+   the heading it leaves and landing at the one it announces. TYPE in HYPE BOY's blue
+   box, COLOR in CÖOKIE's crowned orange box — the biggest mark after the name, because
+   this is the COOKIE reel and the MV crowns its own track the same way — LAYOUT across
+   the big star where HURT was. ATTENTION keeps its name: it is an instruction as much
+   as a title. the angles are deliberately off the clean fractions — nobody hand-letters
+   a disc that evenly. --- */
+.d-att,.d-type,.d-color{position:relative;font-family:var(--marker)}
+.d-type,.d-color{border:3.2px solid currentColor;border-radius:9px 7px 10px 8px;padding:4px 11px 5px}
 .d-att{--ang:199deg;--rad:.630;--tilt:-9deg;font-size:26px;letter-spacing:.01em;color:var(--sky)}
 /* the underline is laid down by the same wipe that letters the word — one gesture.
    -3.4deg chases Permanent Marker's own upward drift so the swipe runs with the word,
@@ -217,24 +218,18 @@ body{background:#050609;color:#fff;font-family:var(--sans);-webkit-font-smoothin
   -webkit-background-clip:text;background-clip:text;color:transparent;
   -webkit-text-stroke:1.3px var(--pen-light);
   border-color:var(--pen-light);padding:6px 12px 7px}
-/* the crown rides above the box, so the group clip needs the taller hat allowance */
-.d-color{--ang:60deg;--rad:.70;--tilt:4deg;font-size:25px;color:var(--ink-orange);
-  clip-path:inset(-115% calc((1 - var(--w,1)) * 128% - 14%) -45% -14%);padding:5px 12px 6px}
+/* the crown rides above the box, so the group clip needs the taller hat allowance.
+   34px against TYPE's 30: the MV's CÖOKIE is the biggest box on its face — the crowned
+   track is the one the disc is FOR, and this disc is the COOKIE reel */
+.d-color{--ang:64deg;--rad:.70;--tilt:4deg;font-size:34px;color:var(--ink-orange);
+  clip-path:inset(-115% calc((1 - var(--w,1)) * 128% - 14%) -45% -14%);padding:5px 14px 6px}
 /* the MV's box is gone over twice — a second border a hair off the first, fainter,
    because the second pass of a marker always is */
 .d-color::before{content:"";position:absolute;inset:-3px -4px -4px -3px;
   border:2.6px solid currentColor;border-radius:11px 8px 12px 9px;
   transform:rotate(-1.3deg);opacity:.55}
-.d-color .crown{position:absolute;left:10%;top:-21px;width:40px;transform:rotate(-9deg)}
+.d-color .crown{position:absolute;left:9%;top:-27px;width:52px;transform:rotate(-9deg)}
 .d-color .crown path{stroke-width:3}
-/* a size DOWN from the track names on purpose: the archivist's note is precise, not loud.
-   bottom dead centre, the one stretch of rim the MV's hand left clear */
-.d-cut{--ang:92deg;--rad:0.800;--tilt:-3deg;font-size:20px;letter-spacing:.01em;color:var(--pen)}
-/* a highlighter stroke never lands square on the word it marks, and it is pulled through
-   AFTER the box is closed — --hw runs on its own clock, a beat behind --w */
-.d-cut::before{content:"";position:absolute;inset:1px -5px 2px -7px;z-index:-1;
-  background:var(--hi);border-radius:3px 6px 4px 5px;transform-origin:left center;
-  transform:rotate(-1.4deg) skewX(-7deg) scaleX(var(--hw,1))}
 
 /* --- deco: pen strokes, not stickers.
    The sizes are MEASURED off the MV close-up, as fractions of the disc's diameter, and
@@ -245,12 +240,12 @@ body{background:#050609;color:#fff;font-family:var(--sans);-webkit-font-smoothin
    crosses another mark's ink. Ink over ink read as clutter here, not as energy; the MV
    gets its density from proximity, and proximity is what these positions buy.
    The marks that can point, DO: the three arrows are the page's reading order made
-   visible — name → TYPE ↓ COLOR → LAYOUT — so the face diagrams itself the way a hand
-   annotating a spec would. And every small mark is a SATELLITE: the gem leans at the
-   name's N, the sparkle hangs off TYPE's corner, the smiley sits on COLOR's shoulder,
-   the heart loves the timestamp, the flower keeps the star company. Nothing floats in
-   even scatter — a filler equidistant from everything belongs to nothing, and reads
-   as confetti. Groups, and empty sectors between them. --- */
+   visible — ATTENTION → TYPE ↓ COLOR → LAYOUT, the MV's own clockwise circuit — so
+   the face diagrams itself the way a hand annotating a spec would. And every small
+   mark is a SATELLITE: the gem leans at the name's N, the sparkle hangs off TYPE's
+   corner, the smiley steps the east rim, the flower keeps the star company. Nothing
+   floats in even scatter — a filler equidistant from everything belongs to nothing,
+   and reads as confetti. Groups, and empty sectors between them. --- */
 .doodle svg{display:block;overflow:visible}
 /* `.doodle path`, not `.doodle svg path`: the extra type selector would out-specify every
    per-mark `.d-x path` rule below, silently flattening their fill and stroke-width */
@@ -301,21 +296,20 @@ body{background:#050609;color:#fff;font-family:var(--sans);-webkit-font-smoothin
 .d-arrow1{--ang:44deg;--rad:0.575;--tilt:8deg;color:var(--pen-light)}   /* ↓ onto COLOR's top edge, clear of the crown */
 .d-arrow1 svg{width:52px}
 .d-arrow1 path{stroke-width:2.8}
-/* the grey one hangs under the arc's right tail — in the open field, NOT sprouting from
-   the hub ring, which is machinery and not paper — and dives at TYPE's top-left corner:
-   the name's own stroke continuing into the first heading */
-.d-arrow2{--ang:312deg;--rad:0.534;--tilt:35deg;color:var(--silver)}
+/* the grey one holds the MV's exact station: the open lane above the hub, between
+   ATTENTION's last stroke and TYPE's box — the departure the reading order needs,
+   drawn where the MV's hand drew it */
+.d-arrow2{--ang:302deg;--rad:0.360;--tilt:14deg;color:var(--silver)}
 .d-arrow2 svg{width:72px}
 .d-arrow2 path{stroke-width:3;fill:#ccd5df}
-/* the swoosh crosses from COLOR's side of the face and its head lands LEVEL on the
-   star's lower-right point — an arrowhead stabbing upward at a shape's underside reads
-   as an accident; one arriving flat reads as an arrival. it writes in LAYOUT's own
-   purple, borrowing the pen of the word it delivers you to, which also breaks up what
-   used to be a rose-on-rose corner. 92px because the corridor it spans — the star's
-   point to COLOR's corner, both tilts included — is 106px of paper: the gesture yields
-   bulk to keep daylight at both ends, proximity over size */
-.d-arrow3{--ang:99deg;--rad:0.440;--tilt:-4deg;color:var(--ink-purple)}
-.d-arrow3 svg{width:92px}
+/* the swoosh runs the bottom band the cut box used to sit in — the MV's pink arrow's
+   own lane — sweeping out of COLOR's side and rising toward the star: COLOR hands you
+   to LAYOUT and the eye completes the circle. it writes in LAYOUT's purple, borrowing
+   the pen of the word it delivers you to. 112px: with the band clear it takes the MV's
+   measured 22% of the face back — the head still stops short of the star's ink,
+   gesturing up into it from open paper instead of stabbing its underside */
+.d-arrow3{--ang:108deg;--rad:0.678;--tilt:10deg;color:var(--ink-purple)}
+.d-arrow3 svg{width:112px}
 .d-arrow3 path{stroke-width:3;fill:#e9e1fb}
 /* the star's satellite: off its left point, below ATTENTION's underline — close, not crossing */
 .d-flow{--ang:172deg;--rad:0.840;--tilt:-12deg;color:var(--ink-rose)}
@@ -323,13 +317,6 @@ body{background:#050609;color:#fff;font-family:var(--sans);-webkit-font-smoothin
 .d-flow ellipse{fill:none;stroke:currentColor;stroke-width:2.6}
 .d-flow .fillc{fill:var(--hi);stroke:currentColor;stroke-width:2.2}
 .d-flow .leaf{fill:var(--ink-green);stroke:var(--ink-green);stroke-width:1.8}
-/* the heart, in RED — the archivist's pen loving the seven seconds it archived — on
-   the cut box's LEFT shoulder. on the right it wedged under COLOR and touched the box's
-   bottom rule; the left side is open paper, and the move shifts one mark's weight out
-   of the crowded south-east into the empty south */
-.d-heart2{--ang:114deg;--rad:0.856;--tilt:-10deg;color:var(--ink-red)}
-.d-heart2 svg{width:44px}
-.d-heart2 path{fill:#ffd9d4;stroke:currentColor;stroke-width:2.2}
 
 /* ================================================================
    THE JEWEL CASE — 142 x 125 x 10mm, hinged on the left.
