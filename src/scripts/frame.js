@@ -32,7 +32,7 @@ var MARKS=[
   ['d-arrow3',0.762,0.022],  /* the rose swoosh, at the star */
   ['d-layout',0.772,0.046],  /* the big star, then LAYOUT through it */
   ['d-flow',  0.810,0.024],
-  ['d-heart2',0.822,0.018],  /* the heart under the swoosh's head */
+  ['d-heart2',0.822,0.018],  /* the red heart on the cut box's shoulder */
   ['d-smile', 0.842,0.024],
   ['d-star3', 0.858,0.016]
 ];
