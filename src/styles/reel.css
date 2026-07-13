@@ -293,22 +293,24 @@ body{background:#050609;color:#fff;font-family:var(--sans);-webkit-font-smoothin
    marker's-width short of its target: aimed at, never touching. The positions below are
    tip-first — pick where the tip must land, subtract the rotated tip offset, and that
    is the centre — so a resize or retilt means redoing that arithmetic, not nudging. */
-.d-arrow1{--ang:44deg;--rad:0.575;--tilt:8deg;color:var(--pen-light)}   /* ↓ onto COLOR's top edge, clear of the crown */
-.d-arrow1 svg{width:52px}
-.d-arrow1 path{stroke-width:2.8}
-/* the grey one holds the MV's exact station: the open lane above the hub, between
-   ATTENTION's last stroke and TYPE's box — the departure the reading order needs,
-   drawn where the MV's hand drew it */
-.d-arrow2{--ang:302deg;--rad:0.360;--tilt:14deg;color:var(--silver)}
-.d-arrow2 svg{width:72px}
-.d-arrow2 path{stroke-width:3;fill:#ccd5df}
-/* the swoosh runs the bottom band the cut box used to sit in — the MV's pink arrow's
-   own lane — sweeping out of COLOR's side and rising toward the star: COLOR hands you
-   to LAYOUT and the eye completes the circle. it writes in LAYOUT's purple, borrowing
-   the pen of the word it delivers you to. 112px: with the band clear it takes the MV's
-   measured 22% of the face back — the head still stops short of the star's ink,
-   gesturing up into it from open paper instead of stabbing its underside */
-.d-arrow3{--ang:108deg;--rad:0.678;--tilt:10deg;color:var(--ink-purple)}
+/* the blue drop grew from a floating glyph to the LINK it is: it fills more of the fall
+   from TYPE's underside to COLOR's top edge, tip stopping a beat above the box */
+.d-arrow1{--ang:33deg;--rad:0.630;--tilt:8deg;color:var(--pen-light)}
+.d-arrow1 svg{width:68px}
+.d-arrow1 path{stroke-width:2.2}
+/* the grey one is a CONNECTOR, not a glyph: 140px, tail lifting off beside ATTENTION's
+   last stroke, shaft arcing OVER the hub with the disc's own curvature, tip stopping a
+   marker's-width short of TYPE. one gesture, first link of the circuit */
+.d-arrow2{--ang:287deg;--rad:0.408;--tilt:24deg;color:var(--silver)}
+.d-arrow2 svg{width:140px}
+.d-arrow2 path{stroke-width:2.4;fill:#ccd5df}
+/* the swoosh runs the bottom band the way the MV's pink arrow does: UNDER the star,
+   bowed toward the rim — the authored path is the grey arrow's mirror, because a hand
+   tracing the bottom of a circle flexes the opposite way to one tracing the top. tail
+   lifts off beside COLOR's corner, head rides along the star's underside pointing up
+   its lower-left arm: COLOR hands you to LAYOUT and the circuit closes. it writes in
+   LAYOUT's purple, borrowing the pen of the word it delivers you to */
+.d-arrow3{--ang:112deg;--rad:0.619;--tilt:12deg;color:var(--ink-purple)}
 .d-arrow3 svg{width:112px}
 .d-arrow3 path{stroke-width:3;fill:#e9e1fb}
 /* the star's satellite: off its left point, below ATTENTION's underline — close, not crossing */
