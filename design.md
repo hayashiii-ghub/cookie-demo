@@ -75,4 +75,3 @@ Then inspect implementation details and Shimon diffs.
 A passing fingerprint only shows that the observations selected by this repository are unchanged.
 An intentional redesign may change them.
 Inspect every changed path, decide whether the new behavior is part of the proposal, and record that decision instead of weakening the probe to obtain a pass.
-
