@@ -10,6 +10,7 @@
     "astro": "astro"
   },
   "devDependencies": {
+    "@hayashiii/shimon": "https://github.com/hayashiii-ghub/shimon/archive/6acd9c5c9cda33a6dd707590ea273db0cf5053f0.tar.gz",
     "astro": "^7.0.6"
   }
 }

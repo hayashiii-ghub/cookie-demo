@@ -19,32 +19,46 @@ used**. Korean + English copy, Y2K broadcast styling.
 
 ```bash
 npm install
+npx playwright install chromium
 npm run dev        # http://localhost:4321
 npm run build      # -> dist/
 npm run preview    # serve the production build
 ```
 
+## Design harness
+
+This repository also acts as an executable reference for agent-driven design
+work. [`design.md`](design.md) describes how to read and transform the design
+without turning it into a fixed token sheet. [`SKILL.md`](SKILL.md) gives an
+agent the working loop. The rendered reel and its source remain the primary
+reference.
+
 ## Verifying a refactor
 
 Almost every change to the reel's two source files is meant to leave the picture
-alone. `scripts/fingerprint.sh` proves it, so that stops being a matter of
-opinion. It hashes what the reel *draws* — the canvas, the 47 baked crumbs, the
+alone. The project-specific probe in `shimon.config.mjs` uses
+[Shimon](https://github.com/hayashiii-ghub/shimon) to measure it, so that stops
+being a matter of opinion. It hashes what the reel *draws* — the canvas, the 47 baked crumbs, the
 transforms, the doodle's `--w`, and the resolved backgrounds — rather than
 comparing screenshots, whose bytes are not reproducible here (`mix-blend-mode`
 and the `preserve-3d` lid are rasterised on the GPU).
 
 ```bash
-npm run dev &                             # the tool reads a live page
-scripts/fingerprint.sh selftest           # capture twice; the tool must agree with itself
-scripts/fingerprint.sh capture before     # on main
+npm run dev -- --port 4322                # the tool reads a live page
+npx shimon selftest --json                 # capture twice; the tool must agree with itself
+npx shimon capture before --json           # before the change
 #   ...make the change...
-scripts/fingerprint.sh capture after
-scripts/fingerprint.sh diff before after  # exit 0 = the picture is unchanged
+npx shimon capture after --json
+npx shimon diff before after --json        # exit 0 = selected observations are unchanged
 ```
 
 Run `selftest` first. A comparison that cannot fail proves nothing, and this one
 has been fooled three times: by an empty file, by GPU raster noise, and by a
 synthetic mouse event that healed the very bug it was written to expose.
+Install Chromium with `npx playwright install chromium` once after installing
+dependencies on a new machine.
+The previous `scripts/fingerprint.sh` remains during the migration, but Shimon is
+the primary workflow.
 
 ## Deploy
 
