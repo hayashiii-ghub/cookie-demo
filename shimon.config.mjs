@@ -10,6 +10,7 @@ const MARKS = [
   "d-arrow3",
   "d-layout",
   "d-flow",
+  "d-frog",
   "d-smile",
   "d-star3",
 ];
@@ -128,6 +129,13 @@ export default {
 
       const ids = ["case", "lid", "cover", "cd1", "doodle"];
       const style = (selector) => computed(element(selector));
+
+      const doodleSpans = document.querySelectorAll("#doodle span").length;
+      if (doodleSpans !== marks.length) {
+        throw new Error(
+          `MARKS drift: probing ${marks.length} marks but #doodle holds ${doodleSpans} spans`,
+        );
+      }
 
       return {
         timecode: element("#tc").textContent,
