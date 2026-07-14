@@ -31,12 +31,13 @@ var MARKS=[
   ['d-arrow3',0.768,0.024],  /* the purple swoosh along the bottom band, at the star */
   ['d-layout',0.780,0.046],  /* the big star, then LAYOUT through it — the circuit closes */
   ['d-flow',  0.828,0.024],
+  ['d-heart2',0.836,0.016],  /* the red heart under COLOR's corner */
   ['d-smile', 0.844,0.022],
   ['d-star3', 0.858,0.016]
 ];
 /* [node, start, end, the last --w written]. --w is read by stroke-dashoffset, fill-opacity
    and clip-path, so a single write invalidates every shape under that mark. A mark that has
-   not started, or has already finished, holds the same number for most of the reel: 13 marks
+   not started, or has already finished, holds the same number for most of the reel: 14 marks
    were being rewritten 60 times a second to say nothing. Write only what changed. */
 var mEl=MARKS.map(function(m){return [E.doodle.querySelector('.'+m[0]),m[1],m[1]+m[2],''];});
 var ulEl=document.querySelector('.ib-ul'), lastUw='';
