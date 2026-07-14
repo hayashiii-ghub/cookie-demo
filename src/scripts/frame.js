@@ -31,7 +31,7 @@ var MARKS=[
   ['d-arrow3',0.768,0.024],  /* the purple swoosh along the bottom band, at the star */
   ['d-layout',0.780,0.046],  /* the big star, then LAYOUT through it — the circuit closes */
   ['d-flow',  0.828,0.024],
-  ['d-heart2',0.836,0.016],  /* the red heart under COLOR's corner */
+  ['d-frog',  0.836,0.018],  /* the frog under COLOR's corner */
   ['d-smile', 0.844,0.022],
   ['d-star3', 0.858,0.016]
 ];

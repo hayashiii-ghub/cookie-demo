@@ -276,17 +276,19 @@ body{background:#050609;color:#fff;font-family:var(--sans);-webkit-font-smoothin
 .d-star3{--ang:2deg;--rad:0.734;--tilt:14deg;color:var(--ink-rose)}
 .d-star3 svg{width:50px}
 .d-star3 path{stroke-width:2.4}
-/* the red heart at COLOR's lower-left: the crowned track gets a love-note, drawn with
-   the archivist's red so it reads beside the orange instead of dissolving into it */
-.d-heart2{--ang:97deg;--rad:0.824;--tilt:-12deg;color:var(--ink-red)}
-.d-heart2 svg{width:44px}
-.d-heart2 path{fill:#ffd9d4;stroke:currentColor;stroke-width:2.2}
+/* the frog at COLOR's lower-left — the green pen's one appearance on the face, so the
+   crowned box's corner gets a sticker that can't dissolve into the orange beside it */
+.d-frog{--ang:98deg;--rad:0.830;--tilt:-12deg;color:var(--ink-green)}
+.d-frog svg{width:48px}
+.d-frog .head{fill:#daf2cc;stroke:currentColor;stroke-width:2.6}
+.d-frog .dot{fill:currentColor;stroke:none}
+.d-frog .mouth{fill:none;stroke:currentColor;stroke-width:2.6}
 /* orange pen, like the close-up: the smiley is drawn with COLOR's marker, not the navy.
    it holds the middle step of the east rim's cascade — TYPE, sparkle, smiley, COLOR
    stepping down the right edge at an even beat */
 .d-smile{--ang:19deg;--rad:0.816;--tilt:5deg;color:#c96f1f}
 .d-smile svg{width:48px}
-.d-smile .face{fill:var(--hi);stroke:currentColor;stroke-width:2.8}
+.d-smile .head{fill:var(--hi);stroke:currentColor;stroke-width:2.8}
 .d-smile .dot{fill:currentColor;stroke:none}
 .d-smile .mouth{fill:none;stroke:currentColor;stroke-width:3}
 /* all three arrows are BLOCK arrows, outlines around a body, because that is how every
