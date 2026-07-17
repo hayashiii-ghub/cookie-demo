@@ -80,7 +80,11 @@ function tickPlay(now){ var p=playFromP+(now-playStart)/PLAY_MS;
 function startPlay(){ var cur=clamp(window.scrollY/maxScroll,0,1); if(cur>=0.999)cur=0;
   playFromP=cur; window.scrollTo(0,cur*maxScroll); playStart=performance.now(); playing=true; setBtn(true); rafId=requestAnimationFrame(tickPlay); }
 function togglePlay(){ if(playing)stopPlay(); else startPlay(); }
-function onButton(t){ return playBtn && (t===playBtn || playBtn.contains(t)); }
+/* the target must be checked before contains(): a synthetic wheel dispatched on window
+   arrives with target=window, which is not a Node, and contains() throws on it — killing
+   the listener and leaving autoplay running through the very event sent to stop it.
+   real input never trips this; test harnesses (shimon included) dispatch exactly that. */
+function onButton(t){ return playBtn && t instanceof Node && (t===playBtn || playBtn.contains(t)); }
 function userInterrupt(e){ if(e && onButton(e.target)) return; userTouched=true; stopPlay(); }
 if(playBtn){ setBtn(false); playBtn.addEventListener('click',function(){userTouched=true;togglePlay();}); }
 window.addEventListener('wheel',userInterrupt,{passive:true});
