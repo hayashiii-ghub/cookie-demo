@@ -57,7 +57,10 @@ body{background:#050609;color:#fff;font-family:var(--sans);-webkit-font-smoothin
              0 34px 90px -12px rgba(0,0,0,.78);}
 /* faint CRT scanlines over the screen — JS sets --scan to 0 when the monitor is
    scaled small (phones), where 1px lines would just moiré */
-.scan{position:absolute;inset:0;z-index:58;pointer-events:none;mix-blend-mode:multiply;opacity:var(--scan,.16);
+/* no mix-blend-mode: multiply by pure black IS normal compositing (both come out
+   backdrop*(1-alpha)), and the blend forced a full-screen recomposite every frame the
+   stage drifted underneath. do not reintroduce it for the look — there is no look to buy. */
+.scan{position:absolute;inset:0;z-index:58;pointer-events:none;opacity:var(--scan,.16);
   background:repeating-linear-gradient(to bottom, rgba(0,0,0,.5) 0 1px, transparent 1px 3px);}
 
 /* ---- backgrounds (cross-fade at the cut) ---- */
@@ -93,7 +96,12 @@ body{background:#050609;color:#fff;font-family:var(--sans);-webkit-font-smoothin
 
 /* ---- scroll length spacer (invisible; the visible stage is the fixed #box) ---- */
 .track{height:440vh}
-.stage{position:absolute;inset:0;z-index:3;animation:cam 16s ease-in-out infinite alternate;will-change:transform}
+/* steps(32), not a smooth curve: the drift covers ~11px in 16s (0.7px/s), so a 60fps
+   tween re-composited the whole stage — and re-blended the grain above it — to move a
+   hundredth of a pixel. 2 steps/s is 0.34px a step, far under perception, and the
+   compositor sleeps between steps. idle frame time measured 22ms -> 8ms on this change
+   plus .scan's blend removal. */
+.stage{position:absolute;inset:0;z-index:3;animation:cam 16s steps(32) infinite alternate;will-change:transform}
 @keyframes cam{0%{transform:translate(-0.45%,-0.3%) rotate(-0.22deg) scale(1.006)}100%{transform:translate(0.45%,0.35%) rotate(0.22deg) scale(1.014)}}
 
 /* anchors keep position; inner nodes get JS transform/opacity (origin:center) */
