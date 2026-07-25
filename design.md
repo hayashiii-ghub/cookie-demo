@@ -70,8 +70,5 @@ A visually different result can belong to the same design lineage when the relat
 
 Review the proposal as a whole before comparing individual tokens.
 Ask whether the focal point is immediate, the beats are distinct, interruptions feel intentional, and motion explains a transition.
-Then inspect implementation details and Shimon diffs.
-
-A passing fingerprint only shows that the observations selected by this repository are unchanged.
-An intentional redesign may change them.
-Inspect every changed path, decide whether the new behavior is part of the proposal, and record that decision instead of weakening the probe to obtain a pass.
+Then inspect the implementation details and the rendered states affected by the change.
+Use automated checks for objective failures and screenshots for hierarchy, rhythm, and material behavior.
