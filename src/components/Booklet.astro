@@ -1,4 +1,5 @@
 ---
+import { DURATION_SECONDS, FRAME_HEIGHT, FRAME_WIDTH } from '../config/reel.js';
 // the lid's inner face: the insert page. h2 + lede + the two-column row (the pen's
 // list, the file's frontmatter) + barcode foot. --uw/--lw are written by frame.js.
 ---
@@ -10,10 +11,10 @@
           <div class="spine"><span>Y2K/DESIGN.MD · 02</span></div>
           <div class="bk ib">
             <div class="ib-head"><span class="ib-kick">Look 02 · 2:16</span><span class="ib-ser">B/W 2:20:00</span></div>
-            <h2>그리고,<br>파랑.<svg class="ib-ul" viewBox="0 0 170 12" aria-hidden="true"><path pathLength="1" d="M3 8 q24 -8 50 -1 q26 7 54 -2 q28 -8 60 1"/></svg></h2>
+            <h2><span>그리고,</span><span class="ib-line">파랑.</span><svg class="ib-ul" viewBox="0 0 170 12" aria-hidden="true"><path pathLength="1" d="M3 8 q24 -8 50 -1 q26 7 54 -2 q28 -8 60 1"/></svg></h2>
             <!-- one sentence, one job: where the cut is from. what the look IS moved down into
                  the three rows as values — prose describing what a spec states is padding. -->
-            <p class="lede">Cookie MV 2:13–2:20에서 가져온 컷.<br><span style="opacity:.62">A cut borrowed from Cookie MV 2:13–2:20.</span></p>
+            <p class="lede"><span>Cookie MV 2:13–2:20에서 가져온 컷.</span><span class="ib-line" style="opacity:.62">A cut borrowed from Cookie MV 2:13–2:20.</span></p>
             <!-- two columns: the pen's list, and beside it the small print a real back
                  cover carries — printed as the file's own frontmatter. this artifact is
                  y2k/design.md, a harness you hand an agent, pressed as a CD single; the
@@ -42,7 +43,7 @@
                 <span><b>file:</b> y2k/design.md</span>
                 <span><b>look:</b> 02 · 그리고, 파랑</span>
                 <span><b>src:</b> <a href="https://www.youtube.com/watch?v=VOmIplFAGeg&t=133s" target="_blank" rel="noopener">NewJeans “Cookie” M/V, 2:13–2:20</a></span>
-                <span><b>stage:</b> 1200×900 · scroll-scrubbed</span>
+                <span><b>stage:</b> {FRAME_WIDTH}×{FRAME_HEIGHT} · {DURATION_SECONDS}s seekable timeline</span>
                 <span><b>note:</b> fan study. not affiliated with ADOR / NewJeans.</span>
                 <span class="fm-r">---</span>
               </div>

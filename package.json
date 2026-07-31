@@ -7,13 +7,17 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "video:dev": "npm --prefix video run dev",
-    "video:check": "npm --prefix video run check",
-    "video:render": "npm --prefix video run render",
+    "video:prepare": "node video/prepare.mjs",
+    "video:dev": "npm run video:prepare && hyperframes preview .video-dist",
+    "video:check": "npm run video:prepare && npm run video:check:prepared",
+    "video:check:prepared": "hyperframes check .video-dist --samples 9 --no-contrast",
+    "video:render": "npm run video:prepare && npm run video:render:prepared",
+    "video:render:prepared": "hyperframes render .video-dist --quality high --strict --output video/renders/cookie-reel.mp4",
     "astro": "astro"
   },
   "devDependencies": {
     "@hayashiii/shimon": "^0.2.0",
-    "astro": "^7.0.6"
+    "astro": "^7.0.6",
+    "hyperframes": "0.7.86"
   }
 }

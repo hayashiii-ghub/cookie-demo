@@ -5,6 +5,7 @@
 import { $, clamp, reduce } from './util.js';
 import { sizeCookie } from './cookie.js';
 import { frame } from './frame.js';
+import { DURATION_SECONDS, FPS, TOTAL_FRAMES } from '../config/reel.js';
 
 var bar=$('bar');
 
@@ -55,7 +56,7 @@ bar.addEventListener('pointerup',endDrag);
 bar.addEventListener('pointercancel',endDrag);
 
 /* the bar is a slider, so it answers to a keyboard. one frame of the reel is 1/168. */
-var STEP=1/168, PAGE=24/168;   /* a frame, and a second */
+var STEP=1/TOTAL_FRAMES, PAGE=FPS/TOTAL_FRAMES;   /* a frame, and a second */
 bar.addEventListener('keydown',function(e){
   var p=clamp(window.scrollY/maxScroll,0,1), k=e.key, d=0;
   if(k==='ArrowRight'||k==='ArrowUp') d=STEP; else if(k==='ArrowLeft'||k==='ArrowDown') d=-STEP;
@@ -71,7 +72,7 @@ var ICON_PLAY='<svg viewBox="0 0 24 24"><path d="M7 5 L19 12 L7 19 Z"/></svg>';
 var ICON_PAUSE='<svg viewBox="0 0 24 24"><path d="M7 5h4v14H7z M13 5h4v14h-4z"/></svg>';
 /* 7000 is not a taste number: the reel IS seven seconds (2:13 → 2:20), so autoplay runs
    the timecode at 1:1. it was 6000, quietly playing the film 17% fast. */
-var PLAY_MS=7000, playing=false, rafId=0, playStart=0, playFromP=0, userTouched=false;
+var PLAY_MS=DURATION_SECONDS*1000, playing=false, rafId=0, playStart=0, playFromP=0, userTouched=false;
 function setBtn(on){ playBtn.innerHTML=on?ICON_PAUSE:ICON_PLAY; playBtn.setAttribute('aria-label',on?'일시정지':'재생'); playBtn.setAttribute('aria-pressed',on?'true':'false'); }
 function stopPlay(){ if(rafId){cancelAnimationFrame(rafId);rafId=0;} if(playing){playing=false;setBtn(false);} }
 function tickPlay(now){ var p=playFromP+(now-playStart)/PLAY_MS;

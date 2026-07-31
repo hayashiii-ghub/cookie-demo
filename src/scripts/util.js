@@ -1,4 +1,6 @@
 /* the shared drawer: one dollar, one deck, and the little algebra of the timeline */
+import { FPS, SOURCE_START_SECONDS, TOTAL_FRAMES } from '../config/reel.js';
+
 export var $=function(id){return document.getElementById(id);};
 export var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -13,4 +15,4 @@ export function seg(p,a,b){return clamp((p-a)/(b-a),0,1);}
 export function lerp(a,b,t){return a+(b-a)*t;}
 export function eOut(t){return 1-Math.pow(1-t,3);}
 export function pad(n){return(n<10?'0':'')+n;}
-export function fmt(p){var f=133*24+Math.round(p*168),sec=Math.floor(f/24),ff=f%24;return Math.floor(sec/60)+':'+pad(sec%60)+':'+pad(ff);}
+export function fmt(p){var f=SOURCE_START_SECONDS*FPS+Math.round(p*TOTAL_FRAMES),sec=Math.floor(f/FPS),ff=f%FPS;return Math.floor(sec/60)+':'+pad(sec%60)+':'+pad(ff);}
