@@ -1,0 +1,86 @@
+---
+import Disc from './Disc.astro';
+import Cover from './Cover.astro';
+import Booklet from './Booklet.astro';
+import Hud from './Hud.astro';
+
+const { video = false } = Astro.props;
+const composition = video
+  ? {
+      'data-composition-id': 'cookie-reel',
+      'data-start': '0',
+      'data-duration': '7',
+      'data-fps': '24',
+      'data-width': '1200',
+      'data-height': '900',
+      'data-no-timeline': true,
+    }
+  : {};
+const layoutIntent = video
+  ? {
+      'data-layout-allow-overlap': true,
+      'data-layout-allow-occlusion': true,
+      'data-layout-allow-overflow': true,
+    }
+  : {};
+---
+
+<!-- everything lives on a fixed 1200x900 (4:3) "broadcast monitor" scaled to fit the viewport -->
+<main {...composition} role="main" aria-label="NewJeans Cookie MV 2:13에서 2:20까지에서 영감받은 7초 룩 릴">
+<h1 class="sr-only" {...layoutIntent}>y2k design.md — LOOK 02 · COOKIE, inspired by NewJeans Cookie MV 2:13→2:20</h1>
+<div id="frame">
+  <!-- The case deliberately folds and layers both printed faces in 3D. HyperFrames' flat
+       layout audit cannot infer backface visibility, so the video composition declares
+       that overlap/occlusion/overflow here; pixel verification remains the visual gate. -->
+  <div id="box" {...layoutIntent}>
+    <div class="bg" id="bgDark"></div>
+    <div class="bg" id="bgBlue"></div>
+    <canvas id="cookie" aria-hidden="true"></canvas>
+
+    <div class="stage">
+
+      <!-- pure dark → giant cookie zooms in → bursts into scattering cookies (canvas) → blue -->
+
+      <!-- ONE OBJECT: a jewel case, shut, lying under the cookie. the burst uncovers it, the
+           lid swings open on its left hinge, and the doodled disc has been in the tray the
+           whole time. at 2:20 the lid comes back down over it. nothing ever fades in. -->
+      <div class="anchor a-case"><div class="case" id="case"><div class="persp">
+
+      <Disc />
+
+      <!-- the lid. one booklet, two covers: shut you read its front through the clear
+           plastic; opened flat it lies to the left of the hinge and you read its back.
+           the lid is the only 3D node, so opacity and the pan live on .case above it:
+           opacity on a preserve-3d node collapses it to flat and kills backface-visibility. -->
+      <div class="lid" id="lid">
+        <!-- the four walls. without them the lid is a plane, and a plane has no edge to show
+             halfway through the swing: it goes to a hairline and the case reads as paper. -->
+        <div class="rim r-top" aria-hidden="true"></div>
+        <div class="rim r-bot" aria-hidden="true"></div>
+        <div class="rim r-free" aria-hidden="true"></div>
+        <div class="rim r-hinge" aria-hidden="true"></div>
+
+        <Cover />
+
+        <Booklet />
+
+      </div>
+
+      </div></div></div>
+
+    </div>
+
+    <div class="bug" id="bug" aria-hidden="true">
+      <div class="lz"><span class="n1">y2k</span><span class="n2">design.md</span></div>
+    </div>
+
+    <div class="grain"></div>
+    <div class="vig"></div>
+    <div class="scan" aria-hidden="true"></div>
+
+    <Hud />
+
+    <div class="flash" id="flash"></div>
+  </div>
+</div>
+</main>

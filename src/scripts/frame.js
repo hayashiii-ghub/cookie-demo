@@ -47,7 +47,7 @@ var lwEl=document.querySelector('.tl li.on'), lastLw='';
    first (mEl above): write only what changed. L caches the last written value of everything
    else -- each value built exactly as before, numbers and strings alike, so a skipped write
    is precisely a write that would have said nothing. */
-var L={bg:-1,ko:-1,kt:'',lt:'',cl:-1,gl:'',sw:'',bt:'',fl:'',sh:-1,hint:false};
+var L={bg:-1,ko:-1,kt:'',lt:'',cl:-1,gl:'',sw:'',bt:'',fl:'',sh:-1,hint:true};
 var SHOTN=['암전 · black','쿠키 · zoom & burst','파랑 · into blue','케이스 · the lid opens','룩 · type · color · layout','닫기 · the lid comes down'];
 var SHOTC=['#9aa0b2','#e8b06a','#eaf1ff','#eaf1ff','#eaf1ff','#eaf1ff'];
 
@@ -142,5 +142,6 @@ export function frame(p){
   if(sh!==L.sh){ L.sh=sh; shotEl.textContent=SHOTN[sh]; shotEl.style.color=SHOTC[sh]; }
   if(!reduce && lastP<0.15 && p>=0.15){flash.classList.remove('go');void flash.offsetWidth;flash.classList.add('go');}
   lastP=p;
-  if(p>0.01&&!L.hint){ L.hint=true; hint.classList.add('hide'); }
+  var hintVisible=p<=0.01;
+  if(hintVisible!==L.hint){ L.hint=hintVisible; hint.classList.toggle('hide',!hintVisible); }
 }

@@ -42,6 +42,9 @@
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 html{scroll-behavior:auto}
 body{background:#050609;color:#fff;font-family:var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.video-render *{transition:none!important}
+.video-render .grain,.video-render .stage,.video-render .flash,
+.video-render .hint .arw,.video-render .topbar .reel .dot{animation:none!important}
 
 /* ================================================================
    4:3 "broadcast monitor": the whole reel is authored on a fixed

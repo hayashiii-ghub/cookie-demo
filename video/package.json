@@ -1,0 +1,11 @@
+{
+  "name": "cookie-demo-video",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "prepare": "npm --prefix .. run build && node prepare.mjs",
+    "dev": "npm run prepare && npx --yes hyperframes@0.7.86 preview ../.video-dist",
+    "check": "npm run prepare && npx --yes hyperframes@0.7.86 check ../.video-dist --samples 9 --no-contrast",
+    "render": "npm run prepare && npx --yes hyperframes@0.7.86 render ../.video-dist --fps 24 --quality high --strict --output ../video/renders/cookie-reel.mp4"
+  }
+}

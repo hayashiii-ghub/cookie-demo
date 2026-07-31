@@ -7,6 +7,9 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
+    "video:dev": "npm --prefix video run dev",
+    "video:check": "npm --prefix video run check",
+    "video:render": "npm --prefix video run render",
     "astro": "astro"
   },
   "devDependencies": {

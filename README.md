@@ -45,6 +45,25 @@ Static site — Vercel auto-detects Astro and serves `dist/`. Import the repo in
 Vercel (Framework preset: **Astro**, build `astro build`, output `dist`); no
 adapter or extra config needed.
 
+## Video edition
+
+The interactive site and the rendered video live in this repository so they share the
+same components, styles, Canvas renderer, and seven-second timeline. The Astro build emits
+`/video/` as a HyperFrames composition; the video transport maps HyperFrames seek time back
+to the existing `frame(p)` function.
+
+```bash
+npm run video:dev       # HyperFrames preview
+npm run video:check     # build + deterministic seek checks
+npm run video:render    # -> video/renders/cookie-reel.mp4
+```
+
+Keep generated MP4 files out of Git. Vercel remains responsible only for the static Web
+edition. For a shareable video, run the **Render video release** GitHub Action manually to
+download an artifact, or push a `video-v*` tag (for example `video-v1.0.0`) to create a
+GitHub Release containing the MP4. Upload that file separately to social/video platforms;
+do not make the Vercel build render video.
+
 ## Disclaimer
 
 Personal, **non-official / non-commercial fan tribute** to NewJeans' "Cookie"

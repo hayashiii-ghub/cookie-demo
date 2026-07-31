@@ -1,0 +1,31 @@
+name: Render video release
+
+on:
+  push:
+    tags:
+      - 'video-v*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run video:check
+      - run: npm run video:render
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cookie-reel
+          path: video/renders/cookie-reel.mp4
+      - if: startsWith(github.ref, 'refs/tags/video-v')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "${GITHUB_REF_NAME}" video/renders/cookie-reel.mp4 --generate-notes --title "COOKIE reel ${GITHUB_REF_NAME}"
