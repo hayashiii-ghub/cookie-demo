@@ -1,6 +1,8 @@
 # build output
 dist/
 .astro/
+.video-dist/
+video/renders/
 
 # deps
 node_modules/
