@@ -1,5 +1,7 @@
 /* the whole reel is authored on a fixed 1200x900 (4:3) stage and scaled to fit */
-export var BW=1200, BH=900;
+import { FRAME_HEIGHT, FRAME_WIDTH } from '../config/reel.js';
+
+export var BW=FRAME_WIDTH, BH=FRAME_HEIGHT;
 
 /* THE PANEL IS DECLARED ONCE, IN CSS, AND EVERYTHING HERE IS DERIVED FROM IT.
    It used to be written out four times: .case in the stylesheet, PAN, the crumbs' seat, and

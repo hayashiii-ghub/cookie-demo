@@ -2,13 +2,16 @@
 import { $, reduce, seg, lerp, eOut, fmt } from './util.js';
 import { PW, PAN, SPREAD } from './stage.js';
 import { drawCookie, CRUMB_P, crumbLayer } from './cookie.js';
+import { DURATION_SECONDS, SOURCE_START_SECONDS } from '../config/reel.js';
 
 var bgDark=$('bgDark'),bgBlue=$('bgBlue'),bug=$('bug'),flash=$('flash'),
     tcEl=$('tc'),fill=$('fill'),head=$('head'),shotEl=$('shot'),hint=$('hint'),
     bar=$('bar'),marks=$('marks');
 var E={cd1:$('cd1'),doodle:$('doodle'),kase:$('case'),lid:$('lid'),cover:$('cover')};
 
-var mh='';for(var s=0;s<=7;s++){mh+='<b style="left:'+(s/7*100)+'%">2:'+(13+s)+'</b>';}marks.innerHTML=mh;
+var mh='';for(var s=0;s<=DURATION_SECONDS;s++){var sourceSecond=SOURCE_START_SECONDS+s;
+  mh+='<b style="left:'+(s/DURATION_SECONDS*100)+'%">'+Math.floor(sourceSecond/60)+':'+String(sourceSecond%60).padStart(2,'0')+'</b>';}
+marks.innerHTML=mh;
 
 var lastP=0,lastPct=-1,lastTc='';
 

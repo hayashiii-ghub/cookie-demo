@@ -48,9 +48,10 @@ adapter or extra config needed.
 ## Video edition
 
 The interactive site and the rendered video live in this repository so they share the
-same components, styles, Canvas renderer, and seven-second timeline. The Astro build emits
-`/video/` as a HyperFrames composition; the video transport maps HyperFrames seek time back
-to the existing `frame(p)` function.
+same components, styles, Canvas renderer, and seven-second timeline. Video commands perform a
+dedicated Astro build that emits `/video/` as a HyperFrames composition, then promotes that route
+to the composition root. The normal Web/Vercel build emits only `/`; the video transport maps
+HyperFrames seek time back to the existing `frame(p)` function.
 
 ```bash
 npm run video:dev       # HyperFrames preview

@@ -1,13 +1,22 @@
 ---
 import '../styles/reel.css';
 import Reel from '../components/Reel.astro';
+import { FRAME_HEIGHT, FRAME_WIDTH } from '../config/reel.js';
+
+export function getStaticPaths() {
+  return process.env.VIDEO_BUILD === '1'
+    ? [{ params: { composition: 'video' } }]
+    : [];
+}
+
+const viewport = `width=${FRAME_WIDTH}, height=${FRAME_HEIGHT}`;
 ---
 
 <!doctype html>
 <html lang="ko">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=1200, height=900" />
+<meta name="viewport" content={viewport} />
 <title>COOKIE · REEL 02 — HyperFrames composition</title>
 </head>
 <body class="video-render">
